@@ -1,0 +1,20 @@
+! Useful resource: http://www.computerhope.com/unix/uxrdb.htm
+! Coloring
+xterm*color: green
+xterm*background: black
+xterm*foreground: green
+xterm*cursorColor: yellow
+
+! Fonts
+xterm*faceName: Terminus:size=8
+xterm*boldFont: Terminus:size=10
+xterm*font: terminus
+
+! General
+xterm*scrollBar: false
+xterm*loginShell: true
+! Something about utf-8
+xterm*locale: true
+
+! Copying to PRIMARY and CLIPBOARD when highlighting a word (I guess)
+xterm*translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
