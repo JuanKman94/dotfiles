@@ -19,3 +19,8 @@ alias gl='git log --graph'
 alias gs='git status'
 alias ga='git add'
 alias gc='git checkout'
+
+# ls
+export LS_OPTIONS='--color=auto'
+eval "`dircolors`"
+alias ls='ls $LS_OPTIONS'
