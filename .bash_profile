@@ -19,6 +19,7 @@ alias gl='git log --graph'
 alias gs='git status'
 alias ga='git add'
 alias gc='git checkout'
+alias gd='git diff'
 
 # ls
 export LS_OPTIONS='--color=auto'
