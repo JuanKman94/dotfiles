@@ -19,8 +19,10 @@ supermenu = {
    { "Pragha", "pragha", "/usr/share/rhythmbox/plugins/context/img/Discogs16x16.png" },
    { "Transmission", "transmission-gtk" },
    { "Thunar", "thunar" },
+   { "Telegram", "telegram" },
+   { "VirtualBox", "virtualbox" },
    { "VLC", "vlc" },
    { "Nautilus", "nautilus" },
    { "Gnome Control Center", "gnome-control-center" },
-   { "Shutdown", { { "No ", "" }, { "Si", "shutdown -h now" } } }
+   { "Shutdown", { { "No ", "" }, { "Reboot", "reboot" }, { "Si", "shutdown -h now" } } }
 }

@@ -14,7 +14,7 @@ local menubar = require("menubar")
 -- Volume display on bar
 require("volume")
 -- Backlight display on bar
-require("backlight")
+--require("backlight")
 -- Battery display on bar
 --local battery = require("battery")
 -- Custom menu
@@ -83,7 +83,7 @@ local layouts =
 if beautiful.wallpaper then
     for s = 1, screen.count() do
         --gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-        gears.wallpaper.maximized("/home/sam/.config/awesome/images/green_wax2.jpg", s, true)
+        gears.wallpaper.maximized("/home/jc/.config/awesome/images/green_wax2.jpg", s, true)
     end
 end
 -- }}}
@@ -102,7 +102,7 @@ local tags_layouts =
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "main", "www", "code", "conf", 5, 6 }, s, tags_layouts)
+    tags[s] = awful.tag({ "main", "www", "code", "conf", "virtual", 6 }, s, tags_layouts)
 end
 -- }}}
 
@@ -214,7 +214,7 @@ for s = 1, screen.count() do
     -- Volume text on top bar
     right_layout:add(volume_widget)
     --right_layout:add(battery)
-    right_layout:add(backlight_widget)
+    --right_layout:add(backlight_widget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -272,7 +272,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
 
     -- My keybindings
-    awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox-de") end),
+    awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox") end),
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("sudo systemctl restart NetworkManager") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
       -- Volume
