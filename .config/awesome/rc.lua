@@ -273,7 +273,7 @@ globalkeys = awful.util.table.join(
 
     -- My keybindings
     awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox") end),
-    awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("sudo systemctl restart NetworkManager") end),
+    awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
       -- Volume
     awful.key({ "Control", "Shift"}, "Down", function () awful.util.spawn("amixer set Master 5%-", false) end),
