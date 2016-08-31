@@ -2,6 +2,7 @@
 echo "The script requires sudo to copy global configuration files..."
 
 cp -rv .xinitrc .vim/ .vimrc .config/ .bash_profile .bashrc .Xresources $HOME
+source $HOME/.bash_profile
 touch $HOME/.bash_private
 sudo cp 00-keyboard.conf /etc/X11/Xresources/
 mkdir -p $HOME/.vim/bundle

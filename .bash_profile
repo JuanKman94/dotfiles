@@ -11,8 +11,10 @@ stty -ixon
 
 # User specific environment and startup programs
 
+EDITOR=vi
 PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:/usr/local/heroku/bin:$PATH
 
+export EDITOR
 export PATH
 source ~/.bash_private
 alias gl='git log --graph'
