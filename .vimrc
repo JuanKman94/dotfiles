@@ -1,62 +1,137 @@
-" Dealing with splitscreen
+" ---- Split management ----
+set splitbelow          " When HSplit, add screen below
+set splitright          " When VSplit, add screen to the right
+
+" Dealing with splitscreen, Alt + <key> to move between screens
 nmap <silent> <A-Up> :wincmd k<CR>
 nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
 
-set bs=indent,eol,start		" allow backspacing over everything in insert mode
 
+
+
+
+" ---- Visuals ----
+
+" Add colors!
+syntax on
+
+" Change tab key behavior
 set expandtab
-set shiftwidth=2
-set softtabstop=2
+set shiftwidth=4
+set softtabstop=4
 
-" Redraw screen and run nohlsearch when pressing <CTRL-l>
-nnoremap <silent> <C-l> :nohl<CR><C-l>
+
+
+
+
+
+" ---- Behavior ----
+
+" Fix backspace on XTerm
+set backspace=indent,eol,start		" allow backspacing over everything in insert mode
 
 if &term=="xterm"
      set t_Co=8
      set t_Sb=[4%dm
      set t_Sf=[3%dm
 endif
-
-" Add colors!
-syntax on
+fixdel
 
 " ViM features
 set showcmd		" Show (partial) command in status line.
 set showmatch		" Show matching brackets.
 set ignorecase		" Do case insensitive matching
 set smartcase		" Do smart case matching
-set incsearch		" Incremental search
+set incsearch		" Incremental search -- find matches as you type
+set hlsearch            " Highlight search
+
+" Redraw screen and run nohlsearch when pressing <CTRL-l>
+nnoremap <silent> <C-l> :nohl<CR><C-l>
 
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
 let &guicursor = &guicursor . ",a:blinkon0"
-fixdel
 
-set nocompatible              " be iMproved, required
-filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
 
-" plugin from http://vim-scripts.org/vim/scripts.html
-Plugin 'L9'
+" ---- Vundle ----
+set nocompatible              " Be iMproved, required -- Latest vim settings/options
 
-" HTML snippets - Tutorial: https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
-Plugin 'mattn/emmet-vim'
+source ~/.vim/plugins.vim
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+
+
+
+
+" ---- Laracasts: Vim mastery ----
+
+let mapleader = ','   " The default <Leader> is '\', but ',' seems better
+set number            " Let's activate line numbers
+
+
+
+
+
+" ------ Visuals ------
+
+set linespace=14      " gVim specific: Change lineheight
+set t_CO=256          " Use 256 colors. Useful in terminal Vim
+
+
+
+
+
+" ------ Mappings ------
+
+" Make it easy to edit Vimrc file
+nmap <Leader>ev :tabedit $MYVIMRC<cr>
+" '' <Leader> key by default is '\', you can customize it
+" '' <cr> <= Carriage Return
+
+" List buffers <= :ls
+nmap <Leader>l :ls<cr>
+
+" Make NERDTree easier to toggle
+nmap <Leader>n :NERDTreeToggle<cr>
+
+" Open a new tab
+nmap <Leader>t :tabnew 
+
+" Open a new Vertically split window
+nmap <Leader>v :vsplit 
+
+" Check for variable names, tags 'n' shite
+nmap <Leader>r :CtrlPBufTag<cr>
+
+" Most Recently Used files
+nmap <Leader>m :CtrlPMRUFiles<cr>
+
+
+
+
+
+" ------ Plugins ------
+
+" // CtrlP
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  'node_modules\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+let g:ctrlp_match_window = 'top,order:ttb,min:1,max:10,results:10'
+
+
+
+
+" ------ Auto-commands ------
+
+" Automatically source Vimrc file on save
+"augroup
+"  " Clear out the group, this way we don't replicate
+"  autocmd!
+"  autocmd BufWritePost .vimrc source %
+"augroup END
