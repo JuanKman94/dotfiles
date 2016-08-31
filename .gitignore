@@ -1,0 +1,14 @@
+*
+*/*
+
+!\.gitignore
+!\.bash_profile
+!\.bashrc
+!\.config/
+!\.git
+!README.md
+!setup.sh
+!\.vim/
+!\.vimrc
+!\.xinitrc
+!\.Xresources
