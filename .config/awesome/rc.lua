@@ -1,24 +1,32 @@
 -- Standard awesome library
 local gears = require("gears")
-local awful = require("awful")
+awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
+
 -- Widget and layout library
-local wibox = require("wibox")
+wibox = require("wibox")
+
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
-local naughty = require("naughty")
+naughty = require("naughty")
 local menubar = require("menubar")
 
 -- Volume display on bar
-require("volume")
+require("plugins/volume")
+local volume_widget = volume_widget_init()
+
 -- Backlight display on bar
 --require("backlight")
+
 -- Battery display on bar
---local battery = require("battery")
+require("plugins/battery")
+local battery_widget = battery_widget_init()
+
 -- Custom menu
-require("menu")
+require("plugins/menu")
+
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -211,11 +219,15 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+
     -- Volume text on top bar
     right_layout:add(volume_widget)
-    --right_layout:add(battery)
+    right_layout:add(battery_widget)
+
     --right_layout:add(backlight_widget)
+
     right_layout:add(mytextclock)
+
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)

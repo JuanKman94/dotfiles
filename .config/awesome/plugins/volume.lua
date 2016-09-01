@@ -1,8 +1,15 @@
-local wibox = require("wibox")
-local awful = require("awful")
+function volume_widget_init()
+    local volume_widget = wibox.widget.textbox()
+    volume_widget:set_align("right")
 
-volume_widget = wibox.widget.textbox()
-volume_widget:set_align("right")
+    update_volume(volume_widget)
+
+    local mytimer = timer({ timeout = 1})
+    mytimer:connect_signal("timeout", function () update_volume(volume_widget) end)
+    mytimer:start()
+
+    return volume_widget
+end
 
 function update_volume(widget)
   local fd = io.popen("amixer sget Master")
@@ -21,6 +28,7 @@ function update_volume(widget)
   local ig = volume * (eg - sg) + sg
   local ib = volume * (eb - sb) + sb
   interpol_colour = string.format("%.2x%.2x%.2x", ir, ig, ib)
+
   if string.find(status, "off", 1, true) then
     volume = "<span color='red' background='#" .. interpol_colour .. "'>" .. volume .. "M</span> | "
   else
@@ -28,9 +36,3 @@ function update_volume(widget)
   end
   widget:set_markup(volume)
 end
-
-update_volume(volume_widget)
-
-mytimer = timer({ timeout = 1})
-mytimer:connect_signal("timeout", function () update_volume(volume_widget) end)
-mytimer:start()
