@@ -1,38 +1,57 @@
-function volume_widget_init()
-    local volume_widget = wibox.widget.textbox()
-    volume_widget:set_align("right")
+volume_cfg = {}
+volume_cfg.card_id  = 0
+volume_cfg.channel = "Master"
+volume_cfg.widget = wibox.widget.textbox()
+volume_cfg.widget:set_align("right")
 
-    update_volume(volume_widget)
+-- command must start with a space!
+volume_cfg.mixercommand = function (command)
+       local fd = io.popen("amixer " .. command)
+       local status = fd:read("*all")
+       fd:close()
+       local volume = string.match(status, "(%d?%d?%d)%%")
+       volume = string.format("% 3d", volume)
+       status = string.match(status, "%[(o[^%]]*)%]")
 
-    local mytimer = timer({ timeout = 1})
-    mytimer:connect_signal("timeout", function () update_volume(volume_widget) end)
-    mytimer:start()
+        local color = "#FF0000"
+        if string.find(status, "on", 1, true) then
+            color = "#00FF00"
+        end
+        status = ""
+        for i = 1, math.floor(volume / 10) do
+            status = status .. "|"
+        end
+        for i = math.floor(volume / 10) + 1, 10 do
+            status = status .. "-"
+        end
+        status = "[" ..status .. "]"
 
-    return volume_widget
+        markup = " <span color=\"#00CC00\">-</span><span color=\"" .. color .. "\">" .. status .. "</span><span color=\"#19FFFF\">+</span> | "
+
+        volume_cfg.widget:set_markup(markup)
 end
 
-function update_volume(widget)
-  local fd = io.popen("amixer sget Master")
-  local status = fd:read("*all")
-  fd:close()
-
-  local volume = tonumber(string.match(status, "%[(%d+)%%%]"))
-  -- volume = string.format("% 3d", volume)
-
-  -- starting colour
-  local sr, sg, sb = 0x3F, 0x3F, 0x3F
-  -- ending colour
-  local er, eg, eb = 0xDC, 0xDC, 0xDC
-
-  local ir = volume * (er - sr) + sr
-  local ig = volume * (eg - sg) + sg
-  local ib = volume * (eb - sb) + sb
-  interpol_colour = string.format("%.2x%.2x%.2x", ir, ig, ib)
-
-  if string.find(status, "off", 1, true) then
-    volume = "<span color='red' background='#" .. interpol_colour .. "'>" .. volume .. "M</span> | "
-  else
-    volume = "<span background='#" .. interpol_colour .. "'>Vol: " .. volume .. "%</span> | "
-  end
-  widget:set_markup(volume)
+volume_cfg.update = function ()
+       volume_cfg.mixercommand(" sget " .. volume_cfg.channel)
 end
+
+volume_cfg.up = function ()
+       volume_cfg.mixercommand(" sset " .. volume_cfg.channel .. " 5%+")
+end
+
+volume_cfg.down = function ()
+       volume_cfg.mixercommand(" sset " .. volume_cfg.channel .. " 5%-")
+end
+
+volume_cfg.toggle = function ()
+       volume_cfg.mixercommand(" sset " .. volume_cfg.channel .. " toggle")
+end
+
+volume_cfg.widget:buttons(awful.util.table.join(
+       awful.button({ }, 4, function () volume_cfg.up() end),
+       awful.button({ }, 5, function () volume_cfg.down() end),
+       awful.button({ }, 1, function () volume_cfg.toggle() end)
+))
+
+volume_cfg.update()
+return volume_cfg

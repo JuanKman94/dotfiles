@@ -19,6 +19,7 @@ supermenu = {
    { "Pragha", "pragha", "/usr/share/rhythmbox/plugins/context/img/Discogs16x16.png" },
    { "Transmission", "transmission-gtk" },
    { "Thunar", "thunar" },
+   { "Google Chrome", "google-chrome-stable" },
    { "Telegram", "telegram" },
    { "VirtualBox", "virtualbox" },
    { "VLC", "vlc" },

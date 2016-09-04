@@ -8,14 +8,18 @@ require("awful.autofocus")
 wibox = require("wibox")
 
 -- Theme handling library
-local beautiful = require("beautiful")
+beautiful = require("beautiful")
+-- {{{ Variable definitions
+-- Themes define colours, icons, font and wallpapers.
+beautiful.init(awful.util.getdir("config") .. "/themes/default/theme.lua")
+--beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+
 -- Notification library
 naughty = require("naughty")
 local menubar = require("menubar")
 
 -- Volume display on bar
-require("plugins/volume")
-local volume_widget = volume_widget_init()
+volume_cfg = require("plugins/volume")
 
 -- Backlight display on bar
 --require("backlight")
@@ -53,10 +57,6 @@ do
 end
 -- }}}
 
--- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
 editor = os.getenv("EDITOR") or "vi"
@@ -90,8 +90,7 @@ local layouts =
 -- {{{ Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
-        --gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-        gears.wallpaper.maximized("/home/jc/.config/awesome/images/green_wax2.jpg", s, true)
+        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
     end
 end
 -- }}}
@@ -221,7 +220,7 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
 
     -- Volume text on top bar
-    right_layout:add(volume_widget)
+    right_layout:add(volume_cfg.widget)
     right_layout:add(battery_widget)
 
     --right_layout:add(backlight_widget)
@@ -288,9 +287,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
       -- Volume
-    awful.key({ "Control", "Shift"}, "Down", function () awful.util.spawn("amixer set Master 5%-", false) end),
-    awful.key({ "Control", "Shift"}, "Up", function () awful.util.spawn("amixer set Master 5%+", false) end),
-    awful.key({ modkey, "Control" }, "m", function () awful.util.spawn("amixer set Master toggle", false) end),
+    awful.key({ "Control", "Shift"}, "Down", function() volume_cfg.down() end ),
+    awful.key({ "Control", "Shift"}, "Up", function() volume_cfg.up() end ),
+    awful.key({ modkey, "Control" }, "m", function() volume_cfg.toggle() end ),
       -- Backlight
     awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 5", false) end),
     awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 5", false) end),
@@ -492,4 +491,15 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}
+
+-- {{{ timer and functions that require it
+local mytimer = timer({ timeout = 1000 })
+
+mytimer:connect_signal("timeout", function ()
+    volume_cfg.update()
+    update_battery(battery_widget)
+end)
+
+mytimer:start()
 -- }}}
