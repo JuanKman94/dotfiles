@@ -1,5 +1,12 @@
 # Home directory files (or dotFiles, as they call'em)
 
+## Fonts
+
+Add the `--fonts` parameter to the setup script to run the `install-*-font.sh` during installation
+```bash
+$ bash setup.sh --fonts
+```
+
 ## Awesome
 
 Debug configuration file on a nested Xorg server (depends on Xephyr)

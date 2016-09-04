@@ -13,6 +13,8 @@
 !/\.git
 !/README.md
 !/setup.sh
+!/install-terminus-font.sh
+
 !/\.vim/
 !/\.vimrc
 !/\.xinitrc
