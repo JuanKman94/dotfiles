@@ -286,13 +286,14 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox") end),
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
+    awful.key({                   }, "#107",   function () awful.util.spawn("screenshot.sh") end),
       -- Volume
-    awful.key({ "Control", "Shift"}, "Down", function() volume_cfg.down() end ),
-    awful.key({ "Control", "Shift"}, "Up", function() volume_cfg.up() end ),
-    awful.key({ modkey, "Control" }, "m", function() volume_cfg.toggle() end ),
+    awful.key({ "Control", "Shift"}, "Down",   function() volume_cfg.down() end ),
+    awful.key({ "Control", "Shift"}, "Up",     function() volume_cfg.up() end ),
+    awful.key({ modkey, "Control" }, "m",      function() volume_cfg.toggle() end ),
       -- Backlight
-    awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 5", false) end),
-    awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 5", false) end),
+    awful.key({}, "XF86MonBrightnessUp",       function () awful.util.spawn("xbacklight -inc 5", false) end),
+    awful.key({}, "XF86MonBrightnessDown",     function () awful.util.spawn("xbacklight -dec 5", false) end),
     --
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
