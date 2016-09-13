@@ -43,7 +43,7 @@ function update_battery(widget)
     elseif state == 'Charging' then
         battery_widget:set_color('#66CC00')
     else
-        battery_widget:set_color("#0F0")
+        battery_widget:set_color("#19FFFF")
     end
 
     battery_widget:set_value(percent)

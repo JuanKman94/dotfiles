@@ -14,6 +14,11 @@ beautiful = require("beautiful")
 beautiful.init(awful.util.getdir("config") .. "/themes/default/theme.lua")
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
+-- This is used later as the default terminal and editor to run.
+terminal = "xterm"
+editor = os.getenv("EDITOR") or "vi"
+editor_cmd = terminal .. " -e " .. editor
+
 -- Notification library
 naughty = require("naughty")
 local menubar = require("menubar")
@@ -56,11 +61,6 @@ do
     end)
 end
 -- }}}
-
--- This is used later as the default terminal and editor to run.
-terminal = "xterm"
-editor = os.getenv("EDITOR") or "vi"
-editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -495,7 +495,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- {{{ timer and functions that require it
-local mytimer = timer({ timeout = 1000 })
+local mytimer = timer({ timeout = 30 })
 
 mytimer:connect_signal("timeout", function ()
     volume_cfg.update()

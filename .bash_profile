@@ -12,7 +12,8 @@ stty -ixon
 # User specific environment and startup programs
 
 EDITOR=vi
-PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:/usr/local/heroku/bin:$PATH
+PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$PATH
+PATH=$PATH:./node_modules/.bin # node packages
 
 export EDITOR
 export PATH

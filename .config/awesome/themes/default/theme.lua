@@ -10,12 +10,12 @@ theme.font          = "terminus 8"
 
 theme.bg_normal     = "#111111"
 theme.bg_focus      = "#00FF00"
---theme.bg_focus      = "#19FFFF"
-theme.bg_urgent     = "#FF0000"
+--theme.bg_focus      = "#19FFFF" -- For tron-like colors
+theme.bg_urgent     = "#FFFF00"
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
---theme.fg_normal     = "#19FFFF"
+--theme.fg_normal     = "#19FFFF" -- For tron-like colors
 theme.fg_normal     = "#00FF00"
 theme.fg_focus      = "#111111"
 theme.fg_urgent     = "#66DD00"

@@ -16,14 +16,11 @@ return { { "awesome", myawesomemenu, beautiful.awesome_icon },
 
 supermenu = {
    { "Firefox", "firefox-de", "/usr/share/firefox-developer/browser/chrome/icons/default/default16.png"},
-   { "Pragha", "pragha", "/usr/share/rhythmbox/plugins/context/img/Discogs16x16.png" },
-   { "Transmission", "transmission-gtk" },
-   { "Thunar", "thunar" },
+   { "Vifm", terminal .. " -e vifm" },
    { "Google Chrome", "google-chrome-stable" },
    { "Telegram", "telegram" },
    { "VirtualBox", "virtualbox" },
    { "VLC", "vlc" },
-   { "Nautilus", "nautilus" },
-   { "Gnome Control Center", "gnome-control-center" },
-   { "Shutdown", { { "No ", "" }, { "Reboot", "reboot" }, { "Si", "shutdown -h now" } } }
+   { "Arduino", "arduino" },
+   { "Shutdown", { { "No ", "" }, { "Reboot", "reboot" }, { "Yes", "shutdown -h now" } } }
 }
