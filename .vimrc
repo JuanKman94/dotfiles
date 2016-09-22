@@ -9,6 +9,12 @@ nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
 
 
+" Store current session on file
+nmap <c-s> :mksession! ~/.vim/prev_session <cr>
+
+" Restore previoues session
+nmap <c-a> :source ~/.vim/prev_session <cr>
+
 
 
 
@@ -95,20 +101,11 @@ nmap <Leader>ev :tabedit $MYVIMRC<cr>
 " List buffers <= :ls
 nmap <Leader>l :ls<cr>
 
-" Make NERDTree easier to toggle
-nmap <Leader>n :NERDTreeToggle<cr>
-
 " Open a new tab
 nmap <Leader>t :tabnew 
 
 " Open a new Vertically split window
 nmap <Leader>v :vsplit 
-
-" Check for variable names, tags 'n' shite
-nmap <Leader>r :CtrlPBufTag<cr>
-
-" Most Recently Used files
-nmap <Leader>m :CtrlPMRUFiles<cr>
 
 
 
@@ -117,13 +114,37 @@ nmap <Leader>m :CtrlPMRUFiles<cr>
 " ------ Plugins ------
 
 " // CtrlP
+
+" Check for variable names, tags 'n' shite
+nmap <Leader>r :CtrlPBufTag<cr>
+
+" Most Recently Used files
+nmap <Leader>m :CtrlPMRUFiles<cr>
+
+" Enable CtrlPBufTag
+"let g:ctrlp_extensions = [ 'buffertag' ]
+
+" Ignore some shite
+let g:ctrlp_working_path_mode = 0
+
+" Ignore some more shite
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  'node_modules\v[\/]\.(git|hg|svn)$',
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$\|node_modules$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
+
+" How result are displayed
 let g:ctrlp_match_window = 'top,order:ttb,min:1,max:10,results:10'
 
+
+
+" // NERDTree
+
+" Make NERDTree easier to toggle
+nmap <Leader>n :NERDTreeToggle<cr>
+
+let NERDTreeHijackNetrw = 0
 
 
 
@@ -135,3 +156,11 @@ let g:ctrlp_match_window = 'top,order:ttb,min:1,max:10,results:10'
 "  autocmd!
 "  autocmd BufWritePost .vimrc source %
 "augroup END
+
+" Codes & Cheats
+"
+""" Mappings
+" zz                <= Center the screen on cursor
+" <c-^>             <= Return to previous location
+" <c-[>             <= Go to function definition (requires ctags)
+" -                 <= Run vinegar (requires vinega plugin)
