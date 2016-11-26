@@ -22,5 +22,5 @@ supermenu = {
    { "VirtualBox", "virtualbox" },
    { "VLC", "vlc" },
    { "Arduino", "arduino" },
-   { "Shutdown", { { "No ", "" }, { "Reboot", "reboot" }, { "Yes", "shutdown -h now" } } }
+   { "Shutdown", { { "No ", "" }, { "Suspend", "systemctl suspend -i" }, { "Reboot", "reboot" }, { "Yes", "shutdown -h now" } } }
 }

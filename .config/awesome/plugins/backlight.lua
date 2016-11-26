@@ -1,8 +1,15 @@
 local wibox = require("wibox")
 local awful = require("awful")
 
-backlight_widget = wibox.widget.textbox()
-backlight_widget:set_align("right")
+backlight_plugin = {}
+backlight_plugin.widget = wibox.widget.textbox()
+backlight_plugin.widget:set_align('right')
+
+backlight_plugin.setBacklight = function ()
+    local brightness = io.open("/sys/class/backlight/radeon_b10/brightness", "r")
+    local current = brightness:read()
+    brightness:close()
+end
 
 function update_backlight(widget)
   local fd = io.popen("xbacklight -get")

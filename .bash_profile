@@ -13,7 +13,7 @@ stty -ixon
 
 EDITOR=vi
 PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$PATH
-PATH=$PATH:./node_modules/.bin # node packages
+PATH=$PATH:$HOME/.npm-global/bin:./node_modules/.bin # node packages
 
 export EDITOR
 export PATH
@@ -23,6 +23,8 @@ alias gs='git status'
 alias ga='git add'
 alias gc='git checkout'
 alias gd='git diff'
+
+alias vim='vim -p'
 
 # ls
 export LS_OPTIONS='--color=auto'

@@ -13,6 +13,7 @@ xterm*font: terminus
 ! General
 xterm*scrollBar: false
 xterm*loginShell: true
+xterm*utf8: true
 ! Something about utf-8
 xterm*locale: true
 
