@@ -15,7 +15,9 @@ nmap <c-s> :mksession! ~/.vim/prev_session <cr>
 " Restore previoues session
 nmap <c-a> :source ~/.vim/prev_session <cr>
 
-
+set wildmenu    " Cool autocompletion menu
+set showcmd     " Always show status
+set cursorline  " Underline current line
 
 
 " ---- Visuals ----
@@ -28,6 +30,12 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
+
+
+
+" ---- Folding ----
+set foldmethod=indent
+set foldlevelstart=7
 
 
 
@@ -104,6 +112,9 @@ nmap <Leader>l :ls<cr>
 " Open a new tab
 nmap <Leader>t :tabnew 
 
+" Open a new Horizontal split window
+nmap <Leader>s :split
+
 " Open a new Vertically split window
 nmap <Leader>v :vsplit 
 
@@ -114,6 +125,9 @@ nmap <Leader>v :vsplit
 " ------ Plugins ------
 
 " // CtrlP
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
 
 " Check for variable names, tags 'n' shite
 nmap <Leader>r :CtrlPBufTag<cr>
@@ -137,6 +151,8 @@ let g:ctrlp_custom_ignore = {
 " How result are displayed
 let g:ctrlp_match_window = 'top,order:ttb,min:1,max:10,results:10'
 
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'  " -- Use silver searcher to look through files
 
 
 " // NERDTree
@@ -164,3 +180,6 @@ let NERDTreeHijackNetrw = 0
 " <c-^>             <= Return to previous location
 " <c-[>             <= Go to function definition (requires ctags)
 " -                 <= Run vinegar (requires vinega plugin)
+"
+" To remove annoying '^M' character:
+" :%s/<Ctrl-V><Ctrl-M>/\r/g
