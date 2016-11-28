@@ -13,7 +13,17 @@ while [ "$1" != "" ]; do
     shift
 done
 
-cp -rv .xinitrc .vim/ .vimrc .config/ .bash_profile .bashrc .Xresources $HOME
+# Copy these files to homedir
+cp -rv .xinitrc \
+    .vim/ \
+    .vimrc \
+    .config/ \
+    .bash_profile \
+    .bashrc \
+    .Xresources \
+    bin/ \
+    $HOME
+
 source $HOME/.bash_profile
 touch $HOME/.bash_private
 
