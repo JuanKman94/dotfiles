@@ -15,9 +15,9 @@ return { { "awesome", myawesomemenu, beautiful.awesome_icon },
 --]]
 
 supermenu = {
-   { "Firefox", "firefox-de", "/usr/share/firefox-developer/browser/chrome/icons/default/default16.png"},
    { "Vifm", terminal .. " -e vifm" },
-   { "Google Chrome", "google-chrome-stable" },
+   { "Chromium", "chromium-browser" },
+   { "Chrome", "google-chrome-stable" },
    { "Telegram", "telegram" },
    { "VirtualBox", "virtualbox" },
    { "VLC", "vlc" },

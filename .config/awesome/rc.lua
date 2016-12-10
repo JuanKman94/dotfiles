@@ -284,6 +284,7 @@ globalkeys = awful.util.table.join(
 
     -------------------- My keybindings --------------------
     awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox") end),
+    awful.key({ modkey, "Shift"   }, "b",      function () awful.util.spawn("firefox -P") end),
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
     awful.key({                   }, "#107",   function () awful.util.spawn("screenshot.sh") end),
@@ -419,9 +420,13 @@ awful.rules.rules = {
     -- Set Firefox to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } },
-    { rule = { class = "Chrome" },
-      properties = { tag = tags[1][6] } },
     { rule = { class = "chrome" },
+      properties = { tag = tags[1][6] } },
+    { rule = { class = "chrome-browser" },
+      properties = { tag = tags[1][6] } },
+    { rule = { class = "chromium" },
+      properties = { tag = tags[1][6] } },
+    { rule = { class = "chromium-browser" },
       properties = { tag = tags[1][6] } },
 }
 -- }}}
