@@ -1,0 +1,10 @@
+{
+    "variables": {
+        "indentation": "\t",
+        "carriage": "\r"
+    },
+    "html": {
+        "lorem" : "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pellentesque dignissim nisl at sagittis. Maecenas a dolor sed nunc posuere convallis. Praesent rhoncus massa vel libero laoreet vehicula. Nulla at risus quam. Sed ultricies aliquam ligula, at pulvinar lorem tempor eu. Nam imperdiet lacinia eros. Vivamus sollicitudin fermentum volutpat. Sed dictum vehicula massa, non vestibulum magna sodales vel. Cras eget gravida sem, at semper dui. Praesent et laoreet lacus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus mauris est, bibendum non nisi non, convallis convallis enim.</p>",
+        "lorem:2" : "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pellentesque dignissim nisl at sagittis. Maecenas a dolor sed nunc posuere convallis. Praesent rhoncus massa vel libero laoreet vehicula. Nulla at risus quam. Sed ultricies aliquam ligula, at pulvinar lorem tempor eu. Nam imperdiet lacinia eros. Vivamus sollicitudin fermentum volutpat. Sed dictum vehicula massa, non vestibulum magna sodales vel. Cras eget gravida sem, at semper dui. Praesent et laoreet lacus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus mauris est, bibendum non nisi non, convallis convallis enim.</p>${carriage}${carriage}<p>Sed nec eleifend tortor. Curabitur a eros erat. Vivamus ut neque dui. Cras at diam tellus. Fusce commodo, nisl et tincidunt ultricies, lorem felis pulvinar dolor, sed dignissim eros mi non justo. Phasellus eget velit maximus, suscipit ipsum nec, mattis diam. Pellentesque iaculis ultrices sem, at mollis quam dictum at.</p>"
+    }
+}

@@ -23,6 +23,9 @@ Plugin 'L9'
 " HTML snippets - Tutorial: https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
 Plugin 'mattn/emmet-vim'
 
+" Weo api ?
+Plugin 'mattn/webapi-vim'
+
 " Ctrl+P plugin
 Plugin 'ctrlpvim/ctrlp.vim'
 

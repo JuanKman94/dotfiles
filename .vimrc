@@ -40,7 +40,6 @@ set foldlevelstart=7
 
 
 
-
 " ---- Behavior ----
 
 " Fix backspace on XTerm
@@ -70,6 +69,9 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 
 
+" ---- FileTypes ----
+autocmd BufRead,BufNewFile *.vue setlocal filetype=html
+
 
 
 " ---- Vundle ----
@@ -77,6 +79,8 @@ set nocompatible              " Be iMproved, required -- Latest vim settings/opt
 
 source ~/.vim/plugins.vim
 
+" ---- Emmet ----
+let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets.json')), "\n"))
 
 
 
