@@ -1,0 +1,26 @@
+#!/bin/bash
+
+CMUS=$(pidof cmus)
+FF=$(pidof firefox)
+
+# Sleep for whatever seconds the first argument specifies
+if [ "$1" != "" ]; then
+    echo Sleeping for $1 seconds before shutdown...
+    sleep $1
+fi
+
+# Then kill EVERYTHING >:D
+
+if [ "$CMUS" != "" ]; then
+    echo - Stoping cmus...
+    cmus-remote --stop
+    kill -9 $CMUS
+fi
+
+if [ "$FF" != "" ]; then
+    echo - Killing firefox process...
+    kill -9 $FF
+fi
+
+# Now halt n_n
+shutdown -h +1
