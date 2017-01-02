@@ -18,6 +18,7 @@ $ DISPLAY=:1.0 awesome -c /home/jc/.config/awesome/rc.lua
 ## Quotes
 
 > If you have an API endpoint with multiple joins, you're screwed anyway and should fix your API.
+
 Linus Torvalds
 
 ## NMCLI
