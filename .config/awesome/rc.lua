@@ -105,11 +105,12 @@ local tags_layouts =
    layouts[1],
    layouts[1],
    layouts[2],
+   layouts[10],
    layouts[10]
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "main", "www", "code", "conf", "virtual", "misc" }, s, tags_layouts)
+    tags[s] = awful.tag({ "main", "www", "code", "conf", "virtual", "misc", "email" }, s, tags_layouts)
 end
 -- }}}
 
@@ -286,9 +287,10 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox") end),
     awful.key({ modkey, "Shift"   }, "b",      function () awful.util.spawn("firefox -P") end),
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
+    awful.key({ modkey, "Control" }, "m",      function () awful.util.spawn("sylpheed") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
     awful.key({                   }, "#107",   function () awful.util.spawn("screenshot.sh") end),
-    awful.key({ modkey, "Control" }, "s",   function () awful.util.spawn("systemctl suspend -i") end),
+    awful.key({ modkey, "Control" }, "s",      function () awful.util.spawn("systemctl suspend -i") end),
       -- Volume
     awful.key({ "Control", "Shift"}, "Down",   function() volume_cfg.down() end ),
     awful.key({ "Control", "Shift"}, "Up",     function() volume_cfg.up() end ),
@@ -428,6 +430,10 @@ awful.rules.rules = {
       properties = { tag = tags[1][6] } },
     { rule = { class = "chromium-browser" },
       properties = { tag = tags[1][6] } },
+    { rule = { class = "chromium-web-browser" },
+      properties = { tag = tags[1][6] } },
+    { rule = { class = "sylpheed" },
+      properties = { tag = tags[1][7] } },
 }
 -- }}}
 
