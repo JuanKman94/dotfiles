@@ -18,7 +18,7 @@ stty -ixon
 EDITOR=vi
 
 PATH=$PATH:$HOME/bin:$HOME/.local/bin
-PATH=$PATH:$HOME/.config/composer/vendor/bin # composer packages
+PATH=$PATH:$HOME/.config/composer/vendor/bin:./vendor/bin # composer packages
 PATH=$PATH:$HOME/.npm-global/bin:./node_modules/.bin # node packages
 
 export EDITOR

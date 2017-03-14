@@ -287,7 +287,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox") end),
     awful.key({ modkey, "Shift"   }, "b",      function () awful.util.spawn("firefox -P") end),
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
-    awful.key({ modkey, "Control" }, "m",      function () awful.util.spawn("sylpheed") end),
+    awful.key({ modkey, "Shift" }, "m",      function () awful.util.spawn("sylpheed") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
     awful.key({                   }, "#107",   function () awful.util.spawn("screenshot.sh") end),
     awful.key({ modkey, "Control" }, "s",      function () awful.util.spawn("systemctl suspend -i") end),
