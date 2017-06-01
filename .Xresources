@@ -1,13 +1,13 @@
 ! Useful resource: http://www.computerhope.com/unix/uxrdb.htm
 ! Coloring
-xterm*color: green
+xterm*color: cyan
 xterm*background: black
-xterm*foreground: green
-xterm*cursorColor: yellow
+xterm*foreground: cyan
+xterm*cursorColor: orange
 
 ! Fonts
-xterm*faceName: Terminus:size=8
-xterm*boldFont: Terminus:size=10
+xterm*faceName: Terminus:size=12
+xterm*boldFont: Terminus:size=14
 xterm*font: terminus
 
 ! General
