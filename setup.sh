@@ -14,7 +14,7 @@ while [ "$1" != "" ]; do
 done
 
 # Copy these files to homedir
-cp -rv .xinitrc \
+cp -ur .xinitrc \
     .vim/ \
     .vimrc \
     .config/ \
@@ -27,7 +27,7 @@ cp -rv .xinitrc \
 source $HOME/.bash_profile
 touch $HOME/.bash_private
 
-sudo cp 00-keyboard.conf /etc/X11/xorg.conf.d/
+sudo cp 00-keyboard.conf /etc/X11/Xsession.d/
 mkdir -p $HOME/.vim/bundle
 
 if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
