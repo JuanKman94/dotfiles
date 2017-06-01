@@ -9,6 +9,8 @@ require("naughty")
 
 -- Load Debian menu entries
 require("debian.menu")
+-- Load personal menu entries
+require("plugins.menu")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -101,7 +103,7 @@ end
 -- }}}
 
 -- {{{ Menu
--- Create a laucher widget and a main menu
+-- Create a launcher widget and a main menu
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
@@ -111,6 +113,7 @@ myawesomemenu = {
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "Debian", debian.menu.Debian_menu.Debian },
+                                    { "Personal", debian.menu.Personal_menu.Personal },
                                     { "open terminal", terminal }
                                   }
                         })

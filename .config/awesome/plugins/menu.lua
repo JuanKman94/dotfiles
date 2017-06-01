@@ -1,26 +1,24 @@
--- {{{ Menu
--- Create a laucher widget and a main menu
---[[
-myawesomemenu = {
-   { "manual", "xterm -e man awesome" },
-   { "edit config", "vim " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
+-- {{{ Menu entries for this host
+
+module("debian.menu")
+
+Personal_menu = {}
+
+Personal_menu['Personal_GUI'] = {
+   { "Firefox", "apulse firefox-esr" },
+   { "Thunderbird", "thunderbird" },
 }
 
-return { { "awesome", myawesomemenu, beautiful.awesome_icon },
-         { "open terminal", terminal },
-         { "supermenu", supermenu, beautiful.awesome_icon}
-       }
---]]
+Personal_menu['Personal_CLI'] = {
+   { "cmus", "x-terminal-emulator -e cmus" },
+}
 
-supermenu = {
-   { "Vifm", terminal .. " -e vifm" },
-   { "Chromium", "chromium-browser" },
-   { "Chrome", "google-chrome-stable" },
-   { "Telegram", "telegram" },
-   { "VirtualBox", "virtualbox" },
-   { "VLC", "vlc" },
-   { "Arduino", "arduino" },
+Personal_menu['Personal_System'] = {
    { "Shutdown", { { "No ", "" }, { "Suspend", "systemctl suspend -i" }, { "Reboot", "reboot" }, { "Yes", "shutdown -h now" } } }
+}
+
+Personal_menu["Personal"] = {
+    { "GUI", Personal_menu['Personal_GUI'] },
+    { "CLI", Personal_menu['Personal_CLI'] },
+    { "System", Personal_menu['Personal_System'] },
 }
