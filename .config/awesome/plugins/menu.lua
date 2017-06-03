@@ -14,7 +14,7 @@ Personal_menu['Personal_CLI'] = {
 }
 
 Personal_menu['Personal_System'] = {
-   { "Shutdown", { { "No ", "" }, { "Suspend", "systemctl suspend -i" }, { "Reboot", "reboot" }, { "Yes", "shutdown -h now" } } }
+   { "Shutdown", { { "No", "" }, { "Reboot", "sudo reboot" }, { "Yes", "sudo shutdown -h now" } } }
 }
 
 Personal_menu["Personal"] = {
