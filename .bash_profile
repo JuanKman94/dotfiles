@@ -38,4 +38,4 @@ alias vim='vim -p'
 export LS_OPTIONS='--color=auto'
 eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
-alias python=/usr/bin/python3.5
+alias python=/usr/bin/python3

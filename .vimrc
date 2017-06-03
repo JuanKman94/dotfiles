@@ -24,6 +24,7 @@ set cursorline  " Underline current line
 
 " Add colors!
 syntax on
+colorscheme industry
 
 " Change tab key behavior
 set expandtab
