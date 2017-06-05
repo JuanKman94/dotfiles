@@ -68,6 +68,7 @@ end
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+altkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
@@ -298,7 +299,11 @@ globalkeys = awful.util.table.join(
       -- Backlight
     awful.key({}, "XF86MonBrightnessUp",       function () awful.util.spawn("xbacklight -inc 5", false) end),
     awful.key({}, "XF86MonBrightnessDown",     function () awful.util.spawn("xbacklight -dec 5", false) end),
-    --
+    -- Music
+    awful.key({ altkey, "Shift" }, "m",     function () awful.util.spawn(terminal .. " -e cmus", false) end),
+    awful.key({ altkey, "Shift" }, "p",     function () awful.util.spawn("cmus-remote --pause", false) end),
+    awful.key({ altkey, "Shift" }, "Right", function () awful.util.spawn("cmus-remote --next", false) end),
+    awful.key({ altkey, "Shift" }, "Left",  function () awful.util.spawn("cmus-remote --prev", false) end),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
