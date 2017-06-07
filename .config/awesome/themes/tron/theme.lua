@@ -141,6 +141,7 @@ local musicplr = awful.util.terminal .. " -title Music -g 130x34-320+16 -e ncmpc
 
 mpdicon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.spawn.with_shell(musicplr) end)))
 theme.mpd = lain.widget.mpd({
+    music_dir = os.getenv("HOME") .. "/music",
     settings = function()
         if mpd_now.state == "play" then
             artist = " " .. mpd_now.artist .. " "
@@ -178,7 +179,7 @@ local cpu = lain.widget.cpu({
 -- Coretemp
 local tempicon = wibox.widget.imagebox(theme.widget_temp)
 local temp = lain.widget.temp({
-    tempfile = "/sys/class/hwmon/hwmon0/device/temp1_input",
+    tempfile = "/sys/class/hwmon/hwmon1/device/temp1_input",
     settings = function()
         widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
     end
@@ -307,24 +308,27 @@ function theme.at_screen_connect(s)
             arrl_dl,
             volicon,
             theme.volume.widget,
+            --arrl_ld,
+            --wibox.container.background(mailicon, spr_bg_color),
+            --arrl_dl,
             arrl_ld,
-            wibox.container.background(mailicon, spr_bg_color),
-            --wibox.container.background(mail.widget, theme.bg_focus),
+            wibox.container.background(memicon, spr_bg_color),
+            wibox.container.background(mem.widget, spr_bg_color),
             arrl_dl,
-            memicon,
-            mem.widget,
+            cpuicon,
+            cpu.widget,
             arrl_ld,
-            wibox.container.background(cpuicon, spr_bg_color),
-            wibox.container.background(cpu.widget, spr_bg_color),
+            wibox.container.background(tempicon, spr_bg_color),
+            wibox.container.background(temp.widget, spr_bg_color),
             arrl_dl,
-            tempicon,
-            temp.widget,
-            arrl_ld,
-            wibox.container.background(fsicon, spr_bg_color),
-            wibox.container.background(theme.fs.widget, spr_bg_color),
+            fsicon,
+            theme.fs.widget,
+            --[[
             arrl_dl,
             baticon,
             bat.widget,
+            arrl_ld,
+            --]]
             arrl_ld,
             wibox.container.background(neticon, spr_bg_color),
             wibox.container.background(net.widget, spr_bg_color),
