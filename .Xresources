@@ -6,7 +6,7 @@ xterm*foreground: cyan
 xterm*cursorColor: orange
 
 ! Fonts
-xterm*faceName: Terminus:size=12
+xterm*faceName: Terminus:size=10
 xterm*boldFont: Terminus:size=14
 xterm*font: terminus
 
