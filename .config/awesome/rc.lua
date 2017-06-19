@@ -29,6 +29,9 @@ volume_cfg = require("plugins/volume")
 -- Backlight display on bar
 --require("backlight")
 
+-- cmus display on bar
+local cmus = require("plugins/cmus")
+
 -- Battery display on bar
 require("plugins/battery")
 local battery_widget = battery_widget_init()
@@ -223,6 +226,7 @@ for s = 1, screen.count() do
 
     -- Volume text on top bar
     right_layout:add(volume_cfg.widget)
+    right_layout:add(cmus.widget)
     right_layout:add(battery_widget)
 
     --right_layout:add(backlight_widget)
@@ -300,10 +304,12 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86MonBrightnessUp",       function () awful.util.spawn("xbacklight -inc 5", false) end),
     awful.key({}, "XF86MonBrightnessDown",     function () awful.util.spawn("xbacklight -dec 5", false) end),
     -- Music
-    awful.key({ altkey, "Shift" }, "m",     function () awful.util.spawn(terminal .. " -e cmus", false) end),
-    awful.key({ altkey, "Shift" }, "p",     function () awful.util.spawn("cmus-remote --pause", false) end),
-    awful.key({ altkey, "Shift" }, "Right", function () awful.util.spawn("cmus-remote --next", false) end),
-    awful.key({ altkey, "Shift" }, "Left",  function () awful.util.spawn("cmus-remote --prev", false) end),
+    awful.key({ altkey, "Shift" }, "m",     function ()
+        awful.util.spawn(terminal .. " -e cmus", false)
+    end),
+    awful.key({ altkey, "Shift" }, "p",     function () awful.util.spawn("cmus-remote --pause", false); cmus.update() end),
+    awful.key({ altkey, "Shift" }, "Right", function () awful.util.spawn("cmus-remote --next", false); cmus.update() end),
+    awful.key({ altkey, "Shift" }, "Left",  function () awful.util.spawn("cmus-remote --prev", false); cmus.update() end),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
@@ -521,6 +527,7 @@ local mytimer = timer({ timeout = 30 })
 mytimer:connect_signal("timeout", function ()
     volume_cfg.update()
     update_battery(battery_widget)
+    cmus.update()
 end)
 
 mytimer:start()
