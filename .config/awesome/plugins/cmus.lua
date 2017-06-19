@@ -2,6 +2,7 @@ local escape_f      = require("awful.util").escape
 local wibox         = require("wibox")
 local string        = { format = string.format,
                        gmatch = string.gmatch,
+                       gsub = string.gsub,
                        match  = string.match }
 
 local cmus          = { widget = wibox.widget.textbox() }
@@ -68,7 +69,8 @@ function cmus.update()
         display = display .. status.artist .. " - " .. status.title
     elseif status.file ~= "" then
         -- everything between the full path and the file extension
-        display = display .. string.match(status.file, ".+/(.+)%..+$")
+        display = display .. status.file
+        --display = display .. string.match(status.file, ".+/(.+)%..+$")
     end
 
     if not status.playing then
@@ -78,6 +80,7 @@ function cmus.update()
     if query == "" then
         cmus.widget:set_markup( "" )
     else
+        display = string.gsub(display, "&", "&amp;")
         cmus.widget:set_markup( display .. " | " )
     end
 end
