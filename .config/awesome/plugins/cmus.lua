@@ -66,7 +66,7 @@ function cmus.update()
 
     if status.artist then
         display = display .. status.artist .. " - " .. status.title
-    else
+    elseif status.file ~= "" then
         -- everything between the full path and the file extension
         display = display .. string.match(status.file, ".+/(.+)%..+$")
     end
@@ -75,7 +75,11 @@ function cmus.update()
         display = "<span color=\"" .. yellow .. "\">" .. display .. "</span>"
     end
 
-    cmus.widget:set_markup( display .. " | " )
+    if query == "" then
+        cmus.widget:set_markup( "" )
+    else
+        cmus.widget:set_markup( display .. " | " )
+    end
 end
 
 cmus.update()
