@@ -24,6 +24,7 @@ set cursorline  " Underline current line
 
 " Add colors!
 syntax on
+colorscheme industry
 
 " Change tab key behavior
 set expandtab
@@ -117,7 +118,7 @@ nmap <Leader>l :ls<cr>
 nmap <Leader>t :tabnew 
 
 " Open a new Horizontal split window
-nmap <Leader>s :split
+nmap <Leader>s :split 
 
 " Open a new Vertically split window
 nmap <Leader>v :vsplit 
