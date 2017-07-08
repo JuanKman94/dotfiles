@@ -10,6 +10,9 @@ require("naughty")
 -- Load Debian menu entries
 require("debian.menu")
 
+-- Require plugins
+temper = require('plugins/temperature')
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -199,6 +202,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+        temper.widget,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -250,8 +254,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
 
     -------------------- My keybindings --------------------
-    awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox") end),
-    awful.key({ modkey, "Shift"   }, "b",      function () awful.util.spawn("firefox -P") end),
+    awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox-de") end),
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
     awful.key({ modkey, "Shift" }, "m",      function () awful.util.spawn("sylpheed") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
@@ -411,4 +414,13 @@ end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}
+
+-- {{{ Timer
+plugins_timer = timer({ timeout = 1 })
+plugins_timer:add_signal("timeout", function()
+    temper.update()
+end)
+
+plugins_timer:start()
 -- }}}
