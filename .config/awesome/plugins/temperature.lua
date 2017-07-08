@@ -1,5 +1,3 @@
-local awful     = require('awful')
-
 local fgcool    = "#6FC3DF"
 local fgmid     = "#FFE64D"
 local fgcrit    = "#DF740C"
@@ -36,18 +34,16 @@ function temper.update()
     -- print results to status string
     for index, dict in ipairs(temps) do
         local curr, crit = tonumber(dict['curr']), tonumber(dict['crit'])
-        local scurr, scrit = "", ""
+        local scurr, scrit, color = "", "", ""
 
         -- pseudo-heuristic to determine color
-        if curr <= (crit - 16) then
-            scurr = string.format("<span color=%q>%3.1f°C</span>", fgcool, curr)
-        elseif curr <= (crit - 10) then
-            scurr = string.format("<span color=%q>%3.1f°C</span>", fgmid, curr)
-        else
-            scurr = string.format("<span color=%q>%3.1f°C</span>", fgcrit, curr)
+        if curr <= (crit - 16) then color = fgcool
+        elseif curr <= (crit - 10) then color = fgmid
+        else color = fgcrit
         end
 
-        -- give color to critical temperature
+        scurr = string.format("<span color=%q>%3.1f°C</span>", color, curr)
+
         if crit then
             scrit = string.format("<span color=%q>%d°C</span>", fgcrit, crit)
         end
@@ -58,6 +54,5 @@ function temper.update()
 
     temper.widget.text = status
 end
---update()
 
 return temper

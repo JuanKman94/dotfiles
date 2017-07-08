@@ -12,6 +12,7 @@ require("debian.menu")
 
 -- Require plugins
 temper = require('plugins/temperature')
+volume = require('plugins/volume')
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -208,6 +209,8 @@ for s = 1, screen.count() do
         mytextclock,
         separator,
         temper.widget,
+        separator,
+        volume.widget,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -425,6 +428,7 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 plugins_timer = timer({ timeout = 1 })
 plugins_timer:add_signal("timeout", function()
     temper.update()
+    volume.update()
 end)
 
 plugins_timer:start()
