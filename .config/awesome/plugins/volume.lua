@@ -1,8 +1,8 @@
-volume_cfg = {}
-volume_cfg.card_id  = 0
-volume_cfg.channel = "Master"
-volume_cfg.widget = wibox.widget.textbox()
-volume_cfg.widget:set_align("right")
+volume_cfg = {
+    widget  = widget({ type = "textbox", align = "right" }),
+    card_id = 0,
+    channel = "Master"
+}
 
 -- command must start with a space!
 volume_cfg.mixercommand = function (command)
@@ -26,9 +26,9 @@ volume_cfg.mixercommand = function (command)
         end
         status = "[" ..status .. "]"
 
-        markup = " <span color=\"#00CC00\">-</span><span color=\"" .. color .. "\">" .. status .. "</span><span color=\"#19FFFF\">+</span> | "
+        markup = " <span color=\"#00CC00\">-</span><span color=\"" .. color .. "\">" .. status .. "</span><span color=\"#19FFFF\">+</span>"
 
-        volume_cfg.widget:set_markup(markup)
+        volume_cfg.widget.text = markup
 end
 
 volume_cfg.update = function ()
@@ -53,5 +53,4 @@ volume_cfg.widget:buttons(awful.util.table.join(
        awful.button({ }, 1, function () volume_cfg.toggle() end)
 ))
 
-volume_cfg.update()
 return volume_cfg
