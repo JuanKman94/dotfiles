@@ -21,3 +21,5 @@
 !/\.vimrc
 !/\.xinitrc
 !/\.Xresources
+
+.*.swp
