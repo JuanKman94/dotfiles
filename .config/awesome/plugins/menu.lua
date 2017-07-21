@@ -11,3 +11,5 @@ supermenu = {
 		}
 	}
 }
+
+return supermenu
