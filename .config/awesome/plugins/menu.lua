@@ -15,12 +15,10 @@ return { { "awesome", myawesomemenu, beautiful.awesome_icon },
 --]]
 
 supermenu = {
-   { "Vifm", terminal .. " -e vifm" },
-   { "Chromium", "chromium-browser" },
-   { "Chrome", "google-chrome-stable" },
-   { "Telegram", "telegram" },
-   { "VirtualBox", "virtualbox" },
+   { "Chromium", "chromium" },
    { "VLC", "vlc" },
    { "Arduino", "arduino" },
-   { "Shutdown", { { "No ", "" }, { "Suspend", "systemctl suspend -i" }, { "Reboot", "reboot" }, { "Yes", "shutdown -h now" } } }
+   { "Shutdown", { { "No ", "" }, { "Suspend", "systemctl suspend -i" }, { "Reboot", "sudo shutdown -r now" }, { "Yes", "sudo shutdown -h now" } } }
 }
+
+return supermenu

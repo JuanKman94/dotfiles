@@ -13,6 +13,8 @@ require("debian.menu")
 -- Require plugins
 temper = require('plugins/temperature')
 volume = require('plugins/volume')
+cmus = require('plugins/cmus')
+my_menu = require('plugins/menu')
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -54,6 +56,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+altkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
@@ -111,7 +114,7 @@ myawesomemenu = {
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "Debian", debian.menu.Debian_menu.Debian },
-                                    { "open terminal", terminal }
+                                    { "My menu", my_menu },
                                   }
                         })
 
@@ -208,6 +211,8 @@ for s = 1, screen.count() do
         separator,
         mytextclock,
         separator,
+        cmus.widget,
+        separator,
         temper.widget,
         separator,
         volume.widget,
@@ -264,7 +269,7 @@ globalkeys = awful.util.table.join(
     -------------------- My keybindings --------------------
     awful.key({ modkey,           }, "b",      function () awful.util.spawn("firefox-de") end),
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
-    awful.key({ modkey, "Shift" }, "m",      function () awful.util.spawn("sylpheed") end),
+    awful.key({ modkey, "Shift" }, "m",      function () awful.util.spawn("claws-mail") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
     awful.key({                   }, "#107",   function () awful.util.spawn("screenshot.sh") end),
     awful.key({ modkey, "Control" }, "s",      function () awful.util.spawn("systemctl suspend -i") end),
@@ -275,7 +280,13 @@ globalkeys = awful.util.table.join(
       -- Backlight
     awful.key({}, "XF86MonBrightnessUp",       function () awful.util.spawn("xbacklight -inc 5", false) end),
     awful.key({}, "XF86MonBrightnessDown",     function () awful.util.spawn("xbacklight -dec 5", false) end),
-    --
+    -- Music
+    awful.key({ altkey, "Shift" }, "m",     function ()
+        awful.util.spawn(terminal .. " -e cmus", false)
+    end),
+    awful.key({ altkey, "Shift" }, "p",     cmus.pause()    ),
+    awful.key({ altkey, "Shift" }, "Left",  cmus.prev()     ),
+    awful.key({ altkey, "Shift" }, "Right", cmus.next()     ),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
@@ -390,6 +401,8 @@ awful.rules.rules = {
     -- Set Firefox to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } },
+    { rule_any = { instance = { "claws-mail" } },
+      properties = { tag = tags[1][7] } },
 }
 -- }}}
 
@@ -429,6 +442,7 @@ plugins_timer = timer({ timeout = 1 })
 plugins_timer:add_signal("timeout", function()
     temper.update()
     volume.update()
+    cmus.update();
 end)
 
 plugins_timer:start()

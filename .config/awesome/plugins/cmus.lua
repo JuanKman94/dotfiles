@@ -1,13 +1,13 @@
 local escape_f      = require("awful.util").escape
+local awful         = require("awful")
 local wibox         = require("wibox")
 local string        = { format = string.format,
                        gmatch = string.gmatch,
                        gsub = string.gsub,
                        match  = string.match }
 
-local cmus          = { widget = wibox.widget.textbox() }
-local host          = os.getenv("XDG_RUNTIME_DIR")
-local cmd           = string.format("cmus-remote --query --server %s/cmus-socket", host)
+local cmus          = { widget = widget({ type = "textbox", align = "right" }) }
+local cmd           = "cmus-remote --query"
 local fd            = nil
 local query         = nil
 
@@ -78,12 +78,33 @@ function cmus.update()
     end
 
     if query == "" then
-        cmus.widget:set_markup( "" )
+        cmus.widget.text = ""
     else
         display = string.gsub(display, "&", "&amp;")
-        cmus.widget:set_markup( display .. " | " )
+        cmus.widget.text = display
     end
 end
+
+function cmus.pause()
+    awful.util.spawn("cmus-remote --pause")
+    cmus.update()
+end
+
+function cmus.prev()
+    awful.util.spawn("cmus-remote --prev")
+    cmus.update()
+end
+
+function cmus.next()
+    awful.util.spawn("cmus-remote --next")
+    cmus.update()
+end
+
+cmus.widget:buttons(awful.util.table.join(
+    awful.button({ }, 4, cmus.next ),
+    awful.button({ }, 5, cmus.prev ),
+    awful.button({ }, 1, cmus.pause )
+))
 
 cmus.update()
 return cmus
