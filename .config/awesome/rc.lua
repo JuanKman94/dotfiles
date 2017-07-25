@@ -441,7 +441,7 @@ plugins_timer = timer({ timeout = 1 })
 plugins_timer:add_signal("timeout", function()
     temper.update()
     volume.update()
-    cmus.update();
+    cmus.update()
 end)
 
 plugins_timer:start()
