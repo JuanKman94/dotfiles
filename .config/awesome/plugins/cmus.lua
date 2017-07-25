@@ -1,6 +1,3 @@
-local escape_f      = require("awful.util").escape
-local awful         = require("awful")
-local wibox         = require("wibox")
 local string        = { format = string.format,
                        gmatch = string.gmatch,
                        gsub = string.gsub,
@@ -19,6 +16,10 @@ function cmus.update()
     fd            = io.popen(cmd)
     query         = fd:read("*all")
     fd:close()
+
+    if string.match(query, 'cmus not running') then
+        return
+    end
 
     local status = {
         playing     = false,
@@ -106,5 +107,4 @@ cmus.widget:buttons(awful.util.table.join(
     awful.button({ }, 1, cmus.pause )
 ))
 
-cmus.update()
 return cmus

@@ -284,9 +284,9 @@ globalkeys = awful.util.table.join(
     awful.key({ altkey, "Shift" }, "m",     function ()
         awful.util.spawn(terminal .. " -e cmus", false)
     end),
-    awful.key({ altkey, "Shift" }, "p",     cmus.pause()    ),
-    awful.key({ altkey, "Shift" }, "Left",  cmus.prev()     ),
-    awful.key({ altkey, "Shift" }, "Right", cmus.next()     ),
+    awful.key({ altkey, "Shift" }, "p",     function () cmus.pause() end ),
+    awful.key({ altkey, "Shift" }, "Left",  function () cmus.prev()  end ),
+    awful.key({ altkey, "Shift" }, "Right", function () cmus.next()  end ),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
@@ -442,7 +442,7 @@ plugins_timer = timer({ timeout = 1 })
 plugins_timer:add_signal("timeout", function()
     temper.update()
     volume.update()
-    cmus.update();
+    cmus.update()
 end)
 
 plugins_timer:start()
