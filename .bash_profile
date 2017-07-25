@@ -18,8 +18,6 @@ stty -ixon
 EDITOR=vi
 
 PATH=$PATH:$HOME/bin:$HOME/.local/bin
-PATH=$PATH:$HOME/.config/composer/vendor/bin:./vendor/bin # composer packages
-PATH=$PATH:$HOME/.npm-global/bin:./node_modules/.bin # node packages
 
 export EDITOR
 export PATH
@@ -29,7 +27,7 @@ alias ga='git add'
 alias gc='git checkout'
 alias gd='git diff'
 alias gcm='git commit -m'
-alias gll='git pull'
+alias gll='git pull --rebase'
 alias gsh='git push'
 
 alias vim='vim -p'
