@@ -148,7 +148,6 @@ mytaglist.buttons = awful.util.table.join(
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
                      awful.button({ }, 1, function (c)
-                                              c.minimized = true
                                               if c == client.focus then
                                                   c.minimized = true
                                               else

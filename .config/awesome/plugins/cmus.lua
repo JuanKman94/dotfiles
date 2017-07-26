@@ -60,30 +60,33 @@ function cmus.update()
         end
     end
 
-    display = "[<span color=\"" .. blue .. "\">"
-    if status.repeat_pl then display = display .. "R" end
-    if status.shuffle then display = display .. "S" end
-    if status.continue then display = display .. "C" end
-    display = display .. "</span>] "
+    -- 'eighth note' character
+    display = "&#9834;"
 
-    if status.artist then
-        display = display .. status.artist .. " - " .. status.title
-    elseif status.file ~= "" then
-        -- everything between the full path and the file extension
-        display = display .. status.file
-        --display = display .. string.match(status.file, ".+/(.+)%..+$")
-    end
-
-    if not status.playing then
-        display = "<span color=\"" .. yellow .. "\">" .. display .. "</span>"
-    end
 
     if query == "" then
         cmus.widget.text = ""
     else
-        display = string.gsub(display, "&", "&amp;")
-        cmus.widget.text = display
+        display = display .. " [<span color=\"" .. blue .. "\">"
+        if status.repeat_pl then display = display .. "R" end
+        if status.shuffle then display = display .. "S" end
+        if status.continue then display = display .. "C" end
+        display = display .. "</span>] "
+
+        if status.artist then
+            display = display .. status.artist .. " - " .. status.title
+        elseif status.file ~= "" then
+            -- everything between the full path and the file extension
+            display = display .. status.file
+            --display = display .. string.match(status.file, ".+/(.+)%..+$")
+        end
+
+        if not status.playing then
+            display = "<span color=\"" .. yellow .. "\">" .. display .. "</span>"
+        end
     end
+
+    cmus.widget.text = display
 end
 
 function cmus.pause()
