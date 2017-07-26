@@ -74,7 +74,11 @@ function cmus.update()
         display = display .. "</span>] "
 
         if status.artist then
-            display = display .. status.artist .. " - " .. status.title
+            display = display .. string.gsub(
+                    status.artist .. " - " .. status.title,
+                    '&',
+                    '&amp;'
+                )
         elseif status.file ~= "" then
             -- everything between the full path and the file extension
             display = display .. status.file
