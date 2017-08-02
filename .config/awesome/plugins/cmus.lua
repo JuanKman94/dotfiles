@@ -61,7 +61,7 @@ function cmus.update()
     end
 
     -- 'eighth note' character
-    display = "&#9834;"
+    display = "&#9835;"
 
 
     if query == "" then
