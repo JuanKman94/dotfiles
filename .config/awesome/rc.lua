@@ -281,7 +281,7 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86MonBrightnessDown",     function () awful.util.spawn("xbacklight -dec 5", false) end),
     -- Music
     awful.key({ altkey, "Shift" }, "m",     function ()
-        awful.util.spawn(terminal .. " -e cmus", false)
+        awful.util.spawn(terminal .. " -title cmus -e cmus", false)
     end),
     awful.key({ altkey, "Shift" }, "p",     function () cmus.pause() end ),
     awful.key({ altkey, "Shift" }, "Left",  function () cmus.prev()  end ),
@@ -400,6 +400,8 @@ awful.rules.rules = {
     -- Set Firefox to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } },
+    { rule_any = { name = { "cmus" } },
+      properties = { tag = tags[1][6] } },
     { rule_any = { instance = { "claws-mail" } },
       properties = { tag = tags[1][7] } },
 }
