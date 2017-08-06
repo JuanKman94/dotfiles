@@ -35,9 +35,8 @@ syntax on
 colorscheme industry
 
 " Change tab key behavior
-set expandtab
 set shiftwidth=4
-set softtabstop=4
+set tabstop=4
 
 
 
