@@ -93,7 +93,7 @@ function cmus.update()
     cmus.widget.text = display
 end
 
-function cmus.pause()
+function cmus.toggle()
     awful.util.spawn("cmus-remote --pause")
     cmus.update()
 end
@@ -105,6 +105,11 @@ end
 
 function cmus.next()
     awful.util.spawn("cmus-remote --next")
+    cmus.update()
+end
+
+function cmus.player()
+    awful.util.spawn("uxterm -title cmus -e cmus")
     cmus.update()
 end
 

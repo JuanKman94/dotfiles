@@ -13,7 +13,7 @@ require("debian.menu")
 -- Require plugins
 temper = require('plugins/temperature')
 volume = require('plugins/volume')
-cmus = require('plugins/cmus')
+music = require('plugins/mpd')
 my_menu = require('plugins/menu')
 
 -- {{{ Error handling
@@ -210,7 +210,7 @@ for s = 1, screen.count() do
         separator,
         mytextclock,
         separator,
-        cmus.widget,
+        music.widget,
         separator,
         temper.widget,
         separator,
@@ -442,7 +442,7 @@ plugins_timer = timer({ timeout = 1 })
 plugins_timer:add_signal("timeout", function()
     temper.update()
     volume.update()
-    cmus.update()
+    music.update()
 end)
 
 plugins_timer:start()
