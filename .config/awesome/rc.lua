@@ -13,7 +13,7 @@ require("debian.menu")
 -- Require plugins
 temper = require('plugins/temperature')
 volume = require('plugins/volume')
-cmus = require('plugins/cmus')
+music = require('plugins/mpd')
 my_menu = require('plugins/menu')
 
 -- {{{ Error handling
@@ -210,7 +210,7 @@ for s = 1, screen.count() do
         separator,
         mytextclock,
         separator,
-        cmus.widget,
+        music.widget,
         separator,
         temper.widget,
         separator,
@@ -280,12 +280,10 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86MonBrightnessUp",       function () awful.util.spawn("xbacklight -inc 5", false) end),
     awful.key({}, "XF86MonBrightnessDown",     function () awful.util.spawn("xbacklight -dec 5", false) end),
     -- Music
-    awful.key({ altkey, "Shift" }, "m",     function ()
-        awful.util.spawn(terminal .. " -title cmus -e cmus", false)
-    end),
-    awful.key({ altkey, "Shift" }, "p",     function () cmus.pause() end ),
-    awful.key({ altkey, "Shift" }, "Left",  function () cmus.prev()  end ),
-    awful.key({ altkey, "Shift" }, "Right", function () cmus.next()  end ),
+    awful.key({ altkey, "Shift" }, "m",     function () music.player() end),
+    awful.key({ altkey, "Shift" }, "p",     function () music.toggle() end ),
+    awful.key({ altkey, "Shift" }, "Left",  function () music.prev()  end ),
+    awful.key({ altkey, "Shift" }, "Right", function () music.next()  end ),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
@@ -443,7 +441,7 @@ plugins_timer = timer({ timeout = 1 })
 plugins_timer:add_signal("timeout", function()
     temper.update()
     volume.update()
-    cmus.update()
+    music.update()
 end)
 
 plugins_timer:start()
