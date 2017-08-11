@@ -9,6 +9,12 @@ local mpd			= {
 local cmd			= "mpc status"
 local fd			= nil
 local output		= nil
+local string		= {
+						format = string.format,
+						match = string.match,
+						gmatch = string.gmatch,
+						gsub = string.gsub
+					  }
 
 -- colors
 local yellow        = "#FFFF00"
@@ -52,7 +58,7 @@ function mpd.update()
 	if s.single == 'on' then markup = markup .. "S" end
 	markup = markup .. "</span>] "
 
-	markup = markup .. s.song
+	markup = markup .. string.gsub(s.song, '&', '&amp;')
 
 	if not s.playing or s.playing ~= 'playing' then
 		markup = string.format("<span color=%q>%s</span>", yellow, markup)
@@ -81,7 +87,7 @@ end
 mpd.widget:buttons(awful.util.table.join(
     awful.button({ }, 4, mpd.next ),
     awful.button({ }, 5, mpd.prev ),
-    awful.button({ }, 1, mpd.pause )
+    awful.button({ }, 1, mpd.toggle )
 ))
 
 return mpd
