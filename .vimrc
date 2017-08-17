@@ -20,6 +20,13 @@ set showcmd     " Always show status
 set cursorline  " Underline current line
 
 
+
+" ---- FileType ----
+autocmd BufNewFile,BufRead *.vue set filetype=javascript " Treat vue file as js
+autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
+
+
+
 " ---- Visuals ----
 
 " Add colors!
@@ -62,16 +69,11 @@ set incsearch		" Incremental search -- find matches as you type
 set hlsearch            " Highlight search
 
 " Redraw screen and run nohlsearch when pressing <CTRL-l>
-nnoremap <silent> <C-l> :nohl<CR><C-l>
+nnoremap <silent> <c-l> :nohl<cr><c-l>
 
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
 let &guicursor = &guicursor . ",a:blinkon0"
-
-
-
-" ---- FileTypes ----
-autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 
 
 
@@ -153,11 +155,11 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
-" How result are displayed
+" How results are displayed
 let g:ctrlp_match_window = 'top,order:ttb,min:1,max:10,results:10'
 
 let g:ctrlp_switch_buffer = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'  " -- Use silver searcher to look through files
+let g:ctrlp_user_command = 'ag %s -l --hidden -g ""'  " -- Use silver searcher to look through files
 
 
 " // NERDTree
@@ -184,7 +186,7 @@ let NERDTreeHijackNetrw = 0
 " zz                <= Center the screen on cursor
 " <c-^>             <= Return to previous location
 " <c-[>             <= Go to function definition (requires ctags)
-" -                 <= Run vinegar (requires vinega plugin)
+" -                 <= Run vinegar (requires vinegar plugin)
 "
 " To remove annoying '^M' character:
 " :%s/<Ctrl-V><Ctrl-M>/\r/g
