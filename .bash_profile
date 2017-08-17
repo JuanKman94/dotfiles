@@ -35,7 +35,7 @@ alias gsh='git push'
 alias vim='vim -p'
 
 # ls
-export LS_OPTIONS='--color=auto'
+export LS_OPTIONS='--color=auto -h'
 eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
-alias python=/usr/bin/python3.5
+alias python=/usr/bin/python3
