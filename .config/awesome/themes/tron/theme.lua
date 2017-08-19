@@ -14,7 +14,7 @@ local os    = { getenv = os.getenv }
 
 local orange = "#DF740C"
 local yellow = "#FFE64D"
-local legacy = "#6FC3DF"
+local legacy = "#6FC3DF" -- blue-ish
 local cyan = "#E6FFFF"
 local dark = "#0C141F"
 
@@ -32,7 +32,7 @@ theme.border_width                              = 1
 theme.border_normal                             = legacy
 theme.border_focus                              = cyan
 theme.border_marked                             = yellow
-theme.tasklist_bg_focus                         = "#1A1A1A"
+theme.tasklist_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
@@ -144,7 +144,7 @@ theme.mpd = lain.widget.mpd({
     music_dir = os.getenv("HOME") .. "/music",
     settings = function()
         if mpd_now.state == "play" then
-            artist = " " .. mpd_now.artist .. " "
+            artist = " " .. mpd_now.artist .. " - "
             title  = mpd_now.title  .. " "
             mpdicon:set_image(theme.widget_music_on)
         elseif mpd_now.state == "pause" then
@@ -156,7 +156,7 @@ theme.mpd = lain.widget.mpd({
             mpdicon:set_image(theme.widget_music)
         end
 
-        widget:set_markup(markup.font(theme.font, markup("#EA6F81", artist) .. title))
+        widget:set_markup(markup.font(theme.font, markup(dark, artist .. title)))
     end
 })
 
@@ -179,7 +179,7 @@ local cpu = lain.widget.cpu({
 -- Coretemp
 local tempicon = wibox.widget.imagebox(theme.widget_temp)
 local temp = lain.widget.temp({
-    tempfile = "/sys/class/hwmon/hwmon1/device/temp1_input",
+    tempfile = "/sys/class/hwmon/hwmon0/device/temp1_input",
     settings = function()
         widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
     end
@@ -196,6 +196,7 @@ theme.fs = lain.widget.fs({
 })
 
 -- Battery
+--[[
 local baticon = wibox.widget.imagebox(theme.widget_battery)
 local bat = lain.widget.bat({
     settings = function()
@@ -218,6 +219,7 @@ local bat = lain.widget.bat({
         end
     end
 })
+--]]
 
 -- ALSA volume
 local volicon = wibox.widget.imagebox(theme.widget_vol)
@@ -244,7 +246,7 @@ local net = lain.widget.net({
         widget:set_markup(markup.font(theme.font,
                           markup(cyan, " down " .. net_now.received)
                           .. " " ..
-                          markup(orange, " up " .. net_now.sent .. " ")))
+                          markup(dark, " up " .. net_now.sent .. " ")))
     end
 })
 
