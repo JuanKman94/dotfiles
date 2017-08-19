@@ -64,13 +64,13 @@ local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "x-terminal-emulator" or "xterm"
 local editor       = os.getenv("EDITOR") or "vi"
-local browser      = "apulse firefox-esr"
+local browser      = "firefox-esr"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "main", "web", "code", "conf", "misc", "email" }
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
+    awful.layout.suit.max,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
@@ -174,6 +174,9 @@ awful.util.mymainmenu = freedesktop.menu.build({
     },
     after = {
         { "Open terminal", terminal },
+        { "My man", {
+            { "Shutdown", { { "No", "" }, { "Reboot", "sudo reboot" }, { "Yes", "sudo shutdown -h now" } } }
+        } },
         -- other triads can be put here
     }
 })
@@ -232,17 +235,20 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "j",
         function ()
             awful.client.focus.byidx( 1)
+            if client.focus then client.focus:raise() end
         end,
         {description = "focus next by index", group = "client"}
     ),
     awful.key({ modkey,           }, "k",
         function ()
             awful.client.focus.byidx(-1)
+            if client.focus then client.focus:raise() end
         end,
         {description = "focus previous by index", group = "client"}
     ),
 
     -- By direction client focus
+    --[[
     awful.key({ modkey }, "j",
         function()
             awful.client.focus.bydirection("down")
@@ -263,6 +269,7 @@ globalkeys = awful.util.table.join(
             awful.client.focus.bydirection("right")
             if client.focus then client.focus:raise() end
         end),
+        --]]
     awful.key({ modkey,           }, "w", function () awful.util.mymainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
@@ -352,12 +359,12 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end),
 
     -- ALSA volume control
-    awful.key({ modkey }, "Up",
+    awful.key({ "Control", "Shift" }, "Up",
         function ()
             os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
             beautiful.volume.update()
         end),
-    awful.key({ modkey }, "Down",
+    awful.key({ "Control", "Shift" }, "Down",
         function ()
             os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
             beautiful.volume.update()
@@ -381,22 +388,22 @@ globalkeys = awful.util.table.join(
     --]]
 
     -- MPD control
-    awful.key({ altkey, "Control" }, "Up",
+    awful.key({ altkey, "Shift" }, "Up",
         function ()
             awful.spawn.with_shell("mpc toggle")
             beautiful.mpd.update()
         end),
-    awful.key({ altkey, "Control" }, "Down",
+    awful.key({ altkey, "Shift" }, "Down",
         function ()
             awful.spawn.with_shell("mpc stop")
             beautiful.mpd.update()
         end),
-    awful.key({ altkey, "Control" }, "Left",
+    awful.key({ altkey, "Shift" }, "Left",
         function ()
             awful.spawn.with_shell("mpc prev")
             beautiful.mpd.update()
         end),
-    awful.key({ altkey, "Control" }, "Right",
+    awful.key({ altkey, "Shift" }, "Right",
         function ()
             awful.spawn.with_shell("mpc next")
             beautiful.mpd.update()
@@ -420,9 +427,10 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "v", function () awful.spawn("xsel -b | xsel") end),
 
     -- User programs
-    awful.key({ modkey }, "e", function () awful.spawn(editor) end),
     awful.key({ modkey }, "b", function () awful.spawn(browser) end,
         { description = "open gui browser", group = "launcher" }),
+    awful.key({ modkey, "Control" }, "b", function () awful.spawn("firefox-de") end,
+        { description = "Firefox Developer Edition -- no audio", group = "launcher" }),
 
     -- Default
     --[[ Menubar
