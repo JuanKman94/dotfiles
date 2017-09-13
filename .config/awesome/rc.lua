@@ -294,7 +294,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "w",      function () awful.util.spawn("ifupdown.sh") end),
     awful.key({ modkey, "Shift" }, "m",      function () awful.util.spawn("sylpheed") end),
     awful.key({ modkey,           }, "`",      function () awful.util.spawn("xscreensaver-command -lock") end),
-    awful.key({                   }, "#107",   function () awful.util.spawn("screenshot.sh") end),
+    awful.key({                   }, "#183",   function () awful.util.spawn("screenshot", false) end),
     awful.key({ modkey, "Control" }, "s",      function () awful.util.spawn("systemctl suspend -i") end),
       -- Volume
     awful.key({ "Control", "Shift"}, "Down",   function() volume_cfg.down() end ),
@@ -304,12 +304,11 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86MonBrightnessUp",       function () awful.util.spawn("xbacklight -inc 5", false) end),
     awful.key({}, "XF86MonBrightnessDown",     function () awful.util.spawn("xbacklight -dec 5", false) end),
     -- Music
-    awful.key({ altkey, "Shift" }, "m",     function ()
-        awful.util.spawn(terminal .. " -e cmus", false)
-    end),
-    awful.key({ altkey, "Shift" }, "p",     function () awful.util.spawn("cmus-remote --pause", false); cmus.update() end),
-    awful.key({ altkey, "Shift" }, "Right", function () awful.util.spawn("cmus-remote --next", false); cmus.update() end),
-    awful.key({ altkey, "Shift" }, "Left",  function () awful.util.spawn("cmus-remote --prev", false); cmus.update() end),
+    awful.key({ altkey, "Shift" }, "m",		function () music.player() end),
+    awful.key({ altkey, "Shift" }, "Up",	function () music.toggle() end ),
+    awful.key({ altkey, "Shift" }, "Down",	function () music.stop() end ),
+    awful.key({ altkey, "Shift" }, "Left",  function () music.prev()  end ),
+    awful.key({ altkey, "Shift" }, "Right", function () music.next()  end ),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),

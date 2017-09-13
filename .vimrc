@@ -22,6 +22,7 @@ set cursorline  " Underline current line
 
 
 " ---- FileType ----
+filetype plugin on
 autocmd BufNewFile,BufRead *.vue set filetype=javascript " Treat vue file as js
 autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
 
@@ -150,7 +151,7 @@ let g:ctrlp_working_path_mode = 0
 
 " Ignore some more shite
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$\|node_modules$',
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
