@@ -4,6 +4,8 @@
 !/\.gitignore
 !/\.bash_profile
 !/\.bashrc
+!/\.xinitrc
+!/\.xsession
 
 !/\.config/
 !/\.config/awesome
@@ -15,7 +17,6 @@
 !/setup.sh
 !/install-terminus-font.sh
 !/bin
-!/bin/screenshot.sh
 
 !/\.vim/
 !/\.vimrc

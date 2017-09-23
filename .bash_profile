@@ -18,11 +18,14 @@ stty -ixon
 EDITOR=vi
 
 PATH=$PATH:$HOME/bin:$HOME/.local/bin
-PATH=$PATH:$HOME/.config/composer/vendor/bin:./vendor/bin # composer packages
-PATH=$PATH:$HOME/.npm-global/bin:./node_modules/.bin # node packages
+#PATH=$PATH:$HOME/.config/composer/vendor/bin:./vendor/bin # composer packages
+#PATH=$PATH:$HOME/.npm-global/bin:./node_modules/.bin # node packages
+GOPATH=$HOME/.go
 
 export EDITOR
 export PATH
+export GOPATH
+
 alias gl='git log --graph'
 alias gs='git status'
 alias ga='git add'
@@ -38,4 +41,8 @@ alias vim='vim -p'
 export LS_OPTIONS='--color=auto -h'
 eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
-alias python=/usr/bin/python3
+
+# less
+export LESS="$LESS -R"
+
+#alias python=/usr/bin/python3
