@@ -18,6 +18,7 @@ nmap <c-a> :source ~/.vim/prev_session <cr>
 set wildmenu    " Cool autocompletion menu
 set showcmd     " Always show status
 set cursorline  " Underline current line
+set nobackup    " No backup ~ files
 
 
 
@@ -35,7 +36,6 @@ syntax on
 colorscheme industry
 
 " Change tab key behavior
-set expandtab
 set shiftwidth=4
 set softtabstop=4
 
