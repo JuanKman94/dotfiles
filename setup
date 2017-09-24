@@ -14,23 +14,34 @@ while [ "$1" != "" ]; do
 done
 
 # Copy these files to homedir
-cp -rv .xinitrc \
+echo -n "Copying files... "
+cp -r .xinitrc \
+    .xsession \
+    .git/ \
+    .gitignore \
     .vim/ \
     .vimrc \
     .config/ \
+    .inputrc \
     .bash_profile \
     .bashrc \
     .Xresources \
     bin/ \
     $HOME
+echo "Done!"
 
 source $HOME/.bash_profile
 touch $HOME/.bash_private
 
+echo -n "Installing Xorg files... "
+sudo mkdir -p /etc/X11/xorg.conf.d
 sudo cp 00-keyboard.conf /etc/X11/xorg.conf.d/
-mkdir -p $HOME/.vim/bundle
+echo "Done!"
 
+echo -n "Running Vim Bundle... "
+mkdir -p $HOME/.vim/bundle
 if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     git clone https://github.com/vundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 vim +PluginInstall +qall
+echo "Done!"

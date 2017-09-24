@@ -1,0 +1,36 @@
+#!/bin/bash
+
+ARCHIVE=$1
+
+if [ -z "$ARCHIVE" -o ! -f "$ARCHIVE" ]; then
+    echo "Package not found"
+    exit 1
+fi
+
+tar xf "$ARCHIVE"
+
+NAME="${ARCHIVE%.tar.gz}"
+cd $NAME
+
+source $NAME.info
+
+# check if DOWNLOAD_x86_64 is configured
+if [ "$DOWNLOAD" == "UNSUPPORTED" -a -n "$DOWNLOAD_x86_64" ]; then
+    DOWNLOAD="$DOWNLOAD_x86_64"
+fi
+
+if [ -z "$DOWNLOAD" ]; then
+    echo "No DOWNLOAD source"
+    exit 1
+fi
+
+wget --continue $DOWNLOAD
+if [ $? -ne 0 ]; then
+    echo "Something went wrong with wget"
+    exit 1
+fi
+
+chmod +x "${NAME}.SlackBuild"
+sudo "./${NAME}.SlackBuild"
+
+exit 0
