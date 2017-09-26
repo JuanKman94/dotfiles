@@ -37,7 +37,7 @@ colorscheme industry
 
 " Change tab key behavior
 set shiftwidth=4
-set softtabstop=4
+set tabstop=4
 
 
 

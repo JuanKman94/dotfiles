@@ -11,9 +11,4 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 [ -f $userresources ] && xrdb -merge $userresources
 [ -f $usermodmap ] && xmodmap $usermodmap
 
-# Start the window manager:
-if [ -z "$DESKTOP_SESSION" -a -x /usr/bin/ck-launch-session ]; then
-    ck-launch-session dbus-launch --exit-with-session awesome
-else
-    awesome
-fi
+ssh-agent dbus-launch --exit-with-session awesome
