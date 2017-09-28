@@ -15,7 +15,25 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 require("awful.hotkeys_popup.keys")
 
 -- Custom stuff
-my_menu = require('plugins/menu')
+local my_menu = require("plugins/menu")
+require("menu") -- XDG menu
+
+-- arcchat
+local arc = wibox.widget.progressbar()
+local arcbox = wibox.widget({
+	widget = arc,
+	colors = {
+		"#0000FF",
+		"#FF0000",
+	},
+	thickness = 2,
+	min_value = 0,
+	max_value = 1,
+	forced_height = 20,
+	forced_width = 20,
+	values = { .60, .80 },
+})
+local myarc = wibox.container.arcchart(arc)
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -44,11 +62,17 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init("~/.config/awesome/themes/xresources/theme.lua")
+
+-- load pulseaudio_widget (needs to be loaded **after** beautiful.init
+local pulse = require("pulseaudio_widget")
+local mybat = require("plugins/battery")
+
+local imgbat = wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/devices/battery-symbolic.svg")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
-editor = os.getenv("EDITOR") or "nano"
+terminal = "uxterm"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -61,7 +85,7 @@ altkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
+    -- awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
@@ -69,9 +93,9 @@ awful.layout.layouts = {
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
+    -- awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
@@ -79,6 +103,17 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.se,
 }
 -- }}}
+
+local my_tags = { "main", "www", "code", "conf", "virtual", "misc", "mail" }
+local tags_layouts = {
+    awful.layout.layouts[1],
+    awful.layout.layouts[8],
+    awful.layout.layouts[5],
+    awful.layout.layouts[1],
+    awful.layout.layouts[1],
+    awful.layout.layouts[8],
+    awful.layout.layouts[8]
+}
 
 -- {{{ Helper functions
 local function client_menu_toggle_fn()
@@ -106,6 +141,7 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+                                    { "XDG", xdgmenu },
                                     { "Menu", my_menu }
                                   }
                         })
@@ -187,7 +223,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag(my_tags, s, tags_layouts )
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -221,6 +257,10 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
+			pulse,
+			imgbat,
+			mybat,
+			--myarc,
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
@@ -335,7 +375,23 @@ globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+
+	-- Personal taste
+    awful.key({ modkey,           }, "b", function () awful.spawn("firefox") end,
+              {description = "open firefox browser", group = "launcher"}),
+
+    awful.key({                   }, "#107", function () awful.spawn("screenshot", false) end),
+
+	-- Audio
+	awful.key({ }, "XF86AudioRaiseVolume", pulse.volume_up),
+	awful.key({ }, "XF86AudioLowerVolume", pulse.volume_down),
+	awful.key({ }, "XF86AudioMute",  pulse.toggle_muted),
+	-- Microphone
+	awful.key({"Shift"}, "XF86AudioRaiseVolume", pulse.volume_up_mic),
+	awful.key({"Shift"}, "XF86AudioLowerVolume", pulse.volume_down_mic),
+	awful.key({ }, "XF86MicMute",  pulse.toggle_muted_mic)
+
 )
 
 clientkeys = gears.table.join(

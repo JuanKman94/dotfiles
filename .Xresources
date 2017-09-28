@@ -1,9 +1,10 @@
 ! Useful resource: http://www.computerhope.com/unix/uxrdb.htm
-! Coloring
-xterm*color: green
-xterm*background: black
-xterm*foreground: green
-xterm*cursorColor: yellow
+
+! XTerm
+xterm*color: #e6ffff
+xterm*background: #0c141f
+xterm*foreground: #6fc3df
+xterm*cursorColor: #ffe64d
 
 ! Fonts
 xterm*faceName: Terminus:size=8
@@ -19,3 +20,47 @@ xterm*locale: true
 
 ! Copying to PRIMARY and CLIPBOARD when highlighting a word (I guess)
 xterm*translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
+
+!!!!!!!!!!! Color theme !!!!!!!!!!!
+! http://ethanschoonover.com/solarized
+
+!!!!! Tron Legacy palette !!!!!
+! http://www.colourlovers.com/palette/1406402/Tron_Legacy_2
+!
+! #df740c -- Orange
+! #ffe64d -- Sweet yellow
+! #6fc3df -- Cyan legacy
+! #e6ffff -- Pane (kinda white)
+! #0c141f -- Basestar
+
+!!! dircolors !!!
+! color10 text files
+! color12 is used in directory names (dircolors)
+
+*background: #0c141f
+*foreground: #6fc3df
+! blackdark
+*color0:     #0c141f
+*color8:     #666666
+! red/orange
+*color1:     #df740c
+*color9:     #ef8171
+! green
+*color2:     #00ff00
+*color10:    #9efe60
+! yellow
+*color3:     #ffe64d
+*color11:    #ffff00
+! blue
+*color4:     #6f15cb
+*color12:    #7e5edc
+! purple
+*color5:     #cb15c9
+*color13:    #b75edc
+! cyan
+*color6:     #6fc3df
+*color14:    #e6ffff
+! white
+*color7:     #e6ffff
+*color15:    #e6ffff
