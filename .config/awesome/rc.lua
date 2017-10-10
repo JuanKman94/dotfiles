@@ -18,23 +18,6 @@ require("awful.hotkeys_popup.keys")
 local my_menu = require("plugins/menu")
 require("menu") -- XDG menu
 
--- arcchat
-local arc = wibox.widget.progressbar()
-local arcbox = wibox.widget({
-	widget = arc,
-	colors = {
-		"#0000FF",
-		"#FF0000",
-	},
-	thickness = 2,
-	min_value = 0,
-	max_value = 1,
-	forced_height = 20,
-	forced_width = 20,
-	values = { .60, .80 },
-})
-local myarc = wibox.container.arcchart(arc)
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -64,11 +47,32 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init("~/.config/awesome/themes/xresources/theme.lua")
 
--- load pulseaudio_widget (needs to be loaded **after** beautiful.init
+-- {{{
+-- Load pulseaudio_widget (needs to be loaded **after** beautiful.init) and 
+-- other widgets
 local pulse = require("pulseaudio_widget")
 local mybat = require("plugins/battery")
+local mpd = require("plugins/mpd")
+local cpu = require("plugins/cpu")
+local separator = wibox.widget.textbox(' | ')
+--- }}}
 
-local imgbat = wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/devices/battery-symbolic.svg")
+-- {{{
+-- Setup images for the status bar
+local imgbat = wibox.container.margin(
+		wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/devices/battery-symbolic.svg", true),
+		0, 4, 4, 0
+	)
+local imgmusic = wibox.container.margin(
+		wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/emblems/emblem-music-symbolic.svg", true),
+		2, 2, 2, 2
+	)
+local pulse_container = wibox.container.margin(pulse, 2, 0, 4, 2)
+
+pulse_container.forced_width = 16
+imgbat.forced_width = 16
+imgmusic.forced_width = 20
+-- }}}
 
 -- This is used later as the default terminal and editor to run.
 terminal = "uxterm"
@@ -257,10 +261,16 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
-			pulse,
+			pulse_container,
+			separator,
+			cpu,
+			separator,
 			imgbat,
 			mybat,
-			--myarc,
+			separator,
+			imgmusic,
+			mpd.widget,
+			separator,
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
@@ -390,8 +400,14 @@ globalkeys = gears.table.join(
 	-- Microphone
 	awful.key({"Shift"}, "XF86AudioRaiseVolume", pulse.volume_up_mic),
 	awful.key({"Shift"}, "XF86AudioLowerVolume", pulse.volume_down_mic),
-	awful.key({ }, "XF86MicMute",  pulse.toggle_muted_mic)
+	awful.key({ }, "XF86MicMute",  pulse.toggle_muted_mic),
 
+	-- MPD
+	-- The Thinkpad X220 has play as Down and stop as Up, I don't like that
+	awful.key({ }, "XF86AudioStop", function () mpd.toggle() end),
+	awful.key({ }, "XF86AudioPrev", function () mpd.prev() end),
+	awful.key({ }, "XF86AudioNext", function () mpd.next() end),
+	awful.key({ }, "XF86AudioPlay", function () mpd.stop() end)
 )
 
 clientkeys = gears.table.join(

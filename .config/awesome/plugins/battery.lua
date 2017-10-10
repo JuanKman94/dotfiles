@@ -2,10 +2,10 @@ local vicious = require("vicious")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 
-mybat = wibox.widget.progressbar()
+local mybat = wibox.widget.progressbar()
 
 -- Create wibox with mybat
-batbox = wibox.widget({
+local batbox = wibox.widget({
 	{
 		max_value     = 1,
 		widget        = mybat,
