@@ -1,0 +1,23 @@
+#!/bin/bash
+
+DOCKER=$(which docker)
+IMAGE="$1"
+
+print_help() {
+	echo "Usage: $0 <image name>"
+	echo ""
+	echo "Remove stopped containers having <image name> as an ancestor"
+}
+
+if [ -z $DOCKER ]; then
+	echo "No docker found"
+	exit 1
+fi
+
+if [ -z $IMAGE ]; then
+	echo "No image name"
+	print_help
+	exit 1
+fi
+
+$DOCKER rm $($DOCKER ps -qa -f ancestor=$IMAGE -f status=exited -f status=dead)
