@@ -41,6 +41,8 @@ alias vim='vim -p'
 export LS_OPTIONS='--color=auto -hF'
 eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
+alias ll='ls -l'
+alias la='ls -A'
 
 # less
 export LESS="$LESS -R"
