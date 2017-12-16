@@ -29,6 +29,9 @@ Plugin 'mattn/webapi-vim'
 " Ctrl+P plugin
 Plugin 'ctrlpvim/ctrlp.vim'
 
+" Dracula theme
+Plugin 'dracula/vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 

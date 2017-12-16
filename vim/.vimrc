@@ -33,7 +33,6 @@ autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
 
 " Add colors!
 syntax on
-colorscheme industry
 
 " Change tab key behavior
 set shiftwidth=4
@@ -79,9 +78,9 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 
 " ---- Vundle ----
-set nocompatible              " Be iMproved, required -- Latest vim settings/options
-
+set nocompatible	" Be iMproved, required -- Latest vim settings/options
 source ~/.vim/plugins.vim
+colorscheme dracula	" this is installed via Vundle
 
 " ---- Emmet ----
 let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets.json')), "\n"))

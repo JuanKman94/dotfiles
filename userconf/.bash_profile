@@ -15,7 +15,7 @@ stty -ixon
 
 # User specific environment and startup programs
 
-EDITOR=vi
+EDITOR=vim
 
 PATH=$PATH:$HOME/bin:$HOME/.local/bin
 #PATH=$PATH:$HOME/.config/composer/vendor/bin:./vendor/bin # composer packages
@@ -38,7 +38,7 @@ alias gsh='git push'
 alias vim='vim -p'
 
 # ls
-export LS_OPTIONS='--color=auto -h'
+export LS_OPTIONS='--color=auto -hF'
 eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
 
