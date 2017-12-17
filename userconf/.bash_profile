@@ -59,5 +59,7 @@ export PS1
 export LS_OPTIONS='--color=auto -hF'
 eval "`dircolors`"
 alias ls='ls $LS_OPTIONS'
+alias ll='ls -l'
+alias la='ls -A'
 
 export LESS="$LESS -R"
