@@ -1,28 +1,18 @@
-local vicious		= require("vicious")
-local wibox			= require("wibox")
-local xresources	= require("beautiful.xresources")
-local xrdb			= xresources.get_current_theme()
-local awful			= require('awful')
-local format		= string.format
-local mpdwidget		= wibox.widget.textbox()
-local mpd			= { widget = mpdwidget }
+local vicious       = require("vicious")
+local wibox         = require("wibox")
+local xresources    = require("beautiful.xresources")
+local xrdb          = xresources.get_current_theme()
+local awful         = require("awful")
+local format        = string.format
+local mpdwidget     = wibox.widget.textbox()
+local mpd           = { widget = mpdwidget }
 
 vicious.register(mpdwidget, vicious.widgets.mpd, function (wid, args)
-	if args['{state}'] == 'Stop' then
-		return ""
-	elseif args['{state}'] == 'Pause' then
-		return string.format('<span color=%q>%s - %s</span>',
-				xrdb.color3,
-				args['{Artist}'],
-				args['{Title}']
-			)
-	else
-		return string.format('<span color=%q>%s - %s</span>',
-				xrdb.foreground,
-				args['{Artist}'],
-				args['{Title}']
-			)
-	end
+    return string.format("<span color=%q>%s > %s</span>",
+            (args["{state}"] == "Playing" and xrdb.foreground or xrdb.color3),
+            args["{Artist}"],
+            args["{Title}"]
+        )
 end)
 
 function mpd.stop()
