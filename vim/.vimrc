@@ -31,6 +31,11 @@ autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
 
 " ---- Visuals ----
 
+"set noruler
+"set laststatus=2
+"set statusline=%f\ >\ %l,%c\ %y%r\ %=%L\ lines\ [%p%%]
+set rulerformat=%24(%y%=\ %l,%c\ [%p%%]%)
+
 " Add colors!
 syntax on
 
@@ -61,12 +66,14 @@ endif
 fixdel
 
 " ViM features
-set showcmd		" Show (partial) command in status line.
+set showcmd			" Show (partial) command in status line.
 set showmatch		" Show matching brackets.
 set ignorecase		" Do case insensitive matching
 set smartcase		" Do smart case matching
 set incsearch		" Incremental search -- find matches as you type
-set hlsearch            " Highlight search
+set hlsearch		" Highlight search
+set number			" Let's activate line numbers
+set relativenumber	" And relative line numbers
 
 " Redraw screen and run nohlsearch when pressing <CTRL-l>
 nnoremap <silent> <c-l> :nohl<cr><c-l>
@@ -80,6 +87,7 @@ let &guicursor = &guicursor . ",a:blinkon0"
 " ---- Vundle ----
 set nocompatible	" Be iMproved, required -- Latest vim settings/options
 source ~/.vim/plugins.vim
+set t_Co=256
 colorscheme dracula	" this is installed via Vundle
 
 " ---- Emmet ----
@@ -91,7 +99,6 @@ let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snip
 " ---- Laracasts: Vim mastery ----
 
 let mapleader = ','   " The default <Leader> is '\', but ',' seems better
-set number            " Let's activate line numbers
 
 
 
