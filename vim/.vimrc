@@ -34,6 +34,15 @@ autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
 " Add colors!
 syntax on
 
+"highlight ExtraWhitespace ctermbg=red guibg=red
+highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
 " Change tab key behavior
 set shiftwidth=4
 set tabstop=4
@@ -44,7 +53,8 @@ set tabstop=4
 " ---- Folding ----
 set foldmethod=indent
 set foldlevelstart=7
-
+nnoremap z1 :set foldlevel=0<CR>
+nnoremap z2 :set foldlevel=1<CR>
 
 
 
@@ -54,19 +64,21 @@ set foldlevelstart=7
 set backspace=indent,eol,start		" allow backspacing over everything in insert mode
 
 if &term=="xterm"
-     set t_Co=8
-     set t_Sb=[4%dm
-     set t_Sf=[3%dm
+	set t_Co=256
+	set t_Sb=[4%dm
+	set t_Sf=[3%dm
 endif
 fixdel
 
 " ViM features
-set showcmd		" Show (partial) command in status line.
+set showcmd         " Show (partial) command in status line.
 set showmatch		" Show matching brackets.
 set ignorecase		" Do case insensitive matching
 set smartcase		" Do smart case matching
 set incsearch		" Incremental search -- find matches as you type
-set hlsearch            " Highlight search
+set hlsearch        " Highlight search
+set number          " Let's activate line numbers
+set relativenumber  " See line relative number upwards & downwards
 
 " Redraw screen and run nohlsearch when pressing <CTRL-l>
 nnoremap <silent> <c-l> :nohl<cr><c-l>
@@ -83,7 +95,7 @@ source ~/.vim/plugins.vim
 colorscheme dracula	" this is installed via Vundle
 
 " ---- Emmet ----
-let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets.json')), "\n"))
+"let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets.json')), "\n"))
 
 
 
@@ -91,7 +103,6 @@ let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snip
 " ---- Laracasts: Vim mastery ----
 
 let mapleader = ','   " The default <Leader> is '\', but ',' seems better
-set number            " Let's activate line numbers
 
 
 
