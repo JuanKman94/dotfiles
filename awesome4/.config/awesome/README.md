@@ -16,3 +16,10 @@ dbus-module
 # echo "load-module module-dbus-protocol" >> /etc/pulseaudio/default.pa
 # luarocks install pulseaudio_widget
 ```
+
+Debug configuration file on a nested Xorg server (using Xephyr)
+
+```bash
+$ Xephyr :5 -ac -br -noreset -screen 600x400 &
+$ DISPLAY=:5.0 awesome -c /home/jc/.config/awesome/custom.lua
+```

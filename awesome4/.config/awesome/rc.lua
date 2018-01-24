@@ -52,7 +52,7 @@ beautiful.init("~/.config/awesome/themes/xresources/theme.lua")
 -- other widgets
 local pulse = require("pulseaudio_widget")
 local mybat = require("plugins/battery")
-local music = require("plugins/cmus")
+local music = require("plugins/mpd")
 local cpu = require("plugins/cpu")
 local separator = wibox.widget.textbox(' | ')
 --- }}}
@@ -392,6 +392,7 @@ globalkeys = gears.table.join(
               {description = "open firefox browser", group = "launcher"}),
 
     awful.key({                   }, "#107", function () awful.spawn("screenshot", false) end),
+	awful.key({ modkey,    altkey }, "m", function () music.player() end),
 
 	-- Audio
 	awful.key({ }, "XF86AudioRaiseVolume", pulse.volume_up),

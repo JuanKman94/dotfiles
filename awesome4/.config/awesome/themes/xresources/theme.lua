@@ -54,6 +54,17 @@ theme.menu_submenu_icon = themes_path.."default/submenu.png"
 theme.menu_height = dpi(16)
 theme.menu_width  = dpi(100)
 
+--theme.notification_font
+theme.notification_bg               = xrdb.background
+--theme.notification_fg
+theme.notification_border_width     = 8
+theme.notification_border_color     = xrdb.color3
+--theme.notification_shape
+--theme.notification_opacity
+--theme.notification_margin
+--theme.notification_width
+--theme.notification_height
+
 -- You can add as many variables as
 -- you wish and access them by using
 -- beautiful.variable in your rc.lua

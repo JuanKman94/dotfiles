@@ -9,7 +9,7 @@ local mpd           = { widget = mpdwidget }
 
 vicious.register(mpdwidget, vicious.widgets.mpd, function (wid, args)
     return string.format("<span color=%q>%s > %s</span>",
-            (args["{state}"] == "Playing" and xrdb.foreground or xrdb.color3),
+            (args["{state}"] == "Play" and xrdb.foreground or xrdb.color3),
             args["{Artist}"],
             args["{Title}"]
         )
