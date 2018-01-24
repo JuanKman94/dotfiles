@@ -390,6 +390,8 @@ globalkeys = gears.table.join(
 	-- Personal taste
     awful.key({ modkey,           }, "b", function () awful.spawn("firefox") end,
               {description = "open firefox browser", group = "launcher"}),
+    awful.key({ modkey,           }, "`", function () awful.spawn("xscreensaver-command -lock") end,
+              {description = "lock screen (xscreensaver must be running)", group = "launcher"}),
 
     awful.key({                   }, "#107", function () awful.spawn("screenshot", false) end),
 	awful.key({ modkey,    altkey }, "m", function () music.player() end),
