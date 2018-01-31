@@ -44,6 +44,11 @@ theme.border_marked = xrdb.color3
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
+theme.titlebar_bg_normal = xrdb.background .. "00"
+theme.titlebar_bg_focus = xrdb.foreground .. "00"
+theme.titlebar_fg_normal = "#FF0000"
+theme.titlebar_fg_focus = "#00FF00"
+
 theme.tooltip_fg = theme.fg_normal
 theme.tooltip_bg = theme.bg_normal
 
