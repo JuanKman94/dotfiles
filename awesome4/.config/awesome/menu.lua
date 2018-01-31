@@ -24,7 +24,7 @@
 
  local menuc8205c7636e728d448c2774e6a4a944b = {
      {"Claws Mail", "claws-mail ", "/usr/share/icons/hicolor/48x48/apps/claws-mail.png" },
-     {"Firefox", "firefox ", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
+     {"Firefox", "firefox ", "/usr/share/icons/HighContrast/16x16/apps/firefox.png" },
      {"Links", "links2 -g", "/usr/share/pixmaps/links.png" },
      {"Pidgin Internet Messenger", "pidgin", "/usr/share/icons/hicolor/16x16/apps/pidgin.png" },
      {"Transmission", "transmission-gtk ", "/usr/share/icons/hicolor/16x16/apps/transmission.png" },
