@@ -60,13 +60,13 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
+    awful.layout.suit.fair.horizontal,
     awful.layout.suit.tile,
     awful.layout.suit.floating,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
     awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
@@ -525,7 +525,20 @@ client.connect_signal("request::titlebars", function(c)
             awful.mouse.client.resize(c)
         end)
     )
-    local defaulttitle = {
+
+    local opts = {
+        fg_normal = beautiful.fg_normal .. "aa",
+        fg_focus = beautiful.fg_normal .. "ff",
+        bg_normal = "#0000ff00",
+        bg_focus = "#ff00ff00"
+    }
+
+    awful.titlebar(c, opts) : setup {
+        {
+            forced_width = c.width / 6,
+            widget = wibox.widget.textbox,
+            align = "left"
+        },
         {
             { -- Left
                 awful.titlebar.widget.iconwidget(c),
@@ -533,9 +546,13 @@ client.connect_signal("request::titlebars", function(c)
                 layout  = wibox.layout.fixed.horizontal
             },
             { -- Middle
-                { -- Title
-                    align  = "center",
-                    widget = awful.titlebar.widget.titlewidget(c)
+                {
+                    { -- Title
+                        align  = "center",
+                        widget = awful.titlebar.widget.titlewidget(c)
+                    },
+                    bg = beautiful.bg_normal,
+                    widget = wibox.container.background
                 },
                 buttons = buttons,
                 layout  = wibox.layout.flex.horizontal
@@ -548,19 +565,8 @@ client.connect_signal("request::titlebars", function(c)
                 awful.titlebar.widget.closebutton    (c),
                 layout = wibox.layout.fixed.horizontal()
             },
-            bg = beautiful.bg_focus,
-            widget = wibox.container.background
+            layout = wibox.layout.align.horizontal
         },
-        layout = wibox.layout.align.horizontal
-    }
-
-    awful.titlebar(c) : setup {
-        {
-            forced_width = c.width / 6,
-            widget = wibox.widget.textbox,
-            align = "left"
-        },
-        defaulttitle,
         {
             forced_width = c.width / 6,
             widget = wibox.widget.textbox,
@@ -578,8 +584,8 @@ client.connect_signal("mouse::enter", function(c)
     end
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+--client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+--client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
 -- {{{ custom border (?)
