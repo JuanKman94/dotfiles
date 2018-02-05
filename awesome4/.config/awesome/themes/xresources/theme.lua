@@ -44,6 +44,12 @@ theme.border_marked = xrdb.color3
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
+theme.titlebar_fg_normal = theme.fg_normal .. "88"
+theme.titlebar_fg_focus = theme.fg_normal .. "ff"
+-- TODO: fix this so the trapeze highlights
+theme.titlebar_bg_normal = "#00000000"
+theme.titlebar_bg_focus = "#00000000"
+
 theme.tooltip_fg = theme.fg_normal
 theme.tooltip_bg = theme.bg_normal
 
@@ -86,22 +92,22 @@ local function darker(color_value, darker_n)
     return result
 end
 theme = theme_assets.recolor_titlebar(
-    theme, theme.fg_normal, "normal"
+    theme, theme.fg_normal, "focus"
 )
 theme = theme_assets.recolor_titlebar(
-    theme, darker(theme.fg_normal, -60), "normal", "hover"
-)
-theme = theme_assets.recolor_titlebar(
-    theme, xrdb.color1, "normal", "press"
-)
-theme = theme_assets.recolor_titlebar(
-    theme, theme.fg_focus, "focus"
-)
-theme = theme_assets.recolor_titlebar(
-    theme, darker(theme.fg_focus, -60), "focus", "hover"
+    theme, darker(theme.fg_normal, -60), "focus", "hover"
 )
 theme = theme_assets.recolor_titlebar(
     theme, xrdb.color1, "focus", "press"
+)
+theme = theme_assets.recolor_titlebar(
+    theme, darker(theme.fg_normal, 80), "normal"
+)
+theme = theme_assets.recolor_titlebar(
+    theme, darker(theme.fg_focus, -60), "normal", "hover"
+)
+theme = theme_assets.recolor_titlebar(
+    theme, xrdb.color1, "normal", "press"
 )
 
 -- Define the icon theme for application icons. If not set then the icons
@@ -142,7 +148,7 @@ theme.wallpaper = function(s)
 end
 --]]
 
-theme.wallpaper = "~/.config/awesome/themes/tron.png"
+theme.wallpaper = "~/.config/awesome/images/gray.png"
 
 return theme
 
