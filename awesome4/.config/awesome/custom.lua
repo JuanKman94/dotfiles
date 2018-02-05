@@ -526,19 +526,27 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    local opts = {
-        fg_normal = beautiful.fg_normal .. "aa",
-        fg_focus = beautiful.fg_normal .. "ff",
-        bg_normal = "#0000ff00",
-        bg_focus = "#ff00ff00"
-    }
+    function trapeze(cr, width, height)
+        cr:move_to(height,0)
+        cr:line_to(width-height,0)
+        cr:line_to(width,height)
+        cr:line_to(0, height)
+        cr:line_to(height, 0)
+        cr:close_path()
+    end
+
     local middle = { -- Middle
         {
-            { -- Title
-                align  = "center",
-                widget = awful.titlebar.widget.titlewidget(c)
+            {
+                { -- Title
+                    align  = "center",
+                    widget = awful.titlebar.widget.titlewidget(c)
+                },
+                left = 10,
+                right = 10,
+                layout = wibox.container.margin
             },
-            shape = gears.shape.hexagon,
+            shape = trapeze,
             bg = beautiful.bg_normal,
             widget = wibox.container.background
         },
@@ -546,7 +554,7 @@ client.connect_signal("request::titlebars", function(c)
         layout  = wibox.layout.flex.horizontal
     }
 
-    awful.titlebar(c, opts) : setup {
+    awful.titlebar(c) : setup {
         { -- Left
             {
                 awful.titlebar.widget.iconwidget(c),
