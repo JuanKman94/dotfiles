@@ -532,45 +532,52 @@ client.connect_signal("request::titlebars", function(c)
         bg_normal = "#0000ff00",
         bg_focus = "#ff00ff00"
     }
+    local middle = { -- Middle
+        {
+            { -- Title
+                align  = "center",
+                widget = awful.titlebar.widget.titlewidget(c)
+            },
+            shape = gears.shape.hexagon,
+            bg = beautiful.bg_normal,
+            widget = wibox.container.background
+        },
+        buttons = buttons,
+        layout  = wibox.layout.flex.horizontal
+    }
 
     awful.titlebar(c, opts) : setup {
-        {
-            forced_width = c.width / 6,
-            widget = wibox.widget.textbox,
-            align = "left"
-        },
-        {
-            { -- Left
+        { -- Left
+            {
                 awful.titlebar.widget.iconwidget(c),
                 buttons = buttons,
-                layout  = wibox.layout.fixed.horizontal
+                width = 70,
+                strategy = "min",
+                layout  = wibox.container.constraint
             },
-            { -- Middle
-                {
-                    { -- Title
-                        align  = "center",
-                        widget = awful.titlebar.widget.titlewidget(c)
-                    },
-                    bg = beautiful.bg_normal,
-                    widget = wibox.container.background
-                },
-                buttons = buttons,
-                layout  = wibox.layout.flex.horizontal
-            },
-            { -- Right
-                awful.titlebar.widget.floatingbutton (c),
-                awful.titlebar.widget.maximizedbutton(c),
-                awful.titlebar.widget.stickybutton   (c),
-                awful.titlebar.widget.ontopbutton    (c),
-                awful.titlebar.widget.closebutton    (c),
-                layout = wibox.layout.fixed.horizontal()
-            },
-            layout = wibox.layout.align.horizontal
+            left = 3,
+            top = 2,
+            bottom = 1,
+            layout = wibox.container.margin
         },
-        {
-            forced_width = c.width / 6,
-            widget = wibox.widget.textbox,
-            align = "right"
+        middle,
+        { -- Right
+            {
+                {
+                    awful.titlebar.widget.floatingbutton (c),
+                    awful.titlebar.widget.maximizedbutton(c),
+                    awful.titlebar.widget.stickybutton   (c),
+                    awful.titlebar.widget.ontopbutton    (c),
+                    awful.titlebar.widget.closebutton    (c),
+                    layout = wibox.layout.fixed.horizontal()
+                },
+                width = 70,
+                strategy = "min",
+                layout = wibox.container.constraint
+            },
+            left = 15,
+            right = 2,
+            layout = wibox.container.margin
         },
         layout = wibox.layout.align.horizontal
     }
@@ -591,92 +598,10 @@ end)
 -- {{{ custom border (?)
 -- IDEA: pon un trapecio en la barra de titulo
 
-local cairo             = require("lgi").cairo
-local active            = setmetatable({},{__mode="k"})
-local ret,cshape        = pcall(require, "awful.client.shape")
-local awclient          = require("awful.client")
-local math              = math
-
--- Cshape is not available in 3.5.*
-if not cshape or ret == false then return end
-
-local mypreset = {
-    timeout = 0,
-    position = "top_middle",
-    shape = gears.shape.rounded_rect,
-    font = "terminus 12",
-    fg = beautiful.fg_normal,
-    bg = beautiful.bg_normal
-}
-
 function jcnotify (title, text)
     naughty.notify({ preset = mypreset,
                      title = title,
                      text = text })
 end
-
-function draw_custom_borders (cr, x, y, w, h, radius)
-    cr:save()
-    cr:translate(x,y)
-    cr:move_to(0, radius)
-    cr:arc(radius, radius, radius, math.pi, math.pi/2)
-    cr:arc(w-radius, radius, radius, math.pi, math.pi/2)
-    cr:arc(w-radius, h-radius, radius, math.pi, math.pi/2)
-    cr:arc(radius, h-radius, radius, math.pi, math.pi/2)
-    cr:close_path()
-    cr:restore()
-end
-
-function create_custom_borders (c)
-    local geo           = c:geometry()
-    local border        = 15
-    local radius        = 10
-    local width, height = geo.width, geo.height
-
-    -- add borders
-    local img   = cairo.ImageSurface.create(cairo.Format.A8, width*2*border, height*2*border)
-    local cr    = cairo.Context(img)
-
-    cr:set_antialias(cairo.ANTIALIAS_NONE)
-    cr:set_operator(cairo.Operator.SOURCE)
-    cr:set_source_rgba(1,1,1,1)
-    draw_custom_borders(cr, 0, 0, width+2*border, height+2*border, radius)
-    cr:fill()
-    c.shape_bounding = img._native
-    img:finish()
-
-    -- Fix the border mask to incluse the round corners
-    img  = cairo.ImageSurface.create(cairo.Format.A8, width+2*border, height+2*border)
-    local cr = cairo.Context(img)
-    cr:set_antialias(cairo.ANTIALIAS_NONE)
-    cr:set_source_rgb(0,0,0,0)
-    cr:paint()
-    cr:set_operator(cairo.Operator.SOURCE)
-    cr:set_source_rgba(1,1,1,1)
-
-    draw_custom_borders(cr,0,0,width,height,2*radius,2*radius,radius,radius)
-    cr:fill()
-    c.shape_clip = img._native
-    img:finish()
-
-    jcnotify('ventana creada', tostring(c.window))
-end
-
--- Disconnect the old, avoid double shape painting
-client.disconnect_signal("property::width", cshape.update.all)
-client.disconnect_signal("property::height", cshape.update.all)
-
-client.connect_signal("property::floating",function(c)
-    active[c] = awclient.floating.get(c)
-end)
-
-client.connect_signal("property::width", function (c)
-    if active[c] then
-        create_custom_borders(c)
-    else
-        jcnotify('Not floating', tostring(c.window))
-        create_custom_borders(c)
-    end
-end)
 
 -- }}}
