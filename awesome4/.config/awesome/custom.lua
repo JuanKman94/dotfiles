@@ -548,6 +548,8 @@ client.connect_signal("request::titlebars", function(c)
             },
             shape = trapeze,
             bg = beautiful.bg_normal,
+            shape_border_color = beautiful.border_focus,
+            shape_border_width = 1,
             widget = wibox.container.background
         },
         buttons = buttons,
