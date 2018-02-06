@@ -29,8 +29,8 @@ theme.fg_minimize   = xrdb.color7
 
 theme.useless_gap   = dpi(3)
 theme.border_width  = dpi(0)
-theme.border_normal = xrdb.color0
-theme.border_focus  = theme.bg_focus
+theme.border_normal = theme.fg_focus
+theme.border_focus  = theme.fg_normal
 theme.border_marked = xrdb.color3
 
 -- There are other variable sets
