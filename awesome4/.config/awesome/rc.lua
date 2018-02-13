@@ -634,6 +634,7 @@ client.connect_signal("request::titlebars", function(c)
                 layout = wibox.container.margin
             },
             shape = trapeze,
+            id = "titlebar_trapeze",
             bg = beautiful.bg_normal,
             shape_border_color = beautiful.border_focus,
             shape_border_width = 1,
@@ -677,6 +678,15 @@ client.connect_signal("mouse::enter", function(c)
     end
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- toggle titlebar border color
+client.connect_signal("focus", function(c)
+    awful.titlebar(c) :
+        get_children_by_id("titlebar_trapeze")[1] :
+        set_shape_border_color(beautiful.titlebar_fg_focus)
+end)
+client.connect_signal("unfocus", function(c)
+    awful.titlebar(c) :
+        get_children_by_id("titlebar_trapeze")[1] :
+        set_shape_border_color(beautiful.titlebar_fg_normal)
+end)
 -- }}}

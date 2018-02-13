@@ -44,9 +44,8 @@ theme.border_marked = xrdb.color3
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
-theme.titlebar_fg_normal = theme.fg_normal .. "88"
+theme.titlebar_fg_normal = theme.fg_normal .. "44"
 theme.titlebar_fg_focus = theme.fg_normal .. "ff"
--- TODO: fix this so the trapeze highlights
 theme.titlebar_bg_normal = "#00000000"
 theme.titlebar_bg_focus = "#00000000"
 
@@ -148,7 +147,7 @@ theme.wallpaper = function(s)
 end
 --]]
 
-theme.wallpaper = "~/.config/awesome/images/gray.png"
+theme.wallpaper = "~/.config/awesome/images/tron.png"
 
 return theme
 
