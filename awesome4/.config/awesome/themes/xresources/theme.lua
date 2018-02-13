@@ -101,7 +101,7 @@ theme = theme_assets.recolor_titlebar(
     theme, xrdb.color1, "focus", "press"
 )
 theme = theme_assets.recolor_titlebar(
-    theme, darker(theme.fg_normal, 80), "normal"
+    theme, darker(theme.fg_normal, 40), "normal"
 )
 theme = theme_assets.recolor_titlebar(
     theme, darker(theme.fg_focus, -60), "normal", "hover"

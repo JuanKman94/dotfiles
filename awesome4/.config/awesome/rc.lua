@@ -600,28 +600,71 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c) : setup {
-        { -- Left
+    local function trapeze(cr, width, height)
+        cr:move_to(height,0)
+        cr:line_to(width-height,0)
+        cr:line_to(width,height)
+        cr:line_to(0, height)
+        cr:line_to(height, 0)
+        cr:close_path()
+    end
+
+    local left_wid = {
+        {
             awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
+            width = 70,
+            strategy = "min",
+            layout  = wibox.container.constraint
         },
-        { -- Middle
-            { -- Title
-                align  = "center",
-                widget = awful.titlebar.widget.titlewidget(c)
+        left = 8,
+        top = 2,
+        bottom = 1,
+        layout = wibox.container.margin
+    }
+    local middle_wid = {
+        {
+            {
+                { -- Title
+                    align  = "center",
+                    widget = awful.titlebar.widget.titlewidget(c)
+                },
+                left = 16,
+                right = 10,
+                layout = wibox.container.margin
             },
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
+            shape = trapeze,
+            bg = beautiful.bg_normal,
+            shape_border_color = beautiful.border_focus,
+            shape_border_width = 1,
+            widget = wibox.container.background
         },
-        { -- Right
-            awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
-            awful.titlebar.widget.closebutton    (c),
-            layout = wibox.layout.fixed.horizontal()
+        buttons = buttons,
+        layout  = wibox.layout.flex.horizontal
+    }
+    local right_wid = {
+        {
+            {
+                awful.titlebar.widget.floatingbutton (c),
+                awful.titlebar.widget.maximizedbutton(c),
+                awful.titlebar.widget.stickybutton   (c),
+                awful.titlebar.widget.ontopbutton    (c),
+                awful.titlebar.widget.closebutton    (c),
+                layout = wibox.layout.fixed.horizontal()
+            },
+            width = 70,
+            strategy = "min",
+            layout = wibox.container.constraint
         },
+        left = 15,
+        right = 6,
+        layout = wibox.container.margin
+    }
+
+    awful.titlebar(c) : setup {
+        left_wid,
+        middle_wid,
+        right_wid,
         layout = wibox.layout.align.horizontal
     }
 end)
