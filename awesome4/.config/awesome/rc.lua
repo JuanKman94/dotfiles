@@ -59,10 +59,6 @@ local separator = wibox.widget.textbox(' | ')
 
 -- {{{
 -- Setup images for the status bar
-local imgbat = wibox.container.margin(
-		wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/devices/battery-symbolic.svg", true),
-		0, 4, 4, 0
-	)
 local imgmusic = wibox.container.margin(
 		wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/emblems/emblem-music-symbolic.svg", true),
 		2, 2, 2, 2
@@ -70,7 +66,6 @@ local imgmusic = wibox.container.margin(
 local pulse_container = wibox.container.margin(pulse, 2, 0, 4, 2)
 
 pulse_container.forced_width = 16
-imgbat.forced_width = 16
 imgmusic.forced_width = 20
 -- }}}
 
