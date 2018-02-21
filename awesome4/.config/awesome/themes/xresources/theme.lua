@@ -28,9 +28,9 @@ theme.fg_urgent     = theme.bg_normal
 theme.fg_minimize   = xrdb.color7
 
 theme.useless_gap   = dpi(3)
-theme.border_width  = dpi(1)
-theme.border_normal = xrdb.color0
-theme.border_focus  = theme.bg_focus
+theme.border_width  = dpi(0)
+theme.border_normal = theme.fg_focus
+theme.border_focus  = theme.fg_normal
 theme.border_marked = xrdb.color3
 
 -- There are other variable sets
@@ -43,6 +43,11 @@ theme.border_marked = xrdb.color3
 -- mouse_finder_[color|timeout|animate_timeout|radius|factor]
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
+
+theme.titlebar_fg_normal = theme.fg_normal .. "88"
+theme.titlebar_fg_focus = theme.fg_normal .. "ff"
+theme.titlebar_bg_normal = "#00000000"
+theme.titlebar_bg_focus = "#00000000"
 
 theme.tooltip_fg = theme.fg_normal
 theme.tooltip_bg = theme.bg_normal
@@ -86,22 +91,22 @@ local function darker(color_value, darker_n)
     return result
 end
 theme = theme_assets.recolor_titlebar(
-    theme, theme.fg_normal, "normal"
+    theme, theme.fg_normal, "focus"
 )
 theme = theme_assets.recolor_titlebar(
-    theme, darker(theme.fg_normal, -60), "normal", "hover"
-)
-theme = theme_assets.recolor_titlebar(
-    theme, xrdb.color1, "normal", "press"
-)
-theme = theme_assets.recolor_titlebar(
-    theme, theme.fg_focus, "focus"
-)
-theme = theme_assets.recolor_titlebar(
-    theme, darker(theme.fg_focus, -60), "focus", "hover"
+    theme, darker(theme.fg_normal, -60), "focus", "hover"
 )
 theme = theme_assets.recolor_titlebar(
     theme, xrdb.color1, "focus", "press"
+)
+theme = theme_assets.recolor_titlebar(
+    theme, darker(theme.fg_normal, 40), "normal"
+)
+theme = theme_assets.recolor_titlebar(
+    theme, darker(theme.fg_focus, -60), "normal", "hover"
+)
+theme = theme_assets.recolor_titlebar(
+    theme, xrdb.color1, "normal", "press"
 )
 
 -- Define the icon theme for application icons. If not set then the icons
@@ -142,7 +147,7 @@ theme.wallpaper = function(s)
 end
 --]]
 
-theme.wallpaper = "~/.config/awesome/themes/tron.png"
+theme.wallpaper = "~/.config/awesome/images/tron.png"
 
 return theme
 

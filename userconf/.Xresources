@@ -29,6 +29,7 @@ xterm*translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFE
 ! http://www.colourlovers.com/palette/1406402/Tron_Legacy_2
 !
 ! #df740c -- Orange
+! #f58c4b -- Darker Orange -- extracted from tron wallpaper
 ! #ffe64d -- Sweet yellow
 ! #6fc3df -- Cyan legacy
 ! #e6ffff -- Pane (kinda white)
@@ -44,8 +45,8 @@ xterm*translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFE
 *color0:     #0c141f
 *color8:     #666666
 ! red/orange
-*color1:     #df740c
-*color9:     #ef8171
+*color1:     #f58c4b
+*color9:     #df740c
 ! green
 *color2:     #00ff00
 *color10:    #9efe60

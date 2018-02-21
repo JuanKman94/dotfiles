@@ -59,10 +59,6 @@ local separator = wibox.widget.textbox(' | ')
 
 -- {{{
 -- Setup images for the status bar
-local imgbat = wibox.container.margin(
-		wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/devices/battery-symbolic.svg", true),
-		0, 4, 4, 0
-	)
 local imgmusic = wibox.container.margin(
 		wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/emblems/emblem-music-symbolic.svg", true),
 		2, 2, 2, 2
@@ -70,7 +66,6 @@ local imgmusic = wibox.container.margin(
 local pulse_container = wibox.container.margin(pulse, 2, 0, 4, 2)
 
 pulse_container.forced_width = 16
-imgbat.forced_width = 16
 imgmusic.forced_width = 20
 -- }}}
 
@@ -600,28 +595,72 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c) : setup {
-        { -- Left
+    local function trapeze(cr, width, height)
+        cr:move_to(height,0)
+        cr:line_to(width-height,0)
+        cr:line_to(width,height)
+        cr:line_to(0, height)
+        cr:line_to(height, 0)
+        cr:close_path()
+    end
+
+    local left_wid = {
+        {
             awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
+            width = 70,
+            strategy = "min",
+            layout  = wibox.container.constraint
         },
-        { -- Middle
-            { -- Title
-                align  = "center",
-                widget = awful.titlebar.widget.titlewidget(c)
+        left = 8,
+        top = 2,
+        bottom = 1,
+        layout = wibox.container.margin
+    }
+    local middle_wid = {
+        {
+            {
+                { -- Title
+                    align  = "center",
+                    widget = awful.titlebar.widget.titlewidget(c)
+                },
+                left = 16,
+                right = 10,
+                layout = wibox.container.margin
             },
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
+            shape = trapeze,
+            id = "titlebar_trapeze",
+            bg = beautiful.bg_normal,
+            shape_border_color = beautiful.border_focus,
+            shape_border_width = 1,
+            widget = wibox.container.background
         },
-        { -- Right
-            awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
-            awful.titlebar.widget.closebutton    (c),
-            layout = wibox.layout.fixed.horizontal()
+        buttons = buttons,
+        layout  = wibox.layout.flex.horizontal
+    }
+    local right_wid = {
+        {
+            {
+                awful.titlebar.widget.floatingbutton (c),
+                awful.titlebar.widget.maximizedbutton(c),
+                awful.titlebar.widget.stickybutton   (c),
+                awful.titlebar.widget.ontopbutton    (c),
+                awful.titlebar.widget.closebutton    (c),
+                layout = wibox.layout.fixed.horizontal()
+            },
+            width = 70,
+            strategy = "min",
+            layout = wibox.container.constraint
         },
+        left = 15,
+        right = 6,
+        layout = wibox.container.margin
+    }
+
+    awful.titlebar(c) : setup {
+        left_wid,
+        middle_wid,
+        right_wid,
         layout = wibox.layout.align.horizontal
     }
 end)
@@ -634,6 +673,15 @@ client.connect_signal("mouse::enter", function(c)
     end
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- toggle titlebar border color
+client.connect_signal("focus", function(c)
+    awful.titlebar(c) :
+        get_children_by_id("titlebar_trapeze")[1] :
+        set_shape_border_color(beautiful.titlebar_fg_focus)
+end)
+client.connect_signal("unfocus", function(c)
+    awful.titlebar(c) :
+        get_children_by_id("titlebar_trapeze")[1] :
+        set_shape_border_color(beautiful.titlebar_fg_normal)
+end)
 -- }}}
