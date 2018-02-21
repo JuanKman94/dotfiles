@@ -1,1 +1,4 @@
 .*.swp
+vim/.vim/prev_session
+vim/.vim/.netrwhist
+userconf/.ncmpcpp/error.log
