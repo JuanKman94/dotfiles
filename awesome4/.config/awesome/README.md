@@ -7,6 +7,12 @@ This configurarion requires Awesome 4. Also install some packages with
 
 ![Xresources theme](./screenshot.png)
 
+## Configuration
+
+* Multiple displays, each with a specific set of tags
+  * a dedicated [library](https://github.com/Drauthius/awesome-sharedtags)
+  * or [home made](https://www.reddit.com/r/awesomewm/comments/6tncxm/first_time_using_multiple_displays_what_are_some/dlmn76k/)
+
 ## pulseaudio_widget
 
 In order to get the pulseaudio widget working make sure pulseaudio loads the
@@ -16,6 +22,8 @@ dbus-module
 # echo "load-module module-dbus-protocol" >> /etc/pulseaudio/default.pa
 # luarocks install pulseaudio_widget
 ```
+
+## Dev/Test
 
 Debug configuration file on a nested Xorg server (using Xephyr)
 

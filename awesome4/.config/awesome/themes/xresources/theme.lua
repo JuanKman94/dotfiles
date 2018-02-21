@@ -44,7 +44,7 @@ theme.border_marked = xrdb.color3
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
-theme.titlebar_fg_normal = theme.fg_normal .. "44"
+theme.titlebar_fg_normal = theme.fg_normal .. "88"
 theme.titlebar_fg_focus = theme.fg_normal .. "ff"
 theme.titlebar_bg_normal = "#00000000"
 theme.titlebar_bg_focus = "#00000000"
