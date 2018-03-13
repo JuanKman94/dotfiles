@@ -48,7 +48,7 @@ end
 beautiful.init("~/.config/awesome/themes/xresources/theme.lua")
 
 -- {{{
--- Load pulseaudio_widget (needs to be loaded **after** beautiful.init) and 
+-- Load pulseaudio_widget (needs to be loaded **after** beautiful.init) and
 -- other widgets
 local pulse = require("pulseaudio_widget")
 local mybat = require("plugins/battery")
@@ -59,14 +59,9 @@ local separator = wibox.widget.textbox(' | ')
 
 -- {{{
 -- Setup images for the status bar
-local imgmusic = wibox.container.margin(
-		wibox.widget.imagebox("/usr/share/icons/Adwaita/scalable/emblems/emblem-music-symbolic.svg", true),
-		2, 2, 2, 2
-	)
 local pulse_container = wibox.container.margin(pulse, 2, 0, 4, 2)
 
 pulse_container.forced_width = 16
-imgmusic.forced_width = 20
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
@@ -263,8 +258,7 @@ awful.screen.connect_for_each_screen(function(s)
 			imgbat,
 			mybat,
 			separator,
-			imgmusic,
-			music.widget,
+			music,
 			separator,
             wibox.widget.systray(),
             mytextclock,

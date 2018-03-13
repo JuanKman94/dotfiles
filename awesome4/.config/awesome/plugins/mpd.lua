@@ -5,7 +5,18 @@ local xrdb          = xresources.get_current_theme()
 local awful         = require("awful")
 local format        = string.format
 local mpdwidget     = wibox.widget.textbox()
-local mpd           = { widget = mpdwidget }
+local img           = wibox.widget.imagebox(
+                        '/usr/share/icons/Adwaita/scalable/emblems/emblem-music-symbolic.svg',
+                        true)
+local mpd           = wibox.widget {
+    {
+        img,
+        left = 2, right = 8, top = 2, bottom = 2,
+        layout = wibox.container.margin
+    },
+    mpdwidget,
+    layout = wibox.layout.fixed.horizontal
+}
 
 vicious.register(mpdwidget, vicious.widgets.mpd, function (wid, args)
     return string.format("<span color=%q>%s > %s</span>",
@@ -31,7 +42,10 @@ function mpd.player()
     awful.util.spawn("uxterm -title ncmpcpp -e ncmpcpp")
 end
 
-mpd.widget:buttons(awful.util.table.join(
+img:buttons(awful.util.table.join(
+    awful.button({ }, 1, mpd.player )
+))
+mpdwidget:buttons(awful.util.table.join(
     awful.button({ }, 4, mpd.next ),
     awful.button({ }, 5, mpd.prev ),
     awful.button({ }, 1, mpd.toggle )
