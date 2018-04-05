@@ -10,8 +10,11 @@
           - git
           - make
           - cmake
+          - xterm
+          - xterm-resize
           - Xephyr
           - libxcb
+          - rlwrap
           - openssh
           - asciidoc
           - lua-lgi
@@ -62,9 +65,8 @@
         dest: $HOME/build/awesome
     - name: Build and install awesome source
       shell: |
-        make
-        make install
-        make clean
+        make package
+        dnf localinstall -y build/*.rpm
       args:
         executable: /bin/bash
         chdir: $HOME/build/awesome
