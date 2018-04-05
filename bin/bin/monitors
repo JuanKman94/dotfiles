@@ -2,7 +2,7 @@
 
 # External output may be "VGA" or "VGA-0" or "DVI-0" or "TMDS-1",
 # see the output of xrandr to be sure.
-EXTERNAL_OUTPUT="${INTERNAL_OUTPUT:-VGA-0}"
+EXTERNAL_OUTPUT="${EXTERNAL_OUTPUT:-VGA-0}"
 INTERNAL_OUTPUT="${INTERNAL_OUTPUT:-LVDS-1}"
 EXTERNAL_LOCATION="${EXTERNAL_LOCATION:-left}"
 
