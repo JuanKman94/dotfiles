@@ -54,7 +54,13 @@ local pulse = require("pulseaudio_widget")
 local mybat = require("plugins/battery")
 local music = require("plugins/mpd")
 local cpu = require("plugins/cpu")
-local separator = wibox.widget.textbox(' | ')
+local separator = wibox.widget.separator({
+    orientation = "vertical",
+    color = beautiful.fg_normal,
+    forced_width = 10,
+    span_ratio = 0.7,
+    thickness = 2
+})
 --- }}}
 
 -- {{{
