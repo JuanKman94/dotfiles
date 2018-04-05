@@ -15,7 +15,7 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 require("awful.hotkeys_popup.keys")
 
 -- Custom stuff
-local my_menu = require("plugins/menu")
+local shutdown_menu = require("plugins/shutdown_menu")
 require("menu") -- XDG menu
 
 -- {{{ Error handling
@@ -136,7 +136,7 @@ myawesomemenu = {
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "XDG", xdgmenu },
-                                    { "Menu", my_menu }
+                                    { "Shutdown", shutdown_menu }
                                   }
                         })
 

@@ -42,6 +42,6 @@ local batwidget = wibox.widget {
 
 mybat.background_color = xrdb.color9
 -- Register battery widget
-vicious.register(mybat, vicious.widgets.bat, '$2', 30, 'BAT1')
+vicious.register(mybat, vicious.widgets.bat, '$2', 30, 'BAT0')
 
 return batwidget
