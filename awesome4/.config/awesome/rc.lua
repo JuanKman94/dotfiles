@@ -54,12 +54,12 @@ local pulse = require("pulseaudio_widget")
 local mybat = require("plugins/battery")
 local music = require("plugins/mpd")
 local cpu = require("plugins/cpu")
+local arclock = require("plugins/arclock")
 local separator = wibox.widget.separator({
-    orientation = "vertical",
-    color = beautiful.fg_normal,
+    color = beautiful.fg_minimize,
     forced_width = 10,
     span_ratio = 0.7,
-    thickness = 2
+    thickness = 1
 })
 --- }}}
 
@@ -257,15 +257,17 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
-			pulse_container,
-			separator,
-			cpu,
-			separator,
-			imgbat,
-			mybat,
-			separator,
-			music,
-			separator,
+            pulse_container,
+            separator,
+            cpu,
+            separator,
+            imgbat,
+            mybat,
+            separator,
+            music,
+            separator,
+            arclock,
+            separator,
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
@@ -402,10 +404,10 @@ globalkeys = gears.table.join(
 
 	-- Music
 	-- The Thinkpad X220 has play as Down and stop as Up, I don't like that
-	awful.key({ }, "XF86AudioStop", function () music.toggle() end),
+	awful.key({ }, "XF86AudioStop", function () music.stop() end),
 	awful.key({ }, "XF86AudioPrev", function () music.prev() end),
 	awful.key({ }, "XF86AudioNext", function () music.next() end),
-	awful.key({ }, "XF86AudioPlay", function () music.stop() end)
+	awful.key({ }, "XF86AudioPlay", function () music.toggle() end)
 )
 
 clientkeys = gears.table.join(
