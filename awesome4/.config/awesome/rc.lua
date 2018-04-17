@@ -16,7 +16,6 @@ require("awful.hotkeys_popup.keys")
 
 -- Custom stuff
 local shutdown_menu = require("plugins/shutdown_menu")
-require("menu") -- XDG menu
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -158,7 +157,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock(" %a %Y-%m-%d")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -267,9 +266,9 @@ awful.screen.connect_for_each_screen(function(s)
             music,
             separator,
             arclock,
+            mytextclock,
             separator,
             wibox.widget.systray(),
-            mytextclock,
             s.mylayoutbox,
         },
     }
