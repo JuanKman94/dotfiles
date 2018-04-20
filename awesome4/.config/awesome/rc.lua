@@ -404,10 +404,10 @@ globalkeys = gears.table.join(
 
 	-- Music
 	-- The Thinkpad X220 has play as Down and stop as Up, I don't like that
-	awful.key({ }, "XF86AudioStop", function () music.stop() end),
+	awful.key({ }, "XF86AudioStop", function () music.toggle() end),
 	awful.key({ }, "XF86AudioPrev", function () music.prev() end),
 	awful.key({ }, "XF86AudioNext", function () music.next() end),
-	awful.key({ }, "XF86AudioPlay", function () music.toggle() end)
+	awful.key({ }, "XF86AudioPlay", function () music.stop() end)
 )
 
 clientkeys = gears.table.join(
