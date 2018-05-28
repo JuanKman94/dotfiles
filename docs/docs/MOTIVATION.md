@@ -24,4 +24,4 @@ feels real
 > Once you get your courage up and believe that you can do important problems,
 > then you can. If you think you can't, almost surely you are not going to.
 >
-> J. F. Kaiser, [You and your research](https://www.cs.virginia.edu/~robins/YouAndYourResearch.html)
+> Richard W. Hamming, [You and your research](https://www.cs.virginia.edu/~robins/YouAndYourResearch.html)
