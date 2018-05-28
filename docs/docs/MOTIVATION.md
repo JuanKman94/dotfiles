@@ -23,5 +23,5 @@ feels real
 > One of the characteristics of successful scientists is having courage.
 > Once you get your courage up and believe that you can do important problems,
 > then you can. If you think you can't, almost surely you are not going to.
-
-[You and your research](https://www.cs.virginia.edu/~robins/YouAndYourResearch.html)
+>
+> J. F. Kaiser, [You and your research](https://www.cs.virginia.edu/~robins/YouAndYourResearch.html)
