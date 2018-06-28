@@ -49,11 +49,12 @@ beautiful.init("~/.config/awesome/themes/xresources/theme.lua")
 -- {{{
 -- Load pulseaudio_widget (needs to be loaded **after** beautiful.init) and
 -- other widgets
-local pulse = require("pulseaudio_widget")
-local mybat = require("plugins/battery")
-local music = require("plugins/mpd")
-local cpu = require("plugins/cpu")
-local arclock = require("plugins/arclock")
+local pulse     = require("pulseaudio_widget")
+local pomodoro  = require("pomodoro")
+local mybat     = require("plugins/battery")
+local music     = require("plugins/mpd")
+local cpu       = require("plugins/cpu")
+local arclock   = require("plugins/arclock")
 local separator = wibox.widget.separator({
     color = beautiful.fg_minimize,
     forced_width = 10,
@@ -64,7 +65,8 @@ local separator = wibox.widget.separator({
 
 -- {{{
 -- Setup images for the status bar
-local pulse_container = wibox.container.margin(pulse, 2, 0, 4, 2)
+local pulse_container   = wibox.container.margin(pulse, 2, 0, 4, 2)
+local pomowidget        = pomodoro.init()
 
 pulse_container.forced_width = 16
 -- }}}
@@ -264,6 +266,9 @@ awful.screen.connect_for_each_screen(function(s)
             mybat,
             separator,
             music,
+            separator,
+            pomowidget.icon_widget,
+            pomowidget.widget,
             separator,
             arclock,
             mytextclock,
