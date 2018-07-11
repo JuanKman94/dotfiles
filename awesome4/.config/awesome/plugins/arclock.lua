@@ -35,8 +35,6 @@ local clockstack = wibox.widget({
     widget = wibox.container.mirror
 })
 
--- TODO: find a vicious widget to get this done.
---       hopefully there's one that might get this done
 vicious.register(
     ctext,
     function(format, warg)

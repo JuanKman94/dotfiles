@@ -17,3 +17,11 @@ feels real
   3. Breathe and give your brain and body a chance to pause an plan
   4. Broaden your attention, and look for the action that will help
   you achieve your goal
+
+----------
+
+> One of the characteristics of successful scientists is having courage.
+> Once you get your courage up and believe that you can do important problems,
+> then you can. If you think you can't, almost surely you are not going to.
+>
+> Richard W. Hamming, [You and your research](https://www.cs.virginia.edu/~robins/YouAndYourResearch.html)

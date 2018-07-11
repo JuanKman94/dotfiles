@@ -6,21 +6,24 @@ xterm*background: #0c141f
 xterm*foreground: #6fc3df
 xterm*cursorColor: #ffe64d
 
-! Fonts
-xterm*faceName: Terminus:size=8
-xterm*boldFont: Terminus:size=10
+!! Fonts
+xterm*faceName: terminus:size=8
+xterm*boldFont: terminus:size=10
 xterm*font: terminus
 
-! General
+!! General
 xterm*scrollBar: false
 xterm*loginShell: true
 xterm*utf8: true
 ! Something about utf-8
 xterm*locale: true
 
-! Copying to PRIMARY and CLIPBOARD when highlighting a word (I guess)
+!! Copying to PRIMARY and CLIPBOARD when highlighting a word (I guess)
 xterm*translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
+! Xscreensaver
+xscreensaver*Dialog*foreground: #6fc3df
+xscreensaver*Dialog*background: #0c141f
 
 !!!!!!!!!!! Color theme !!!!!!!!!!!
 ! http://ethanschoonover.com/solarized

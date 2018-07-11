@@ -16,7 +16,6 @@ require("awful.hotkeys_popup.keys")
 
 -- Custom stuff
 local shutdown_menu = require("plugins/shutdown_menu")
-require("menu") -- XDG menu
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -50,11 +49,12 @@ beautiful.init("~/.config/awesome/themes/xresources/theme.lua")
 -- {{{
 -- Load pulseaudio_widget (needs to be loaded **after** beautiful.init) and
 -- other widgets
-local pulse = require("pulseaudio_widget")
-local mybat = require("plugins/battery")
-local music = require("plugins/mpd")
-local cpu = require("plugins/cpu")
-local arclock = require("plugins/arclock")
+local pulse     = require("pulseaudio_widget")
+local pomodoro  = require("pomodoro")
+local mybat     = require("plugins/battery")
+local music     = require("plugins/mpd")
+local cpu       = require("plugins/cpu")
+local arclock   = require("plugins/arclock")
 local separator = wibox.widget.separator({
     color = beautiful.fg_minimize,
     forced_width = 10,
@@ -65,7 +65,8 @@ local separator = wibox.widget.separator({
 
 -- {{{
 -- Setup images for the status bar
-local pulse_container = wibox.container.margin(pulse, 2, 0, 4, 2)
+local pulse_container   = wibox.container.margin(pulse, 2, 0, 4, 2)
+local pomowidget        = pomodoro.init()
 
 pulse_container.forced_width = 16
 -- }}}
@@ -158,7 +159,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock(" %a %Y-%m-%d")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -266,10 +267,13 @@ awful.screen.connect_for_each_screen(function(s)
             separator,
             music,
             separator,
+            pomowidget.icon_widget,
+            pomowidget.widget,
+            separator,
             arclock,
+            mytextclock,
             separator,
             wibox.widget.systray(),
-            mytextclock,
             s.mylayoutbox,
         },
     }

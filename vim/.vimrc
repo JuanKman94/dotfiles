@@ -8,12 +8,13 @@ nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
 
+let mapleader = ','   " The default <Leader> is '\', but ',' seems better
 
 " Store current session on file
-nmap <c-s> :mksession! ~/.vim/prev_session <cr>
+nmap <Leader>s :mksession! ~/.vim/prev_session <cr>
 
 " Restore previoues session
-nmap <c-a> :source ~/.vim/prev_session <cr>
+nmap <Leader>a :source ~/.vim/prev_session <cr>
 
 set wildmenu    " Cool autocompletion menu
 set showcmd     " Always show status
@@ -107,12 +108,6 @@ colorscheme dracula	" this is installed via Vundle
 
 
 " ---- Laracasts: Vim mastery ----
-
-let mapleader = ','   " The default <Leader> is '\', but ',' seems better
-
-
-
-
 
 " ------ Visuals ------
 
