@@ -109,15 +109,6 @@ colorscheme dracula	" this is installed via Vundle
 
 " ---- Laracasts: Vim mastery ----
 
-" ------ Visuals ------
-
-set linespace=14      " gVim specific: Change lineheight
-set t_CO=256          " Use 256 colors. Useful in terminal Vim
-
-
-
-
-
 " ------ Mappings ------
 
 " Make it easy to edit Vimrc file
