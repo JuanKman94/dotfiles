@@ -181,23 +181,22 @@ mpd_music_dir = ~/music
 ##
 ## Note: colors can be nested.
 ##
-#
 
-song_list_format = {%a - }{%t}|{$8%f$9}$R{$3(%l)$9}
-#
-#song_status_format = {{%a{ "%b"{ (%y)}} - }{%t}}|{%f}
+
+song_list_format = {$5%a$9 - }{$7%t$9}|{$8%f$9}$R{$3(%l)$9}
+
 song_status_format = {{$4%a{ $2>}{ $8%t}{ $2<}{ $4[$3%N$4] $7%b} }}|{%f}
 
 song_library_format = {%n - }{%t}|{%f}
-#
+
 #alternative_header_first_line_format = $b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b
 #
 #alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($4%y$9)}}|{%D}
-#
+
 current_item_prefix = $(yellow)$r
-#
+
 current_item_suffix = $/r$(end)
-#
+
 #current_item_inactive_column_prefix = $(white)$r
 #
 #current_item_inactive_column_suffix = $/r$(end)
@@ -264,9 +263,9 @@ current_item_suffix = $/r$(end)
 ##   display artist tag and then composer and performer if previous ones are not
 ##   available.
 ##
-#
-#song_columns_list_format = (20)[]{a} (6f)[green]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[magenta]{l}
-#
+
+song_columns_list_format = (20)[red]{a} (6f)[yellow]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[magenta]{l}
+
 ##### various settings #####
 #
 ##
