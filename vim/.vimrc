@@ -139,6 +139,8 @@ nmap <Leader>v :vsplit
 
 
 
+set grepprg=ag\ --vimgrep\ $*
+set grepformat='%f:%l:%c%m'
 
 
 " ------ Plugins ------
@@ -158,7 +160,7 @@ nmap <Leader>m :CtrlPMRUFiles<cr>
 "let g:ctrlp_extensions = [ 'buffertag' ]
 
 " Ignore some shite
-let g:ctrlp_working_path_mode = 0
+let g:ctrlp_working_path_mode = 'ra'
 
 " Ignore some more shite
 let g:ctrlp_custom_ignore = {
