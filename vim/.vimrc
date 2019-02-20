@@ -25,8 +25,12 @@ set nobackup    " No backup ~ files
 
 " ---- FileType ----
 filetype plugin on
+set modeline
+set modelines=3
 autocmd BufNewFile,BufRead *.vue set filetype=javascript " Treat vue file as js
 autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
+
+autocmd BufNewFile,BufRead *.blade.php set filetype=html " Treat blade files as html
 
 
 
@@ -99,7 +103,7 @@ let &guicursor = &guicursor . ",a:blinkon0"
 set nocompatible	" Be iMproved, required -- Latest vim settings/options
 source ~/.vim/plugins.vim
 set t_Co=256
-colorscheme dracula	" this is installed via Vundle
+colorscheme gotham256	" this is installed via Vundle
 
 " ---- Emmet ----
 "let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets.json')), "\n"))
