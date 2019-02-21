@@ -39,6 +39,7 @@ PS1="\u@${RED}\H${RESET} ${YELLOW}\W${RESET}> "
 alias gl='git log --graph'
 alias gs='git status'
 alias ga='git add'
+alias gb='git --no-pager branch -a'
 alias gc='git checkout'
 alias gd='git diff'
 alias gcm='git commit -m'

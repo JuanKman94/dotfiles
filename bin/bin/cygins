@@ -1,0 +1,17 @@
+#!/bin/bash
+# Install cygwin packages a la Linux
+#
+# This script assumes the cygwin installer, aka, setup program,
+# is located at $HOME/.local/ but you can override this by setting an
+# environment variable `CYGWIN_INSTALLER` to your path of the file.
+#
+# Similarly, you can specify which mirror to use by setting the
+# `CYGWIN_MIRROR` variable.
+
+# cyqwin setup program
+INSTALLER="${CYGWIN_INSTALLER:-$HOME/.local/setup-x86_64.exe}"
+
+PACKAGES="${@}"
+MIRROR="${CYGWIN_MIRROR:-https://mirrors.kernel.org/sourceware/cygwin}"
+
+${INSTALLER} -q -s ${MIRROR} -P ${PACKAGES}
