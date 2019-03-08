@@ -17,7 +17,7 @@ stty -ixon
 
 EDITOR=vim
 
-PATH=$PATH:$HOME/bin:$HOME/.local/bin
+PATH=$PATH:$HOME/bin:$HOME/.local/bin:/snap/bin
 #PATH=$PATH:$HOME/.config/composer/vendor/bin:./vendor/bin # composer packages
 #PATH=$PATH:$HOME/.npm-global/bin:./node_modules/.bin # node packages
 GOPATH=$HOME/.go

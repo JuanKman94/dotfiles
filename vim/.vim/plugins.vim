@@ -35,6 +35,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 
 " Dracula theme
 Plugin 'dracula/vim'
+Plugin 'whatyouhide/vim-gotham'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

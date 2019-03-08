@@ -4,6 +4,10 @@
 >
 > Linus Torvalds
 
+## Cool utilities
+
+* [bat](https://github.com/sharkdp/bat): a replacement for `cat`
+
 ## GNU Stow
 
 I started using stow for easier managing across machines/users. I was a bit
