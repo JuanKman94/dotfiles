@@ -54,6 +54,7 @@ $ nmtui
 ```
 
 ## Notes
+
 To verify password strength, one can use **Pluggable Authentication Modules**
 (PAM). Its configuration is implemented using the `pam_cracklib.so`, which
 can be replaced by `pam_passwdqc.so` for more options.
@@ -75,4 +76,31 @@ and then extract the audio from the _short_ video.
 ```bash
 $ ffmpeg -i original.mp4 -ss 00:00:05 -t 00:00:07 -async 1 -strict -2 short.mp4
 $ ffmpeg -i short.mp4 -vn -acodec copy audio.aac
+```
+
+## Windows
+
+I like [cygwin](https://cygwin.com/) when working on Windows. I made script
+to install packages a la aptitute/dnf/whatever, see [cygins](bin/bin/cygins):
+
+```
+$ cygins vim
+```
+
+Running `ssh-agent` can be tricky. What I do is add this to my `.bash_profile`:
+
+```bash
+SSH_AGENT_RUNNING=$(ps -ef | grep ssh-agent | wc -l)
+
+if [ "$SSH_AGENT_RUNNING" -eq "0" ]; then
+  echo "Starting SSH Agent!"
+
+  $(ssh-agent) && ssh-add ~/.ssh/id_rsa
+  setx SSH_AUTH_SOCK $SSH_AUTH_SOCK
+  setx SSH_AGENT_PID $SSH_AGENT_PID
+
+  echo "SSH Agent running (PID: $SSH_AGENT_PID)"
+else
+  echo "SSH Agent already running (PID: $SSH_AGENT_PID)"
+fi
 ```
