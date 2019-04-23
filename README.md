@@ -94,17 +94,21 @@ $ cygins vim
 Running `ssh-agent` can be tricky. What I do is add this to my `.bash_profile`:
 
 ```bash
+PATH=$PATH:/usr/share/winpty/bin
+
+alias docker='winpty docker'
+alias dc='winpty docker-compose'
+
+# startup of the ssh-agent
 SSH_AGENT_RUNNING=$(ps -ef | grep ssh-agent | wc -l)
 
 if [ "$SSH_AGENT_RUNNING" -eq "0" ]; then
-  echo "Starting SSH Agent!"
+  echo "[INFO] Starting SSH Agent"
 
-  $(ssh-agent) && ssh-add ~/.ssh/id_rsa
+  eval "$(ssh-agent)" && ssh-add ~/.ssh/id_rsa
   setx SSH_AUTH_SOCK $SSH_AUTH_SOCK
   setx SSH_AGENT_PID $SSH_AGENT_PID
 
-  echo "SSH Agent running (PID: $SSH_AGENT_PID)"
-else
-  echo "SSH Agent already running (PID: $SSH_AGENT_PID)"
+  echo "[INFO] SSH Agent running (PID: $SSH_AGENT_PID)"
 fi
 ```

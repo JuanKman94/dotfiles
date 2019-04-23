@@ -32,6 +32,7 @@ autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
 
 autocmd BufNewFile,BufRead *.blade.php set filetype=html " Treat blade files as html
 
+autocmd BufNewFile,BufRead *.ftl set filetype=html " Treat FreeMarker's files as html
 
 
 " ---- Visuals ----
