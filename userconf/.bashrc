@@ -13,3 +13,12 @@ bind 'set mark-symlinked-directories on'
 
 # User specific aliases and functions
 stty erase '^?'
+
+case "$TERM" in
+  st-*)
+    # st reads .bashrc instead of .bash_profile
+    source .bash_profile
+    ;;
+  *)
+    ;;
+esac

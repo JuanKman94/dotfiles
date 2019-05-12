@@ -1,9 +1,16 @@
 # .bash_profile
 
 # Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-fi
+case "$TERM" in
+  st-*)
+    # st reads .bashrc instead of .bash_profile
+    ;;
+  *)
+    if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+    fi
+    ;;
+esac
 
 if [ -f $HOME/.bash_private ]; then
     source $HOME/.bash_private
@@ -24,14 +31,14 @@ GOPATH=$HOME/.go
 
 ####### Bash prompt #######
 
-RESET="\[$(tput sgr0)\]"
-RED="\[$(tput setaf 1)\]"
-#GREEN="\[$(tput setaf 2)\]"
-YELLOW="\[$(tput setaf 3)\]"
-#BLUE="\[$(tput setaf 4)\]"
-#MAGENTA="\[$(tput setaf 5)\]"
-#CYAN="\[$(tput setaf 6)\]"
-#WHITE="\[$(tput setaf 7)\]"
+RESET="$(tput sgr0)"
+RED="$(tput setaf 1)"
+#GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+#BLUE="$(tput setaf 4)"
+#MAGENTA="$(tput setaf 5)"
+#CYAN="$(tput setaf 6)"
+#WHITE="$(tput setaf 7)"
 
 PS1="\u@${RED}\H${RESET} ${YELLOW}\W${RESET}> "
 
