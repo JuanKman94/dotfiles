@@ -1,0 +1,33 @@
+#!/bin/bash
+
+CONTAINER_NAME="$(pwd | tr / '\n' | tail -1 | sed 's|[- ]|_|g')"
+NODE_VERSION="${NODE_VERSION:-8.1}"
+DOCKER_COMMAND=docker
+DOCKER_IMAGE="node:${NODE_VERSION}-alpine"
+WD=$PWD
+
+# check current environment
+case "$(uname)" in
+	CYGWIN*)
+		DOCKER_COMMAND="winpty docker"
+		WD="$(cygpath -w $PWD)"
+		;;
+esac
+
+if [ -n "$1" ]; then
+	if [ "$1" = "install" ]; then
+		SCRIPT="$1"
+	else
+		SCRIPT="run $1"
+	fi
+fi
+
+$DOCKER_COMMAND run \
+	--name ${CONTAINER_NAME} \
+	--rm \
+	-it \
+	-w /app \
+	-v "$WD:/app" \
+	-p 8000:8000 \
+	${DOCKER_IMAGE} \
+	npm ${SCRIPT}

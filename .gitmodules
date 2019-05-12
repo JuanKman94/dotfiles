@@ -6,4 +6,4 @@
 	url = https://github.com/VundleVim/Vundle.vim.git
 [submodule "awesome4/.config/awesome/pomodoro"]
 	path = awesome4/.config/awesome/pomodoro
-	url = git@github.com:unode/awesome-pomodoro.git
+	url = https://github.com/unode/awesome-pomodoro.git
