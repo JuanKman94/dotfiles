@@ -5,6 +5,16 @@ NODE_VERSION="${NODE_VERSION:-12.2}"
 DOCKER_COMMAND=docker
 DOCKER_IMAGE="node:${NODE_VERSION}-alpine"
 WD=$PWD
+APP_PORT=8000
+
+# parameter handling variables
+declare -a NPM_ARGS
+NPM_COUNT=0
+
+print_help() {
+	echo "Usage: $0 run <npm script> [-p <port>]"
+	exit 1
+}
 
 # check current environment
 case "$(uname)" in
@@ -14,12 +24,31 @@ case "$(uname)" in
 		;;
 esac
 
+while [[ -n "$1" ]]; do
+	case "$1" in
+		-p|--port)
+			shift
+			APP_PORT="$1"
+			;;
+		-h|--help)
+			print_help
+			;;
+		*)
+			NPM_ARGS[$NPM_COUNT]="$1"
+			NPM_COUNT=$(($NPM_COUNT + 1))
+			;;
+	esac
+
+	shift
+done
+
 $DOCKER_COMMAND run \
 	--name ${CONTAINER_NAME} \
 	--rm \
 	-it \
 	-w /app \
+	-v "$(cygpath -w $HOME/.aws):/root/.aws" \
 	-v "$WD:/app" \
-	-p 8000:8000 \
+	-p ${APP_PORT}:${APP_PORT} \
 	${DOCKER_IMAGE} \
-	npm "${@}"
+	npm "${NPM_ARGS[@]}"
