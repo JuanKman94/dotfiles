@@ -1,0 +1,31 @@
+ThemeFile=
+BellType=0
+
+BackgroundColour=#0c141f
+ForegroundColour=#6fc3df
+CursorColour=#ffe64d
+
+# blackdark
+Black=#0c141f
+BoldBlack=#666666
+# red/orange
+Red=#f58c4b
+BoldRed=#df740c
+# green
+Green=#00ff00
+BoldGreen=#9efe60
+# yellow
+Yellow=#ffe64d
+BoldYellow=#ffff00
+# blue
+Blue=#6f15cb
+BoldBlue=#7e5edc
+# purple
+Magenta=#cb15c9
+BoldMagenta=#b75edc
+# cyan
+Cyan=#6fc3df
+BoldCyan=#e6ffff
+# white
+White=#e6ffff
+BoldWhite=#e6ffff
