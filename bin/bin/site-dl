@@ -1,0 +1,18 @@
+#!/bin/bash
+# Download site recursively [from the specified path]
+#
+# NOTE: do NOT include protocol, i.e., `https://`
+
+URL="$1"
+DOMAIN=$(sed "s|\([a-zA-Z\.]\)/.*|\1|" <<< ${URL})
+
+wget \
+      --recursive \
+      --no-clobber \
+      --page-requisites \
+      --html-extension \
+      --convert-links \
+      --restrict-file-names=windows \
+      --domains ${DOMAIN} \
+      --no-parent \
+      ${URL}
