@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo docker run \
+  --rm \
+  -v $PWD:/usr/local/apache2/htdocs \
+  -p 80:80 \
+  httpd:2.4-alpine

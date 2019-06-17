@@ -1,0 +1,9 @@
+#!/bin/sh
+
+INFILE="$1"
+OUTFILE="$(sed 's|\.\w\+$|.ogg|' <<< "$INFILE")"
+
+ffmpeg -i "${INFILE}" \
+  -b:a 320k \
+  -c:a libvorbis \
+  "${OUTFILE}"

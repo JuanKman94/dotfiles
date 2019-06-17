@@ -1,9 +1,16 @@
 # .bash_profile
 
 # Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-fi
+case "$TERM" in
+  st-*)
+    # st reads .bashrc instead of .bash_profile
+    ;;
+  *)
+    if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+    fi
+    ;;
+esac
 
 if [ -f $HOME/.bash_private ]; then
     source $HOME/.bash_private
@@ -24,16 +31,19 @@ GOPATH=$HOME/.go
 
 ####### Bash prompt #######
 
-RESET="\[$(tput sgr0)\]"
-RED="\[$(tput setaf 1)\]"
-#GREEN="\[$(tput setaf 2)\]"
-YELLOW="\[$(tput setaf 3)\]"
-#BLUE="\[$(tput setaf 4)\]"
-#MAGENTA="\[$(tput setaf 5)\]"
-#CYAN="\[$(tput setaf 6)\]"
-#WHITE="\[$(tput setaf 7)\]"
+RESET='\[\e[0m\]'
+BLACK='\[\033[0;30m\]'
+RED='\[\033[0;31m\]'
+GREEN='\[\033[0;32m\]'
+YELLOW='\[\033[0;33m\]'
+BLUE='\[\033[0;34m\]'
+MAGENTA='\[\033[0;35m\]'
+CYAN='\[\033[0;36m\]'
+WHITE='\[\033[0;37m\]' # actually light gray but whatever
+#LIGHT_RED='\[\033[1;31m\]'
+# etc.
 
-PS1="\u@${RED}\H${RESET} ${YELLOW}\W${RESET}> "
+PS1="\u${RED}@${RESET}${MAGENTA}\H ${YELLOW}\W${RESET}> "
 
 # Git
 alias gl='git log --graph'
