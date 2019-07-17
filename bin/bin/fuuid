@@ -1,0 +1,32 @@
+#!/bin/sh
+# Reformat uuid to hyphen format
+
+UUID="$1"
+
+function print_error() {
+	echo 1>&2 "Error: $1"
+}
+
+if [[ ${#UUID} -eq 36 ]]; then
+	echo "${UUID}"
+	exit 0
+fi
+
+if [[ ${#UUID} -ne 32 ]]; then
+	print_error "invalid format"
+	exit 1
+fi
+
+i=0
+RESULT=""
+
+while [[ $i -lt 32 ]]; do
+	if [[ $i -eq 8 || $i -eq 12 || $i -eq 16 || $i -eq 20 ]]; then
+		RESULT="${RESULT}-"
+	fi
+	RESULT="${RESULT}${UUID:$i:1}"
+
+	i=$(($i + 1))
+done
+
+echo "$RESULT"
