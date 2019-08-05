@@ -30,17 +30,17 @@ set modelines=3
 autocmd BufNewFile,BufRead *.vue set filetype=javascript " Treat vue file as js
 autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
 
+autocmd BufNewFile,BufRead *.scss set filetype=css " Treat scss file as css
+
 autocmd BufNewFile,BufRead *.blade.php set filetype=html " Treat blade files as html
 autocmd BufNewFile,BufRead *.ftl set filetype=html " Treat FreeMarker's files as html
-
-autocmd BufNewFile,BufRead *.scss set filetype=css " Treat scss file as css
 
 
 " ---- Visuals ----
 
 "set noruler
 "set laststatus=2
-"set statusline=%f\ >\ %l,%c\ %y%r\ %=%L\ lines\ [%p%%]
+set statusline=%f\ >\ %l,%c\ %y%r\ %=%L\ lines\ [%p%%]
 set rulerformat=%24(%y%=\ %l,%c\ [%p%%]%)
 
 set diffopt=vertical
