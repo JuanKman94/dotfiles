@@ -5,6 +5,10 @@
 
 URL="$1"
 DOMAIN=$(sed "s|\([a-zA-Z\.]\)/.*|\1|" <<< ${URL})
+DESTINATION=$HOME/offline/sites
+
+mkdir -p $DESTINATION
+cd $DESTINATION
 
 wget \
       --recursive \
@@ -16,3 +20,5 @@ wget \
       --domains ${DOMAIN} \
       --no-parent \
       ${URL}
+
+cd $OLDPWD
