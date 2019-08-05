@@ -23,8 +23,8 @@ st*foreground: tron_cyan
 st*cursorColor: tron_yellow
 
 !! Fonts
-st*faceName: terminus:size=8
-st*boldFont: terminus:size=10
+st*faceName: terminus:size=12
+st*boldFont: terminus:size=12
 st*font: terminus
 
 !! General
@@ -41,8 +41,8 @@ xterm*foreground: tron_cyan
 xterm*cursorColor: tron_yellow
 
 !! Fonts
-xterm*faceName: terminus:size=8
-xterm*boldFont: terminus:size=10
+xterm*faceName: terminus:size=12
+xterm*boldFont: terminus:size=12
 xterm*font: terminus
 
 !! General

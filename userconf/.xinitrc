@@ -11,4 +11,7 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 [ -f $userresources ] && xrdb -merge $userresources
 [ -f $usermodmap ] && xmodmap $usermodmap
 
+xset s 60 80
+# xss-lock -n /usr/bin/slock -- slock
+
 ssh-agent dbus-launch --exit-with-session awesome
