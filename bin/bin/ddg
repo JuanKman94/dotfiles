@@ -1,0 +1,11 @@
+#!/bin/sh
+# Query a search in DuckDuckGo from command line using links
+
+if [ ! $(builtin type -P links) ]; then
+	echo 1>&2 "links not found, aborting."
+	exit 1
+fi
+
+QUERY="$(sed 's/ /%20/g' <<< $@)"
+
+links "https://duckduckgo.com/html?q=$QUERY"
