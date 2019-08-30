@@ -1,5 +1,31 @@
 # Documentation
 
+## Bash
+
+### Parse arguments
+
+```bash
+APP_ENV=""
+OTHER_ARG=""
+while getopts ":e:s:" opt; do
+    case ${opt} in
+        e )
+            APP_ENV=$OPTARG
+            ;;
+        s )
+            OTHER_ARG=$OPTARG
+            ;;
+        \? )
+            echo "Invlaid option: $OPTARG" 1>&2
+            ;;
+        : )
+            echo "Invalid option: $OPTARG requires an argument" 1>&2
+            ;;
+    esac
+done
+shift $((OPTIND -1))
+```
+
 ## CentOS
 
 For server configurations, RH derivatives offer the best documentation, but
