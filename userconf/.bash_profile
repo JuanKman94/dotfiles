@@ -46,15 +46,19 @@ WHITE='\[\033[0;37m\]' # actually light gray but whatever
 PS1="\u${RED}@${RESET}${MAGENTA}\H ${YELLOW}\W${RESET}> "
 
 # Git
+alias g='git log --oneline -n 30'
 alias gl='git log --graph'
 alias gs='git status'
 alias ga='git add'
 alias gb='git --no-pager branch -a'
 alias gc='git checkout'
-alias gd='git diff'
 alias gcm='git commit -m'
+alias gcmm='git commit --no-ff -m'
+alias gd='git diff'
+alias gdc='git diff --cached'
 alias gll='git pull'
 alias gsh='git push'
+alias gsha='git push --all'
 
 alias vim='vim -p'
 #alias python=/usr/bin/python3
