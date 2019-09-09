@@ -14,4 +14,4 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 xset s 60 80
 # xss-lock -n /usr/bin/slock -- slock
 
-ssh-agent dbus-launch --exit-with-session awesome
+ssh-agent awesome
