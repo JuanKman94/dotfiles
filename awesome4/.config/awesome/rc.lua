@@ -16,6 +16,7 @@ require("awful.hotkeys_popup.keys")
 
 -- Custom stuff
 local shutdown_menu = require("plugins/shutdown_menu")
+local start_dir = require("plugins/start_dir")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -111,7 +112,7 @@ local tags_layouts = {
     awful.layout.layouts[8],
     awful.layout.layouts[5],
     awful.layout.layouts[1],
-    awful.layout.layouts[1],
+    awful.layout.layouts[3],
     awful.layout.layouts[8],
     awful.layout.layouts[8]
 }
@@ -253,6 +254,7 @@ awful.screen.connect_for_each_screen(function(s)
             mylauncher,
             s.mytaglist,
             s.mypromptbox,
+            start_dir.widget,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
@@ -298,6 +300,8 @@ globalkeys = gears.table.join(
               {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
+    awful.key({ modkey, "Control" }, "s",      start_dir.set,
+              {description="set working directory for new terminals", group="client"}),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -335,7 +339,7 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
+    awful.key({ modkey,           }, "Return", function () start_dir.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
