@@ -4,9 +4,12 @@ local start_dir = {
     widget = awful.widget.prompt().widget
 }
 
+-- TODO: add `configure` method where we can override `dir` and `cmd_str`
+
 start_dir.dir = '$HOME'
 start_dir.cmd_str = '%s -e "if [ -d %q ]; then cd %q; else cd $HOME; fi; $SHELL -l"'
 
+-- Spawn program after `cd`ing to `dir`
 function start_dir.spawn(terminal)
     local cmd = string.format(start_dir.cmd_str,
         terminal,
@@ -17,6 +20,7 @@ function start_dir.spawn(terminal)
     awful.spawn(cmd)
 end
 
+-- Set working directory for future `spawn`s
 function start_dir.set()
     awful.prompt.run {
         prompt       = string.format('Working dir [%s]: ', start_dir.dir),
@@ -24,9 +28,5 @@ function start_dir.set()
         exe_callback = function(input) start_dir.dir = input end
     }
 end
-
-start_dir.widget:buttons(awful.util.table.join(
-    awful.button({ }, 1, start_dir.set )
-))
 
 return start_dir
