@@ -21,4 +21,18 @@ wget \
       --no-parent \
       ${URL}
 
+lis=""
+for site in $DESTINATION/*; do
+	site="$(basename "$site")"
+
+	# see bash(1) `[[ expression ]]`
+	if [[ ! "$site" =~ 'index.html' ]]; then
+		lis="${lis}<li><a href=./${site}>${site}</a></li>"
+	fi
+done
+
+cat "$DESTINATION/index.html.tpl" \
+	| sed "s|{{\s*SITES_LIST\s*}}|${lis}|" \
+	> "$DESTINATION/index.html"
+
 cd $OLDPWD
