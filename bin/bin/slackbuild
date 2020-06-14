@@ -1,16 +1,24 @@
 #!/bin/bash
+# Install package using SlackBuilds (R) method
+#
+# Usage: slackbuild <sb pkg>[.tar.gz]
+
+# exit on error
+set -e
 
 ARCHIVE=$1
+NAME="${ARCHIVE%.tar.gz}" # take an archive from slackbuilds.com
+NAME="${NAME%/}"          # or a slackbuild package directory
 
-if [ -z "$ARCHIVE" -o ! -f "$ARCHIVE" ]; then
+if [ ! -f "$ARCHIVE" -a ! -d "$NAME" ]; then
     echo "Package not found"
     exit 1
 fi
 
-tar xf "$ARCHIVE"
+[ -f "$ARCHIVE" ] && tar xf "$ARCHIVE"
 
-NAME="${ARCHIVE%.tar.gz}"
 cd $NAME
+NAME="$(basename "$NAME")"
 
 source $NAME.info
 
@@ -32,5 +40,4 @@ fi
 
 chmod +x "${NAME}.SlackBuild"
 sudo "./${NAME}.SlackBuild"
-
-exit 0
+sudo /sbin/upgradepkg --install-new /tmp/${PRGNAM}-*.tgz
