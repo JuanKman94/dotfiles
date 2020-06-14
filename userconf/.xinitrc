@@ -11,7 +11,15 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 [ -f $userresources ] && xrdb -merge $userresources
 [ -f $usermodmap ] && xmodmap $usermodmap
 
-xset s 60 80
+xset s 120 140
 # xss-lock -n /usr/bin/slock -- slock
+
+command -V start-pulseaudio-x11 >/dev/null 2>&1 && start-pulseaudio-x11
+
+# start MPD
+command -V mpd >/dev/null 2>&1 && mpd
+
+# start btpd
+command -V btpd >/dev/null 2>&1 && btpd
 
 ssh-agent awesome
