@@ -20,6 +20,7 @@ set wildmenu    " Cool autocompletion menu
 set showcmd     " Always show status
 set cursorline  " Underline current line
 set nobackup    " No backup ~ files
+set noundofile
 
 
 
