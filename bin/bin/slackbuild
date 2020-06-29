@@ -9,10 +9,24 @@ set -e
 ARCHIVE=$1
 NAME="${ARCHIVE%.tar.gz}" # take an archive from slackbuilds.com
 NAME="${NAME%/}"          # or a slackbuild package directory
+RED='\033[0;31m'
+RESET='\e[0m'
+
+function print_error() {
+    echo -e 1>&2 "${RED}$@${RESET}"
+}
+
+function print_help() {
+    echo 1>&2 "Usage: $(basename $0) <slackbuild [.tar.gz]>"
+    echo -ne 1>&2 "\nThe slackbuild can be either an archive downloaded from "
+    echo -e 1>&2 "slackbuilds.org\nor a directory from the slackbuilds repository."
+    exit 1
+}
 
 if [ ! -f "$ARCHIVE" -a ! -d "$NAME" ]; then
-    echo "Package not found"
-    exit 1
+    print_error "Package not found."
+    echo
+    print_help
 fi
 
 [ -f "$ARCHIVE" ] && tar xf "$ARCHIVE"
@@ -28,16 +42,15 @@ if [ "$DOWNLOAD" == "UNSUPPORTED" -a -n "$DOWNLOAD_x86_64" ]; then
 fi
 
 if [ -z "$DOWNLOAD" ]; then
-    echo "No DOWNLOAD source"
+    print_error "No DOWNLOAD source"
     exit 1
 fi
 
 wget --continue $DOWNLOAD
 if [ $? -ne 0 ]; then
-    echo "Something went wrong with wget"
+    print_error "Something went wrong with wget"
     exit 1
 fi
 
-chmod +x "${NAME}.SlackBuild"
-sudo "./${NAME}.SlackBuild"
+sudo bash "./${NAME}.SlackBuild"
 sudo /sbin/upgradepkg --install-new /tmp/${PRGNAM}-*.tgz
