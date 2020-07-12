@@ -1,0 +1,46 @@
+#!/bin/sh
+# Set a start directory for new login shells.
+#
+# This is orchestrated in different places:
+#
+# * $HOME/.xinitrc resets the state by deleting the file if exists
+# * $HOME/.bash_profile reads $HOME/.bash_private if exists
+# * $HOME/.bash_private checks for the .startdirrc file
+#   + If it exists and is a valid directory `cd` into it
+#
+# ========
+#
+# $HOME/.xinitrc
+#
+# ```
+#    START_DIR_RC=$HOME/.startdirrc
+#    [ -f "$START_DIR_RC" ] && rm "$START_DIR_RC"
+# ```
+#
+# --------
+#
+# $HOME/.bash_private
+#
+# ```
+#    START_DIR_RC="$HOME/.startdirrc"
+#    if [ -f "$START_DIR_RC" ]; then
+#        START_DIR="$(cat "$START_DIR_RC")"
+#        [ -d "$START_DIR" ] && cd "$START_DIR"
+#    fi
+# ```
+
+CHOSEN="$HOME"
+START_DIR_RC="$HOME/.startdirrc"
+
+while
+    [ "$CHOSEN" != "." -a "$CHOSEN" != "" ]
+do
+    if [ -d "$CHOSEN" ]; then
+        CHOSEN="$CHOSEN/$(ls "$CHOSEN" | dmenu)"
+    else
+        CHOSEN="$(dirname "$CHOSEN")"
+        break;
+    fi
+done
+
+echo "$CHOSEN" > "$START_DIR_RC"

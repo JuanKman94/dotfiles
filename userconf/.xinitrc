@@ -4,12 +4,14 @@ userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
+START_DIR_RC=$HOME/.startdirrc
 
 # merge in defaults and keymaps
 [ -f $sysresources ] && xrdb -merge $sysresources
 [ -f $sysmodmap ] && xmodmap $sysmodmap
 [ -f $userresources ] && xrdb -merge $userresources
 [ -f $usermodmap ] && xmodmap $usermodmap
+[ -f $START_DIR_RC ] && rm $START_DIR_RC
 
 xset s 120 140
 # xss-lock -n /usr/bin/slock -- slock
