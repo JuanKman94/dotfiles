@@ -6,11 +6,32 @@
 # exit on error
 set -e
 
-ARCHIVE=$1
-NAME="${ARCHIVE%.tar.gz}" # take an archive from slackbuilds.com
-NAME="${NAME%/}"          # or a slackbuild package directory
+ARCHIVE="$1"
 RED='\033[0;31m'
 RESET='\e[0m'
+SB_DIR="${SB_DIR:-$HOME/slackbuilds}"
+
+function install_sb() {
+    local path="$(find $SB_DIR -type d -name $1)"
+
+    if [ -n "$path" ]; then
+        slackbuild "$path"
+        if [[ $? -ne 0 ]]; then
+            echo 1>&2 "Failed to install $path"
+        fi
+    fi
+}
+
+function is_sb_installed() {
+    local current_version="$(find /var/log/packages -name "${1}-*")"
+
+    if [ -n "$current_version" ]; then
+        #echo 1>&2 "$1 already installed: $current_version"
+        echo 0
+    else
+        echo 2
+    fi
+}
 
 function print_error() {
     echo -e 1>&2 "${RED}$@${RESET}"
@@ -23,18 +44,38 @@ function print_help() {
     exit 1
 }
 
-if [ ! -f "$ARCHIVE" -a ! -d "$NAME" ]; then
-    print_error "Package not found."
+PKG_NAME="${ARCHIVE%.tar.gz}" # take an archive from slackbuilds.com
+PKG_NAME="${PKG_NAME%/}"      # or a slackbuild package directory
+
+if [ ! -f "$ARCHIVE" -a ! -d "$PKG_NAME" ]; then
+    print_error "Package not found: $PKG_NAME."
     echo
     print_help
 fi
 
 [ -f "$ARCHIVE" ] && tar xf "$ARCHIVE"
 
-cd $NAME
-NAME="$(basename "$NAME")"
+cd $PKG_NAME
+PKG="$(basename "$PKG_NAME")"
+is_installed=$(is_sb_installed "$PKG")
 
-source $NAME.info
+if [[ 0 -eq $is_installed ]]; then
+    print_error "$PKG already installed"
+    exit 1
+fi
+
+
+source $PKG.info
+
+if [ -n "$REQUIRES" ]; then
+    for d in $REQUIRES; do
+        is_installed=$(is_sb_installed $d)
+
+        if [[ 0 -ne $is_installed ]]; then
+            install_sb "$d"
+        fi
+    done
+fi
 
 # check if DOWNLOAD_x86_64 is configured
 if [ "$DOWNLOAD" == "UNSUPPORTED" -a -n "$DOWNLOAD_x86_64" ]; then
@@ -52,5 +93,5 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-sudo bash "./${NAME}.SlackBuild"
+sudo bash "./${PKG}.SlackBuild"
 sudo /sbin/upgradepkg --install-new /tmp/${PRGNAM}-*.tgz
