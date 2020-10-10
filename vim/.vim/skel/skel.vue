@@ -1,6 +1,3 @@
-<style lang="scss">
-</style>
-
 <template>
 </template>
 
@@ -12,3 +9,6 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+</style>
