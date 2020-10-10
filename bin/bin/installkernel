@@ -1,0 +1,50 @@
+#!/bin/sh
+# Install newly compile kernel
+
+LOG_FILE="$HOME/install.log"
+VERSION="$1"
+BZIMAGE="$2"
+SYSTEM_MAP="$3"
+INSTALL_DIR="$4"
+INITRD="$INSTALL_DIR/initrd-$VERSION.gz"
+CURR="$(uname -r)"
+CURR_CONFIG="$INSTALL_DIR/config-$CURR"
+CURR_MAP="$INSTALL_DIR/System.map-$CURR"
+CURR_IMAGE="$INSTALL_DIR/vmlinuz-$CURR"
+
+[ -r $HOME/.mkinitrd.rc ] && source $HOME/.mkinitrd.rc
+
+function log() {
+	echo "[$(date '+%Y-%m-%d %H:%M:%S')] ${@}" | tee -a $LOG_FILE
+}
+
+echo -e "\n\n\n--- Installing $VERSION ---\n\n\n" | tee -a $LOG_FILE
+
+[ ! -f "$CURR_CONFIG" ] && cp $INSTALL_DIR/config "$CURR_CONFIG"
+[ ! -f "$CURR_MAP" ]    && cp $INSTALL_DIR/System.map "$CURR_MAP"
+[ ! -f "$CURR_IMAGE" ]  && cp $INSTALL_DIR/vmlinuz "$CURR_IMAGE"
+
+log "Generating initrd... $INITRD"
+MKINITRD=$(/usr/share/mkinitrd/mkinitrd_command_generator.sh -r -k "$VERSION" -a "-o $INITRD")
+
+[ -n "$MKINITRD_MODULES" ] && MKINITRD="$MKINITRD -m $MKINITRD_MODULES"
+
+log "$MKINITRD"
+sh -c "$MKINITRD"
+
+log "Copying new kernel files..."
+cp $BZIMAGE    $INSTALL_DIR/vmlinuz-$VERSION
+cp $SYSTEM_MAP $INSTALL_DIR/$SYSTEM_MAP-$VERSION
+cp .config     $INSTALL_DIR/config-$VERSION
+
+log "Generating lilo entry"
+
+echo "" | tee -a $LOG_FILE
+echo "image = /boot/vmlinuz-$VERSION" | tee -a $LOG_FILE
+echo "  initrd = $INITRD" | tee -a $LOG_FILE
+echo "  root = /dev/slax/root" | tee -a $LOG_FILE
+echo "  label = $VERSION" | tee -a $LOG_FILE
+echo "  read-only" | tee -a $LOG_FILE
+
+echo "" | tee -a $LOG_FILE
+log "Dont't forget to run lilo!"
