@@ -29,7 +29,7 @@ PATH=$PATH:$HOME/bin:$HOME/.local/bin:/snap/bin
 #PATH=$PATH:$HOME/.npm-global/bin:./node_modules/.bin # node packages
 GOPATH=$HOME/.go
 
-####### Bash prompt #######
+####### sh prompt #######
 
 RESET='\[\e[0m\]'
 BLACK='\[\033[0;30m\]'
@@ -59,6 +59,7 @@ alias gdc='git diff --cached'
 alias gll='git pull'
 alias gsh='git push'
 alias gsha='git push --all'
+alias gshf='git push --force-with-lease'
 
 alias vim='vim -p'
 #alias python=/usr/bin/python3
@@ -103,3 +104,5 @@ echo -e "\tMan is just an animal"
 echo -e "\t\ttrying to figure out"
 echo -e "\t\t\thow to kill time through his days..."
 echo "  -- Kanji, Persona 4"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

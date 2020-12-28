@@ -11,10 +11,10 @@ nmap <silent> <A-Right> :wincmd l<CR>
 let mapleader = ','   " The default <Leader> is '\', but ',' seems better
 
 " Store current session on file
-nmap <Leader>s :mksession! ~/.vim/prev_session <cr>
+nmap <Leader>z :mksession ~/.vim/sessions/
 
 " Restore previoues session
-nmap <Leader>a :source ~/.vim/prev_session <cr>
+nmap <Leader>Z :source ~/.vim/sessions/
 
 set wildmenu    " Cool autocompletion menu
 set showcmd     " Always show status
@@ -108,7 +108,7 @@ let &guicursor = &guicursor . ",a:blinkon0"
 set nocompatible	" Be iMproved, required -- Latest vim settings/options
 source ~/.vim/plugins.vim
 set t_Co=256
-colorscheme gotham256	" this is installed via Vundle
+colorscheme tron256	" this is installed via Vundle
 
 " ---- Emmet ----
 "let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets.json')), "\n"))
@@ -138,8 +138,10 @@ nmap <Leader>s :split
 nmap <Leader>v :vsplit 
 
 
+" tags search paths, see tag-details
+"set tags=./tags,.git/tags,tags
 
-set grepprg=ag\ --vimgrep\ $*
+set grepprg=rg\ --vimgrep\ $*
 set grepformat='%f:%l:%c%m'
 
 
@@ -157,7 +159,8 @@ nmap <Leader>r :CtrlPBufTag<cr>
 nmap <Leader>m :CtrlPMRUFiles<cr>
 
 " Enable CtrlPBufTag
-"let g:ctrlp_extensions = [ 'buffertag' ]
+let g:ctrlp_extensions = [ 'buffertag' ]
+nnoremap <leader>. :CtrlPTag<cr>
 
 " Ignore some shite
 let g:ctrlp_working_path_mode = 'ra'

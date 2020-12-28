@@ -1,5 +1,8 @@
 .*.swp
 vim/.vim/prev_session
+vim/.vim/colors/*
+vim/.vim/sessions/*
 vim/.vim/.netrwhist
 vim/.vim/spell
 userconf/.ncmpcpp/error.log
+.DS_Store
