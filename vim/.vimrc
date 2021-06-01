@@ -11,9 +11,9 @@ nmap <silent> <A-Right> :wincmd l<CR>
 let mapleader = ','   " The default <Leader> is '\', but ',' seems better
 
 " Store current session on file
-nmap <Leader>z :mksession ~/.vim/sessions/
+nmap <Leader>z :mksession! ~/.vim/sessions/
 
-" Restore previoues session
+" Restore previous session
 nmap <Leader>Z :source ~/.vim/sessions/
 
 set wildmenu    " Cool autocompletion menu
@@ -28,6 +28,8 @@ set noundofile
 filetype plugin on
 set modeline
 set modelines=3
+autocmd BufNewFile,BufRead *.ts set filetype=javascript " Treat TypeScriptX file as js
+autocmd BufNewFile,BufRead *.tsx set filetype=javascript " Treat TypeScriptX file as js
 autocmd BufNewFile,BufRead *.vue set filetype=javascript " Treat vue file as js
 autocmd BufNewFile *.vue 0r ~/.vim/skel/skel.vue " Insert skeleton when new file
 
@@ -70,6 +72,7 @@ set foldmethod=indent
 set foldlevelstart=7
 nnoremap z1 :set foldlevel=0<CR>
 nnoremap z2 :set foldlevel=1<CR>
+nnoremap z3 :set foldlevel=2<CR>
 
 
 
