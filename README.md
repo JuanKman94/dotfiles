@@ -82,6 +82,9 @@ $ ffmpeg -i original.mp4 -ss 00:00:05 -t 00:00:07 -async 1 -strict -2 short.mp4
 $ ffmpeg -i short.mp4 -vn -acodec copy audio.aac
 ```
 
+* [Normalize audio using ffmpeg](https://superuser.com/questions/323119/how-can-i-normalize-audio-using-ffmpeg)
+* [Audio Volume Manipulation](https://trac.ffmpeg.org/wiki/AudioVolume)
+
 ## Windows
 
 I like [cygwin](https://cygwin.com/) when working on Windows. I made script

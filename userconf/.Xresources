@@ -3,15 +3,15 @@
 !!!!! Tron Legacy palette !!!!!
 ! http://www.colourlovers.com/palette/1406402/Tron_Legacy_2
 
-#define tron_black #0c141f
-#define tron_yellow #ffe64d
-#define tron_red #df740c
-#define tron_orange #f58c4b
-#define tron_green #00ff00
-#define tron_blue #6f15cb
+#define tron_black   #0c141f
+#define tron_red     #df740c
+#define tron_orange  #f58c4b
+#define tron_yellow  #f8e420
 #define tron_magenta #cb15c9
-#define tron_cyan #6fc3df
-#define tron_white #e6ffff
+#define tron_blue    #6f15cb
+#define tron_cyan    #6fc3df
+#define tron_green   #00ff00
+#define tron_white   #e6ffff
 
 *background: tron_black
 *foreground: tron_cyan

@@ -70,6 +70,7 @@ export EDITOR
 export PATH
 export GOPATH
 export PS1
+export MAKEFLAGS=-j$(nproc)
 
 # ls
 export LS_OPTIONS='--color=auto -hF'

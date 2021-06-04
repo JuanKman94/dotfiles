@@ -101,6 +101,9 @@ set relativenumber	" And relative line numbers
 " Redraw screen and run nohlsearch when pressing <CTRL-l>
 nnoremap <silent> <c-l> :nohl<cr><c-l>
 
+
+colorscheme tron256
+
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
 let &guicursor = &guicursor . ",a:blinkon0"
@@ -108,10 +111,12 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 
 " ---- Vundle ----
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set nocompatible	" Be iMproved, required -- Latest vim settings/options
 source ~/.vim/plugins.vim
 set t_Co=256
-colorscheme tron256	" this is installed via Vundle
+"colorscheme gotham256 " this is installed via Vundle
 
 " ---- Emmet ----
 "let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets.json')), "\n"))
