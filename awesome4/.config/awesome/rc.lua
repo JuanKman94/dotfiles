@@ -16,7 +16,6 @@ require("awful.hotkeys_popup.keys")
 
 -- Custom stuff
 local shutdown_menu = require("plugins/shutdown_menu")
-local start_dir = require("plugins/start_dir")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -52,7 +51,7 @@ beautiful.init("~/.config/awesome/themes/xresources/theme.lua")
 -- other widgets
 local pulse     = require("pulseaudio_widget")
 local pomodoro  = require("pomodoro")
-local mybat     = require("plugins/battery")
+local batteries     = require("plugins/battery")
 local music     = require("plugins/mpd")
 local cpu       = require("plugins/cpu")
 local arclock   = require("plugins/arclock")
@@ -254,7 +253,6 @@ awful.screen.connect_for_each_screen(function(s)
             mylauncher,
             s.mytaglist,
             s.mypromptbox,
-            start_dir.widget,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
@@ -265,7 +263,8 @@ awful.screen.connect_for_each_screen(function(s)
             cpu,
             separator,
             imgbat,
-            mybat,
+            batteries[1],
+            batteries[2],
             separator,
             music,
             separator,
@@ -300,7 +299,7 @@ globalkeys = gears.table.join(
               {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
-    awful.key({ modkey, "Control" }, "s",      start_dir.set,
+    awful.key({ modkey, "Control" }, "s",      function () awful.spawn("start_dir") end,
               {description="set working directory for new terminals", group="client"}),
 
     awful.key({ modkey,           }, "j",
@@ -339,7 +338,7 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () start_dir.spawn(terminal) end,
+    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
@@ -412,10 +411,10 @@ globalkeys = gears.table.join(
 
 	-- Music
 	-- The Thinkpad X220 has play as Down and stop as Up, I don't like that
-	awful.key({ }, "XF86AudioStop", function () music.toggle() end),
-	awful.key({ }, "XF86AudioPrev", function () music.prev() end),
-	awful.key({ }, "XF86AudioNext", function () music.next() end),
-	awful.key({ }, "XF86AudioPlay", function () music.stop() end)
+	awful.key({ modkey, altkey }, "Up",    function () music.toggle() end),
+	awful.key({ modkey, altkey }, "Left",  function () music.prev() end),
+	awful.key({ modkey, altkey }, "Right", function () music.next() end),
+	awful.key({ modkey, altkey }, "Down",  function () music.stop() end)
 )
 
 clientkeys = gears.table.join(

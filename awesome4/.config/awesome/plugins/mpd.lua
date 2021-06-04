@@ -27,19 +27,19 @@ vicious.register(mpdwidget, vicious.widgets.mpd, function (wid, args)
 end)
 
 function mpd.stop()
-    awful.util.spawn("mpc stop")
+    awful.spawn("mpc stop")
 end
 function mpd.toggle()
-    awful.util.spawn("mpc toggle")
+    awful.spawn("mpc toggle")
 end
 function mpd.prev()
-    awful.util.spawn("mpc prev")
+    awful.spawn("mpc prev")
 end
 function mpd.next()
-    awful.util.spawn("mpc next")
+    awful.spawn("mpc next")
 end
 function mpd.player()
-    awful.util.spawn("uxterm -title ncmpcpp -e ncmpcpp")
+    awful.spawn("uxterm -title ncmpcpp -e ncmpcpp")
 end
 
 img:buttons(awful.util.table.join(
