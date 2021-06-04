@@ -4,22 +4,29 @@
 # NOTE: do NOT include protocol, i.e., `https://`
 
 URL="$1"
+CONFIRMATION="y"
 DOMAIN=$(sed "s|\([a-zA-Z\.]\)/.*|\1|" <<< ${URL} | sed 's|https*://||')
 DESTINATION=$HOME/offline/sites
 
 mkdir -p $DESTINATION
 cd $DESTINATION
 
-wget \
-      --recursive \
-      --no-clobber \
-      --page-requisites \
-      --html-extension \
-      --convert-links \
-      --restrict-file-names=unix \
-      --domains ${DOMAIN} \
-      --no-parent \
-      ${URL}
+if [ -d "$DESTINATION/$DOMAIN" ]; then
+    read -p "Site already downloaded, download again? (Y,n): " CONFIRMATION
+fi
+
+if [ "$CONFIRMATION" != "n" ]; then
+    wget \
+          --recursive \
+          --no-clobber \
+          --page-requisites \
+          --html-extension \
+          --convert-links \
+          --restrict-file-names=unix \
+          --domains ${DOMAIN} \
+          --no-parent \
+          ${URL}
+fi
 
 lis=""
 for site in $DESTINATION/*; do
@@ -27,7 +34,7 @@ for site in $DESTINATION/*; do
 
 	# see bash(1) `[[ expression ]]`
 	if [[ ! "$site" =~ 'index.html' ]]; then
-		lis="${lis}<li><a href=./${site}>${site}</a></li>"
+		lis="${lis}<li><a href=./${site}/index.html>${site}</a></li>"
 	fi
 done
 

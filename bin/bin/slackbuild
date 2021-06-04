@@ -60,8 +60,8 @@ PKG="$(basename "$PKG_NAME")"
 is_installed=$(is_sb_installed "$PKG")
 
 if [[ 0 -eq $is_installed ]]; then
-    print_error "$PKG already installed"
-    exit 1
+    print_error "$PKG already installed, skipping"
+    exit 0
 fi
 
 
