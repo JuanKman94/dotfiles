@@ -112,3 +112,26 @@ if [ "$SSH_AGENT_RUNNING" -eq "0" ]; then
   echo "[INFO] SSH Agent running (PID: $SSH_AGENT_PID)"
 fi
 ```
+
+## PDF handling
+
+* having the [pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/) can't hurt
+* GhostScript is probably the most powerful, and verbose, tool available
+* here's a [linux journal entry](https://www.linuxjournal.com/content/tech-tip-extract-pages-pdf)
+
+```sh
+#!/bin/sh
+
+OUTPUT="merge.pdf"
+FILES="$(ls *.pdf | grep -v "$OUTPUT" | sort)"
+
+/usr/local/bin/gs -dBATCH \
+    -dNOPAUSE \
+    -dSAFER \
+    -dFirstPage=1 \
+    -dLastPage=1 \
+    -q \
+    -sDEVICE=pdfwrite \
+    -sOutputFile="$OUTPUT" \
+    $FILES
+```
