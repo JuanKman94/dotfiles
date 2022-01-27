@@ -684,13 +684,17 @@ end)
 
 -- toggle titlebar border color
 client.connect_signal("focus", function(c)
-    awful.titlebar(c) :
-        get_children_by_id("titlebar_trapeze")[1] :
-        set_shape_border_color(beautiful.titlebar_fg_focus)
+    if c.type == "normal" then
+        awful.titlebar(c) :
+            get_children_by_id("titlebar_trapeze")[1] :
+            set_shape_border_color(beautiful.titlebar_fg_focus)
+    end
 end)
 client.connect_signal("unfocus", function(c)
-    awful.titlebar(c) :
-        get_children_by_id("titlebar_trapeze")[1] :
-        set_shape_border_color(beautiful.titlebar_fg_normal)
+    if c.type == "normal" then
+        awful.titlebar(c) :
+            get_children_by_id("titlebar_trapeze")[1] :
+            set_shape_border_color(beautiful.titlebar_fg_normal)
+    end
 end)
 -- }}}
