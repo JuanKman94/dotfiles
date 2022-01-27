@@ -16,6 +16,11 @@ if [ -f $HOME/.bash_private ]; then
     source $HOME/.bash_private
 fi
 
+# source autocompletion scripts
+for completion_f in $HOME/.config/completions.d/*.bash; do
+    [ -x $completion_f ] && source $completion_f
+done
+
 # Remove legacy behaviour
 # http://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator
 stty -ixon
