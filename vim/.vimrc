@@ -86,7 +86,7 @@ if &term=="xterm"
 	set t_Sb=[4%dm
 	set t_Sf=[3%dm
 endif
-fixdel
+"fixdel
 
 " ViM features
 set showcmd			" Show (partial) command in status line.
@@ -101,6 +101,8 @@ set relativenumber	" And relative line numbers
 " Redraw screen and run nohlsearch when pressing <CTRL-l>
 nnoremap <silent> <c-l> :nohl<cr><c-l>
 
+" Open tag under cursor in a new tab
+nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T
 
 colorscheme tron256
 

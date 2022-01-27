@@ -66,8 +66,9 @@ alias gsh='git push'
 alias gsha='git push --all'
 alias gshf='git push --force-with-lease'
 
-alias vim='vim -p'
-#alias python=/usr/bin/python3
+alias vim='nvim -p'
+alias dc='docker-compose'
+alias be='bundle exec'
 
 ####### Exports #######
 
