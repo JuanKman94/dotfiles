@@ -3550,8 +3550,9 @@ ___git_complete git __git_main
 ___git_complete gitk __gitk_main
 
 # autocomplete my aliases for git
-__git_complete gc _git_checkout
 __git_complete gb _git_branch
+__git_complete gc _git_checkout
+__git_complete gd _git_diff
 
 # The following are necessary only for Cygwin, and only are needed
 # when the user has tab-completed the executable name and consequently
