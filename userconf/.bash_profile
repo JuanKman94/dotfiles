@@ -29,10 +29,10 @@ stty -ixon
 
 EDITOR=vim
 
-PATH=$PATH:$HOME/bin:$HOME/.local/bin:/snap/bin
+PATH=$PATH:$HOME/bin:$HOME/.local/bin
 #PATH=$PATH:$HOME/.config/composer/vendor/bin:./vendor/bin # composer packages
 #PATH=$PATH:$HOME/.npm-global/bin:./node_modules/.bin # node packages
-GOPATH=$HOME/.go
+#GOPATH="$HOME/.go:/usr/share/gocode"
 
 ####### sh prompt #######
 
@@ -66,9 +66,10 @@ alias gsh='git push'
 alias gsha='git push --all'
 alias gshf='git push --force-with-lease'
 
-alias vim='nvim -p'
-alias dc='docker-compose'
 alias be='bundle exec'
+alias dc='docker-compose'
+alias nvim='nvim -p'
+alias vim='vim -p'
 
 ####### Exports #######
 
@@ -77,6 +78,7 @@ export PATH
 export GOPATH
 export PS1
 export MAKEFLAGS=-j$(nproc)
+export CMAKEFLAGS=-j$(nproc)
 
 # ls
 export LS_OPTIONS='--color=auto -hF'
@@ -111,5 +113,3 @@ echo -e "\tMan is just an animal"
 echo -e "\t\ttrying to figure out"
 echo -e "\t\t\thow to kill time through his days..."
 echo "  -- Kanji, Persona 4"
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

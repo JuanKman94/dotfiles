@@ -1,3 +1,10 @@
+local awful      = require("awful")
+local math       = require("math")
+local io         = require("io")
+local vicious    = require("vicious")
+local wibox      = require("wibox")
+local string     = string
+
 volume_cfg = {}
 volume_cfg.card_id  = 0
 volume_cfg.channel = "Master"

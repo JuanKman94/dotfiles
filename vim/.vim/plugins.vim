@@ -17,10 +17,8 @@ Plugin 'scrooloose/nerdtree'
 " HTML snippets - Tutorial: https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
 Plugin 'mattn/emmet-vim'
 
-Plugin 'neovim/nvim-lspconfig'
-
-Plugin 'nvim-lua/plenary.nvim'
-Plugin 'nvim-telescope/telescope.nvim'
+" Ctrl+P plugin
+" Plugin 'ctrlpvim/ctrlp.vim'
 
 call vundle#end()
 

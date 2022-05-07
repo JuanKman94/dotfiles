@@ -23,9 +23,9 @@ st*foreground: tron_cyan
 st*cursorColor: tron_yellow
 
 !! Fonts
-st*faceName: terminus:size=12
-st*boldFont: terminus:size=12
-st*font: terminus
+st*faceName: terminus:size=14
+st*boldFont: terminus:size=14
+st*font: terminus:size=12
 
 !! General
 st*scrollBar: false
@@ -41,8 +41,8 @@ xterm*foreground: tron_cyan
 xterm*cursorColor: tron_yellow
 
 !! Fonts
-xterm*faceName: terminus:size=12
-xterm*boldFont: terminus:size=12
+xterm*faceName: terminus:size=14
+xterm*boldFont: terminus:size=14
 xterm*font: terminus
 
 !! General
