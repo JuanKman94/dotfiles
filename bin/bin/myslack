@@ -21,13 +21,14 @@ log() {
 
 function install_dependencies() {
     local dependencies="$1"
+    local action="${2:-install}"
 
     for dep in $dependencies; do
         packages=$(find $SLACKBUILDS_DIR -type d -name "$dep")
         log "Installing dependency... $dependencies -- $packages"
 
         for pkg_path in $packages; do
-            install_sb "$pkg_path"
+            install_sb "$pkg_path" $action
         done
     done
 }
@@ -54,7 +55,7 @@ function install_sb() {
     source $PWD/$pkg_name.info
 
     if [ -n "$REQUIRES" ]; then
-        install_dependencies $REQUIRES
+        install_dependencies $REQUIRES $action
     fi
 
     log "Installing $path..."
