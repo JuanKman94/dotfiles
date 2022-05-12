@@ -1,0 +1,27 @@
+#!/usr/bin/env -S sed -i.bak -f
+# Remove accented characters in place from the specified file.
+#
+# A backup file will be created, see sed(8)
+#
+# Usage: unaccent <file>
+
+s/Á/A/g
+s/á/a/g
+
+s/É/E/g
+s/é/e/g
+
+s/Í/I/g
+s/í/i/g
+
+s/Ó/O/g
+s/ó/o/g
+
+s/Ú/U/g
+s/ú/u/g
+
+s/¡//g
+s/¿//g
+
+s#<i>##g
+s#</i>##g
