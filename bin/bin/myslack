@@ -11,12 +11,23 @@ CONFIRMATION="n"
 PACKAGE="$1"
 SUDO=""
 
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+RESET='\033[0m'
+YELLOW='\033[0;33m'
+
 # use sudo if not running as root
 [[ $UID -ne 0 ]] && SUDO="sudo --preserve-env"
 
 log() {
     local lvl="${2:-INFO}"
-    echo "[$lvl] $1"
+    local color="$RESET"
+
+    [[ "$lvl" = "INFO" ]] && color="$GREEN"
+    [[ "$lvl" = "WARN" ]] && color="$YELLOW"
+    [[ "$lvl" = "ERROR" ]] && color="$RED"
+
+    echo -e "[${color}${lvl}${RESET}] $1"
 }
 
 function install_dependencies() {
@@ -80,8 +91,19 @@ function install_sb() {
         log "Source found" "WARN"
     fi
 
+    # check if MD5 checksum is configured
+    test -z "$MD5SUM" && test -n "$MD5SUM_x86_64" && MD5SUM="$MD5SUM_x86_64"
+
+    if [ -n "$MD5SUM" ]; then
+        log "Comparing MD5 checksum..." "WARN"
+        if [ "$MD5SUM" != "$(md5sum "$(basename "$DOWNLOAD")" | cut -d' ' -f 1)" ]; then
+            log "MD5SUM does not match, exiting..." "ERROR"
+            exit 1
+        fi
+    fi
+
     log "Running slack build script"
-    notify-send "Slackbuild" "Runnind buld script for $pkg_name. May need password"
+    notify-send "Slackbuild" "Running build script for $pkg_name. May need password"
     $SUDO sh "$PWD/${pkg_name}.SlackBuild"
 
     log "Installing package"
@@ -92,6 +114,7 @@ function install_sb() {
         log "Failed to install $path" "ERROR"
     fi
 
+    rm "$(echo $DOWNLOAD | tr '/' '\n' | tail -n 1)"
     popd
 }
 
@@ -131,7 +154,7 @@ while [[ $# -gt 0 ]]; do
     param="$1"
 
     case $param in
-        d|desc|info|s|search)
+        d|desc|s|search)
             ACTION="desc"
             PACKAGE="$2"
             shift
@@ -143,6 +166,12 @@ while [[ $# -gt 0 ]]; do
             ;;
         u|upgrade)
             ACTION="upgrade"
+            PACKAGE="$2"
+            shift
+            shift
+            ;;
+        info)
+            ACTION="info"
             PACKAGE="$2"
             shift
             shift
@@ -162,16 +191,23 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [ $ACTION = "install" -o $ACTION = "upgrade" ]; then
+if [ $ACTION = "info" -o $ACTION = "install" -o $ACTION = "upgrade" ]; then
     packages=$(find $SLACKBUILDS_DIR -type d -name "$PACKAGE")
 
     for pkg_path in $packages; do
-        if [ $CONFIRMATION = 'n' ]; then
-            read -p "[PROMPT] Install $pkg_path ? [y/N]:" CONFIRMATION
-        fi
+        if [ $ACTION = "info" ]; then
+            pkg=$(basename $pkg_path)
 
-        if [ $CONFIRMATION = 'y' ]; then
-            install_sb "$pkg_path" $ACTION
+            echo "$pkg =================================================== $pkg_path"
+            cat $pkg_path/$pkg.info
+        else
+            if [ "$CONFIRMATION" = 'n' ]; then
+                read -p "[PROMPT] Install $pkg_path ? [y/N]:" CONFIRMATION
+            fi
+
+            if [ "$CONFIRMATION" = 'y' ]; then
+                install_sb "$pkg_path" $ACTION
+            fi
         fi
     done
 
