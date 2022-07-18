@@ -1,0 +1,25 @@
+#!/bin/sh
+
+FILENAME_FORMAT="%(playlist_index)s %(title)s.%(ext)s"
+PLAYLIST="$1"
+PLAYLIST_START="${2:-1}"
+PLAYLIST_END=""
+
+print_help() {
+    echo -e 1>&2 "Usage: $0 <playlist url>\n\n"
+    echo 1>&2 "Download playlist songs to current directory"
+}
+
+if [ -z "$PLAYLIST" ]; then
+    print_help
+    exit 1
+fi
+
+youtube-dl "$PLAYLIST" \
+    --continue \
+    --extract-audio \
+    --audio-format mp3 \
+    --audio-quality 0 \
+    --format bestaudio \
+    --playlist-start $PLAYLIST_START \
+    -o "$FILENAME_FORMAT"
