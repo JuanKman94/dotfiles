@@ -49,7 +49,7 @@ beautiful.init("~/.config/awesome/themes/xresources/theme.lua")
 -- {{{
 -- Load pulseaudio_widget (needs to be loaded **after** beautiful.init) and
 -- other widgets
-local pulse     = require("pulseaudio_widget")
+--local pulse     = require("pulseaudio_widget")
 local pomodoro  = require("pomodoro")
 local batteries     = require("plugins/battery")
 local music     = require("plugins/mpd")
@@ -65,10 +65,10 @@ local separator = wibox.widget.separator({
 
 -- {{{
 -- Setup images for the status bar
-local pulse_container   = wibox.container.margin(pulse, 2, 0, 4, 2)
+--local pulse_container   = wibox.container.margin(pulse, 2, 0, 4, 2)
 local pomowidget        = pomodoro.init()
 
-pulse_container.forced_width = 16
+--pulse_container.forced_width = 16
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
@@ -258,8 +258,8 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
-            pulse_container,
-            separator,
+            --pulse_container,
+            --separator,
             cpu,
             separator,
             imgbat,
@@ -401,12 +401,12 @@ globalkeys = gears.table.join(
 	awful.key({ modkey,    altkey }, "m", function () music.player() end),
 
 	-- Audio
-	awful.key({ }, "XF86AudioRaiseVolume", pulse.volume_up),
-	awful.key({ }, "XF86AudioLowerVolume", pulse.volume_down),
-	awful.key({ }, "XF86AudioMute",  pulse.toggle_muted),
+	--awful.key({ }, "XF86AudioRaiseVolume", pulse.volume_up),
+	--awful.key({ }, "XF86AudioLowerVolume", pulse.volume_down),
+	--awful.key({ }, "XF86AudioMute",  pulse.toggle_muted),
 	-- Microphone
-	awful.key({"Shift"}, "XF86AudioRaiseVolume", pulse.volume_up_mic),
-	awful.key({"Shift"}, "XF86AudioLowerVolume", pulse.volume_down_mic),
+	--awful.key({"Shift"}, "XF86AudioRaiseVolume", pulse.volume_up_mic),
+	--awful.key({"Shift"}, "XF86AudioLowerVolume", pulse.volume_down_mic),
 	--awful.key({ }, "XF86MicMute",  pulse.toggle_muted_mic),
 
 	-- Music
@@ -433,6 +433,8 @@ clientkeys = gears.table.join(
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
+              {description = "toggle keep on top", group = "client"}),
+    awful.key({ modkey, "Control" }, "t",      function (c) c.sticky = not c.sticky          end,
               {description = "toggle keep on top", group = "client"}),
     awful.key({ modkey,           }, "n",
         function (c)
@@ -684,17 +686,21 @@ end)
 
 -- toggle titlebar border color
 client.connect_signal("focus", function(c)
-    if c.type == "normal" then
-        awful.titlebar(c) :
-            get_children_by_id("titlebar_trapeze")[1] :
-            set_shape_border_color(beautiful.titlebar_fg_focus)
-    end
+    local titlebar = awful.titlebar(c)
+
+    if not (titlebar and #titlebar:get_children_by_id("titlebar_trapeze") > 0) then return end
+
+    awful.titlebar(c) :
+        get_children_by_id("titlebar_trapeze")[1] :
+        set_shape_border_color(beautiful.titlebar_fg_focus)
 end)
 client.connect_signal("unfocus", function(c)
-    if c.type == "normal" then
-        awful.titlebar(c) :
-            get_children_by_id("titlebar_trapeze")[1] :
-            set_shape_border_color(beautiful.titlebar_fg_normal)
-    end
+    local titlebar = awful.titlebar(c)
+
+    if not (titlebar and #titlebar:get_children_by_id("titlebar_trapeze") > 0) then return end
+
+    awful.titlebar(c) :
+        get_children_by_id("titlebar_trapeze")[1] :
+        set_shape_border_color(beautiful.titlebar_fg_normal)
 end)
 -- }}}

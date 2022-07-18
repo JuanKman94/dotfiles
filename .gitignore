@@ -6,3 +6,5 @@ vim/.vim/.netrwhist
 vim/.vim/spell
 userconf/.ncmpcpp/error.log
 .DS_Store
+userconf/.local/share/*
+userconf/.config/nvim/plugin/packer_compiled.lua

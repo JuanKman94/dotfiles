@@ -7,6 +7,9 @@ require "thor"
 class Song
   attr_reader :artist, :album, :name, :track, :filename
 
+  TRACK_PATTERN = /(?<track>[[:digit:]]+)[[:punct:]]? /.freeze
+  AUDIO_EXTENSIONS = %w[.aac .m4a .mp3 .ogg].freeze
+
   def initialize(artist:, album:, name:, track:, filename:)
     @artist = artist
     @album = album
@@ -21,6 +24,50 @@ class Song
 
   def new_filename
     "#{File.dirname(@filename)}/#{new_name}"
+  end
+
+  def id3v2_tags
+    tags = []
+
+    tags << ["-a", artist] unless artist.nil?
+    tags << ["-A", album] unless album.nil?
+    tags << ["-s", name] unless name.nil?
+    tags << ["-t", track.to_s] unless track.nil?
+
+    tags
+  end
+
+  # @param [String] directory
+  # @param [String] artist
+  # @param [String] album
+  # @param [Array<String>] extensions Allowed extensions with dot prefix, e.g., ".mp3"
+  def self.from_directory(directory, artist:, album:, extensions: AUDIO_EXTENSIONS)
+    Dir["#{directory}/*"]
+      .select { |file| extensions.include?(File.extname(file)) }
+      .map do |file|
+        filename = File.basename(file)
+        track = extract_track(filename).to_i
+
+        while track == 0 do
+          print "Track for '#{filename}': "
+          track = STDIN.gets.chomp.to_i
+        end
+
+        Song.new(
+          artist: artist,
+          album: album,
+          filename: file,
+          track: track,
+          name: filename.sub(File.extname(filename), "").sub(/0?#{track} /, "")
+        )
+      end
+  end
+
+  def self.extract_track(filename)
+    matches = TRACK_PATTERN.match(filename)
+    return nil unless matches
+
+    matches[:track].to_i
   end
 
   private
@@ -42,12 +89,6 @@ class Song
 end
 
 class MyMusic < Thor
-  AUDIO_EXTENSIONS = [
-    ".aac",
-    ".m4a",
-    ".mp3",
-    ".ogg",
-  ].freeze
 
   desc "my_music DIRECTORY", "Rename files inside DIRECTORY"
   method_option :artist, aliases: "-a", desc: "Specify album artist for files inside DIRECTORY"
@@ -55,27 +96,7 @@ class MyMusic < Thor
   def rename(directory)
     album = options[:album] || extract_album(directory)
     artist = options[:artist] || extract_artist(directory)
-    songs = []
-
-    Dir["#{directory}/*"]
-      .select { |file| is_audio_file?(file) }
-      .each do |file|
-        filename = File.basename(file)
-        track = 0
-
-        while track == 0 do
-          print "Track for '#{filename}': "
-          track = STDIN.gets.chomp.to_i
-        end
-
-        songs << Song.new(
-          artist: artist,
-          album: album,
-          filename: file,
-          track: track,
-          name: filename.sub(File.extname(filename), "")
-        )
-      end
+    songs = Song.from_directory(directory, artist: artist, album: album)
 
     songs
       .sort { |a,b| a.track <=> b.track }
@@ -87,6 +108,21 @@ class MyMusic < Thor
           File.rename(song.filename, song.new_filename)
         end
       end
+  end
+
+  desc "my_music tag DIRECTORY", "Add id3v2 tags to MP3 files"
+  method_option :artist, aliases: "-a", desc: "Specify album artist for files inside DIRECTORY"
+  method_option :album, aliases: "-b", desc: "Specify album for files inside DIRECTORY"
+  def tag(directory)
+    album = options[:album] || extract_album(directory)
+    artist = options[:artist] || extract_artist(directory)
+    songs = Song.from_directory(directory, artist: artist, album: album, extensions: [".mp3"])
+
+    songs.each do |song|
+      tags = ["-T", songs.size.to_s] + song.id3v2_tags
+
+      system("id3tag", *tags.flatten, song.filename)
+    end
   end
 
   def self.exit_on_failure?
@@ -104,7 +140,7 @@ class MyMusic < Thor
   end
 
   def is_audio_file?(filename)
-    AUDIO_EXTENSIONS.include?(File.extname(filename))
+    Song::AUDIO_EXTENSIONS.include?(File.extname(filename))
   end
 end
 

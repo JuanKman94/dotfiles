@@ -1,16 +1,23 @@
-# Default settings for user directories
+# This file is written by xdg-user-dirs-update
+# If you want to change or add directories, just edit the line you're
+# interested in. All local changes will be retained on the next run.
+# Format is XDG_xxx_DIR="$HOME/yyy", where yyy is a shell-escaped
+# homedir-relative path, or XDG_xxx_DIR="/yyy", where /yyy is an
+# absolute path. No other format is supported.
 #
-# The values are relative pathnames from the home directory and
-# will be translated on a per-path-element basis into the users locale
-DESKTOP=.config/desktop
-DOWNLOAD=downloads
-TEMPLATES=Templates
-PUBLICSHARE=Public
-DOCUMENTS=documents
-MUSIC=music
-PICTURES=pictures
-VIDEOS=videos
-# Another alternative is:
-#MUSIC=Documents/Music
-#PICTURES=Documents/Pictures
-#VIDEOS=Documents/Videos
+XDG_DESKTOP_DIR="$HOME/"
+XDG_DOWNLOAD_DIR="$HOME/downloads"
+XDG_TEMPLATES_DIR="$HOME/"
+XDG_PUBLICSHARE_DIR="$HOME/"
+XDG_DOCUMENTS_DIR="$HOME/documents"
+XDG_MUSIC_DIR="$HOME/music"
+XDG_PICTURES_DIR="$HOME/pictures"
+XDG_VIDEOS_DIR="$HOME/videos"
+XDG_XDG_DESKTOP_DIR_DIR="$HOME/"
+XDG_XDG_DOWNLOAD_DIR_DIR="$HOME/"
+XDG_XDG_TEMPLATES_DIR_DIR="$HOME/"
+XDG_XDG_PUBLICSHARE_DIR_DIR="$HOME/"
+XDG_XDG_DOCUMENTS_DIR_DIR="$HOME/"
+XDG_XDG_MUSIC_DIR_DIR="$HOME/"
+XDG_XDG_PICTURES_DIR_DIR="$HOME/"
+XDG_XDG_VIDEOS_DIR_DIR="$HOME/"

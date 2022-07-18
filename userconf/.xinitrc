@@ -13,21 +13,18 @@ START_DIR_RC=$HOME/.startdirrc
 [ -f $usermodmap ] && xmodmap $usermodmap
 [ -f $START_DIR_RC ] && rm $START_DIR_RC
 
-# See synaptics(4) & https://forums.linuxmint.com/viewtopic.php?t=145283
+# see synaptics(4)
+# see https://forums.linuxmint.com/viewtopic.php?t=145283 (synaptics finger)
 #xinput --list-props 12 | grep -i finger
-#xinput --set-prop 12 267 42 48 192
-# xinput set-prop 12 275 -112 -112 # natural scrolling
-xinput set-prop 12 275 -112 -112
+# xinput set-prop 12 267 42 48 192 # synaptics finger: FingerLow, FingerHigh, FingerPress
+# xinput set-prop 12 275 -112 -112 # scrolling distance: natural scrolling
+#xinput set-prop 12 297 24 42 192 # synaptics finger: FingerLow, FingerHigh, FingerPress
+#xinput set-prop 12 305 -112 -112 # scrolling distance: natural scrolling
 xset s 120 140
 
 # xss-lock -n /usr/bin/slock -- slock
 
-command -V start-pulseaudio-x11 >/dev/null 2>&1 && start-pulseaudio-x11
+# per-system stuff, e.g.: `command -V start-pulseaudio-x11 >/dev/null 2>&1 && start-pulseaudio-x11`
+[ -f $HOME/.xinit_private ] && sh "$HOME/.xinit_private"
 
-# start MPD
-command -V mpd >/dev/null 2>&1 && mpd
-
-# start btpd
-command -V btpd >/dev/null 2>&1 && btpd
-
-ssh-agent awesome
+ssh-agent awesome --config $HOME/.config/awesome/rc.lua > "$HOME/.xsession.log"

@@ -10,6 +10,20 @@ ARCHIVE="$1"
 RED='\033[0;31m'
 RESET='\e[0m'
 SB_DIR="${SB_DIR:-$HOME/slackbuilds}"
+SUDO=""
+SLACKBUILDS_DIR="/opt/slackbuilds"
+
+# use sudo if not running as root
+[[ $UID -ne 0 ]] && SUDO="sudo --preserve-env"
+
+log() {
+    local lvl="${2:-INFO}"
+    echo "[$lvl] $1"
+}
+
+function print_error() {
+    echo -e 1>&2 "${RED}$@${RESET}"
+}
 
 function install_sb() {
     local path="$(find $SB_DIR -type d -name $1)"
@@ -23,7 +37,7 @@ function install_sb() {
 }
 
 function is_sb_installed() {
-    local current_version="$(find /var/log/packages -name "${1}-*")"
+    local current_version="$(find /var/log/packages/ -name "${1}-*")"
 
     if [ -n "$current_version" ]; then
         #echo 1>&2 "$1 already installed: $current_version"
@@ -31,10 +45,6 @@ function is_sb_installed() {
     else
         echo 2
     fi
-}
-
-function print_error() {
-    echo -e 1>&2 "${RED}$@${RESET}"
 }
 
 function print_help() {
@@ -64,15 +74,17 @@ if [[ 0 -eq $is_installed ]]; then
     exit 0
 fi
 
-
 source $PKG.info
 
 if [ -n "$REQUIRES" ]; then
-    for d in $REQUIRES; do
-        is_installed=$(is_sb_installed $d)
+    for dependency in $REQUIRES; do
+        is_installed=$(is_sb_installed $dependency)
 
         if [[ 0 -ne $is_installed ]]; then
-            install_sb "$d"
+            log "Installing dependency: $dependency"
+            install_sb "$dependency"
+        else
+            log "$dependency already installed"
         fi
     done
 fi
@@ -87,11 +99,20 @@ if [ -z "$DOWNLOAD" ]; then
     exit 1
 fi
 
-wget --continue $DOWNLOAD
-if [ $? -ne 0 ]; then
-    print_error "Something went wrong with wget"
-    exit 1
+if [ ! -f "$(basename $DOWNLOAD)" ]; then
+    log "Downloading source from: $DOWNLOAD" "DEBUG"
+    wget --continue $DOWNLOAD
+    if [ $? -ne 0 ]; then
+        print_error "Something went wrong with wget"
+        exit 1
+    fi
+else
+    log "Source found"
 fi
 
-sudo bash "./${PKG}.SlackBuild"
-sudo /sbin/upgradepkg --install-new /tmp/${PRGNAM}-*.tgz
+log "Running slack build script"
+notify-send "Slackbuild" "Runnind buld script for $PKG. May need password"
+$SUDO bash "./${PKG}.SlackBuild"
+log "Installing package"
+notify-send "Slackbuild" "Installing $PKG. May need password"
+$SUDO /sbin/upgradepkg --install-new /tmp/${PRGNAM}-*.tgz

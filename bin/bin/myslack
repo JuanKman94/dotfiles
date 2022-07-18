@@ -1,0 +1,230 @@
+#!/bin/sh
+#
+# See https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash#13359121
+# for bash parameter handling
+
+set -e
+
+SLACKBUILDS_DIR="/opt/slackbuilds"
+ACTION="install"
+CONFIRMATION="n"
+PACKAGE="$1"
+SUDO=""
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+RESET='\033[0m'
+YELLOW='\033[0;33m'
+
+# use sudo if not running as root
+[[ $UID -ne 0 ]] && SUDO="sudo --preserve-env"
+
+log() {
+    local lvl="${2:-INFO}"
+    local color="$RESET"
+
+    [[ "$lvl" = "INFO" ]] && color="$GREEN"
+    [[ "$lvl" = "WARN" ]] && color="$YELLOW"
+    [[ "$lvl" = "ERROR" ]] && color="$RED"
+
+    echo -e "[${color}${lvl}${RESET}] $1"
+}
+
+function install_dependencies() {
+    local dependencies="$1"
+    local action="${2:-install}"
+
+    for dep in $dependencies; do
+        packages=$(find $SLACKBUILDS_DIR -type d -name "$dep")
+        log "Installing dependency... $dependencies -- $packages"
+
+        for pkg_path in $packages; do
+            install_sb "$pkg_path" $action
+        done
+    done
+}
+
+function install_sb() {
+    local path="$1"
+    local action="${2:-install}"
+
+    if [ -z "$path" ]; then
+        log "Invalid slackbuild: '$path'" "ERROR"
+        return
+    fi
+
+    pushd $path
+    local pkg_name="$(basename $path)"
+
+    if [ $(is_sb_installed $pkg_name) -eq 0 -a $action = "install" ]; then
+        log "$pkg_name already installed, skipping..." "WARN"
+        popd
+        return
+    fi
+
+    # read package information
+    source $PWD/$pkg_name.info
+
+    if [ -n "$REQUIRES" ]; then
+        install_dependencies $REQUIRES $action
+    fi
+
+    log "Installing $path..."
+    # check if DOWNLOAD_x86_64 is configured
+    if [ "$DOWNLOAD" == "UNSUPPORTED" -a -n "$DOWNLOAD_x86_64" ]; then
+        DOWNLOAD="$DOWNLOAD_x86_64"
+    fi
+
+    if [ -z "$DOWNLOAD" ]; then
+        log "No DOWNLOAD source" "ERROR"
+        exit 1
+    fi
+
+    if [ ! -f "$(basename $DOWNLOAD)" ]; then
+        log "Downloading source from: $DOWNLOAD" "DEBUG"
+        wget --continue $DOWNLOAD
+        if [ $? -ne 0 ]; then
+            log "Something went wrong with wget" "ERROR"
+            exit 1
+        fi
+    else
+        log "Source found" "WARN"
+    fi
+
+    # check if MD5 checksum is configured
+    test -z "$MD5SUM" && test -n "$MD5SUM_x86_64" && MD5SUM="$MD5SUM_x86_64"
+
+    if [ -n "$MD5SUM" ]; then
+        log "Comparing MD5 checksum..." "WARN"
+        if [ "$MD5SUM" != "$(md5sum "$(basename "$DOWNLOAD")" | cut -d' ' -f 1)" ]; then
+            log "MD5SUM does not match, exiting..." "ERROR"
+            exit 1
+        fi
+    fi
+
+    log "Running slack build script"
+    notify-send "Slackbuild" "Running build script for $pkg_name. May need password"
+    $SUDO sh "$PWD/${pkg_name}.SlackBuild"
+
+    log "Installing package"
+    notify-send "Slackbuild" "Installing $pkg_name. May need password"
+    $SUDO /sbin/upgradepkg --install-new /tmp/${PRGNAM}-*.tgz
+
+    if [[ $? -ne 0 ]]; then
+        log "Failed to install $path" "ERROR"
+    fi
+
+    rm "$(echo $DOWNLOAD | tr '/' '\n' | tail -n 1)"
+    popd
+}
+
+# Check if package is already installed
+#
+# @return 0 if package is installed
+# @return 2 if package is not installed
+function is_sb_installed() {
+    local current_version="$(find /var/log/packages/ -name "${1}-*")"
+
+    if [ -n "$current_version" ]; then
+        echo 0
+    else
+        echo 2
+    fi
+}
+
+function print_help() {
+    cat 1>&2 <<EOS
+Usage: $(basename $0) [<action>] <slackbuild [.tar.gz]>
+
+The slackbuild can be either an archive downloaded from slackbuilds.org
+or a directory from the slackbuilds repository.
+
+  <action>      install, search. Default is install
+  <slackbuild>  space-separated list of slackbuild packages
+
+ACTIONS
+
+  [i]nstall     Install package
+  [d]esc        Show package description (slack-desc), if found.
+  [s]earch      Show package description (slack-desc), if found.
+EOS
+}
+
+while [[ $# -gt 0 ]]; do
+    param="$1"
+
+    case $param in
+        d|desc|s|search)
+            ACTION="desc"
+            PACKAGE="$2"
+            shift
+            shift
+            ;;
+        i|install)
+            PACKAGE="$2"
+            shift
+            ;;
+        u|upgrade)
+            ACTION="upgrade"
+            PACKAGE="$2"
+            shift
+            shift
+            ;;
+        info)
+            ACTION="info"
+            PACKAGE="$2"
+            shift
+            shift
+            ;;
+        -y|--yes)
+            CONFIRMATION="y"
+            shift
+            ;;
+        -h|--help)
+            print_help
+            exit 1
+            ;;
+        *)
+            PACKAGE="$param"
+            shift
+            ;;
+    esac
+done
+
+if [ $ACTION = "info" -o $ACTION = "install" -o $ACTION = "upgrade" ]; then
+    packages=$(find $SLACKBUILDS_DIR -type d -name "$PACKAGE")
+
+    for pkg_path in $packages; do
+        if [ $ACTION = "info" ]; then
+            pkg=$(basename $pkg_path)
+
+            echo "$pkg =================================================== $pkg_path"
+            cat $pkg_path/$pkg.info
+        else
+            if [ "$CONFIRMATION" = 'n' ]; then
+                read -p "[PROMPT] Install $pkg_path ? [y/N]:" CONFIRMATION
+            fi
+
+            if [ "$CONFIRMATION" = 'y' ]; then
+                install_sb "$pkg_path" $ACTION
+            fi
+        fi
+    done
+
+    exit 0
+fi
+
+if [ $ACTION = "desc" ]; then
+    packages=$(find $SLACKBUILDS_DIR -type d -name "*${PACKAGE}*")
+
+    # find $SLACKBUILDS_DIR -type d -name "$PACKAGE" -execdir cat "{}/slack-desc" \;
+    # See installpkg(8) for a reference on how they parse package description
+    for pkg_path in $packages; do
+        pkg=$(basename $pkg_path)
+
+        echo "$pkg =================================================== $pkg_path"
+        grep "^$pkg:" $pkg_path/slack-desc | uniq | sed "s/^$pkg:/#/g"
+        echo
+    done
+    exit 0
+fi
