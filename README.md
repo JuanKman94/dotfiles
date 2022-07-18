@@ -138,3 +138,11 @@ FILES="$(ls *.pdf | grep -v "$OUTPUT" | sort)"
     -sOutputFile="$OUTPUT" \
     $FILES
 ```
+
+## NeoVim
+
+Add packer.nvim to manage plugins:
+
+```sh
+git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+```

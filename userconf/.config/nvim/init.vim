@@ -1,8 +1,130 @@
-set runtimepath^=~/.vim runtimepath+=~/.vim/after
-let &packpath = &runtimepath
-source ~/.vimrc
+let mapleader = ','   " The default <Leader> is '\', but ',' seems better
 
+"""""" Mappings
+
+" Make it easy to edit Vimrc file
+nmap <Leader>ev :tabedit $MYVIMRC<cr>
+
+" Dealing with splitscreen, Alt + <key> to move between screens
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
+
+" Redraw screen and run nohlsearch when pressing <CTRL-l>
+nnoremap <silent> <c-l> :nohl<cr><c-l>
+
+" Open tag under cursor in a new tab
+nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T
+
+" Store current session on file
+nmap <Leader>z :mksession! ~/.vim/sessions/
+
+" Restore previous session
+nmap <Leader>Z :source ~/.vim/sessions/
+" Open a new tab
+nmap <Leader>t :tabnew 
+
+" Open a new Horizontal split window
+nmap <Leader>s :split 
+
+" Open a new Vertically split window
+nmap <Leader>v :vsplit 
+
+""" plugins
+
+" Make NERDTree easier to toggle
+let NERDTreeHijackNetrw = 0
+nmap <Leader>n :NERDTreeToggle<cr>
+
+
+"""""" Settings
+
+set wildmenu    " Cool autocompletion menu
+set showcmd     " Always show status
+set cursorline  " Underline current line
+set nobackup    " No backup ~ files
+set noundofile
+set splitbelow  " When HSplit, add screen below
+set splitright  " When VSplit, add screen to the right
+set modeline
+set modelines=3
+set shiftwidth=4 " tab behavior
+set tabstop=4 " tab behavior
+set showcmd			" Show (partial) command in status line.
+set showmatch		" Show matching brackets.
+set ignorecase		" Do case insensitive matching
+set smartcase		" Do smart case matching
+set incsearch		" Incremental search -- find matches as you type
+set hlsearch		" Highlight search
+set number			" Let's activate line numbers
+set relativenumber	" And relative line numbers
+" set grepprg=rg\ --vimgrep\ $*
+set grepformat='%f:%l:%c%m'
+
+" ---- Visuals ----
+
+"set noruler
+"set laststatus=2
+set statusline=%f\ >\ %l,%c\ %y%r\ %=%L\ lines\ [%p%%]
+set rulerformat=%24(%y%=\ %l,%c\ [%p%%]%)
+
+set diffopt=vertical
+
+colorscheme tron256
+
+
+" ---- Folding ----
+set foldmethod=indent
+set foldlevelstart=7
+nnoremap z1 :set foldlevel=0<CR>
+nnoremap z2 :set foldlevel=1<CR>
+nnoremap z3 :set foldlevel=2<CR>
+nnoremap z4 :set foldlevel=3<CR>
+
+"highlight ExtraWhitespace ctermbg=red guibg=red
+highlight ExtraWhitespace ctermbg=darkred guibg=darkred
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+
+" ---- FileType ----
+autocmd BufNewFile,BufRead *.ts set filetype=javascript " Treat TypeScriptX file as js
+autocmd BufNewFile,BufRead *.tsx set filetype=javascript " Treat TypeScriptX file as js
+autocmd BufNewFile,BufRead *.vue set filetype=javascript " Treat vue file as js
+autocmd BufNewFile,BufRead *.scss set filetype=css " Treat scss file as css
+" autocmd BufNewFile,BufRead *.blade.php set filetype=html " Treat blade files as html
+" autocmd BufNewFile,BufRead *.ftl set filetype=html " Treat FreeMarker's files as html
+
+
+""""""" neovim
 lua <<EOF
+local packer_plugins = require('plugins')
+
+--[[
+# LSP: how to use it
+
+Ensure you have `solargraph` installed for the project's ruby version
+
+    $ gem install solargraph solargraph-standardrb
+
+Some of the LSP features and their key mappings are listed here.
+But there are many more. See `:help LSP` for the full list.
+
+Key map 	Action
+<c-x> <c-o> -- Complete
+g d         -- Jump to definition
+K           -- Show hover documentation
+g r         -- Open quickfix with all references to method
+r n         -- Rename method and update references
+
+@see https://blog.backtick.consulting/neovims-built-in-lsp-with-ruby-and-rails/
+--]]
+
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys
@@ -51,19 +173,6 @@ for _, lsp in ipairs(servers) do
 end
 EOF
 
-""""" LSP: how to use it
-"
-" Some of the LSP features and their key mappings are listed here.
-" But there are many more. See `:help LSP` for the full list.
-"
-" Key map 	Action
-" <c-x> <c-o> -- Complete
-" g d         -- Jump to definition
-" K           -- Show hover documentation
-" g r         -- Open quickfix with all references to method
-" r n         -- Rename method and update references
-"
-" @see https://blog.backtick.consulting/neovims-built-in-lsp-with-ruby-and-rails/
 
 nnoremap <leader>ff <cmd>Telescope find_files<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<CR>

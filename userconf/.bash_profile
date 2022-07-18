@@ -55,7 +55,7 @@ alias g='git log --oneline -n 30'
 alias gl='git log --graph'
 alias gs='git status'
 alias ga='git add'
-alias gb='git --no-pager branch -a'
+alias gb='git --no-pager branch'
 alias gc='git checkout'
 alias gcm='git commit -m'
 alias gcmm='git commit --no-ff -m'
@@ -68,8 +68,8 @@ alias gshf='git push --force-with-lease'
 
 alias be='bundle exec'
 alias dc='docker-compose'
-alias nvim='nvim -p'
 alias vim='vim -p'
+alias nvim='nvim -p'
 
 ####### Exports #######
 
