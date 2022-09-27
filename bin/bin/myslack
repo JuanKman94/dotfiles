@@ -9,6 +9,7 @@ SLACKBUILDS_DIR="/opt/slackbuilds"
 ACTION="install"
 CONFIRMATION="n"
 PACKAGE="$1"
+SKIP_MD5_CHECK=""
 SUDO=""
 
 GREEN='\033[0;32m'
@@ -94,7 +95,7 @@ function install_sb() {
     # check if MD5 checksum is configured
     test -z "$MD5SUM" && test -n "$MD5SUM_x86_64" && MD5SUM="$MD5SUM_x86_64"
 
-    if [ -n "$MD5SUM" ]; then
+    if [ -n "$MD5SUM" -a "$SKIP_MD5_CHECK" != "y" ]; then
         log "Comparing MD5 checksum..." "WARN"
         if [ "$MD5SUM" != "$(md5sum "$(basename "$DOWNLOAD")" | cut -d' ' -f 1)" ]; then
             log "MD5SUM does not match, exiting..." "ERROR"
@@ -178,6 +179,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -y|--yes)
             CONFIRMATION="y"
+            shift
+            ;;
+        --skip-md5)
+            SKIP_MD5_CHECK="y"
             shift
             ;;
         -h|--help)
