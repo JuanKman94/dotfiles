@@ -27,7 +27,7 @@ stty -ixon
 
 # User specific environment and startup programs
 
-EDITOR=vim
+EDITOR=nvim
 
 PATH=$PATH:$HOME/bin:$HOME/.local/bin
 #PATH=$PATH:$HOME/.config/composer/vendor/bin:./vendor/bin # composer packages

@@ -57,6 +57,16 @@ $ echo "Or even better..."
 $ nmtui
 ```
 
+## Image Manipulation
+
+### Convert SVG to PNG
+
+[From StackOverflow](https://stackoverflow.com/questions/9853325/how-to-convert-a-svg-to-a-png-with-imagemagick):
+
+```sh
+$ inkscape -w 1024 -h 1024 input.svg -o output.png
+```
+
 ## Notes
 
 To verify password strength, one can use **Pluggable Authentication Modules**

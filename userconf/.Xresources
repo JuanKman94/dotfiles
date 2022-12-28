@@ -23,9 +23,12 @@ st*foreground: tron_cyan
 st*cursorColor: tron_yellow
 
 !! Fonts
-st*faceName: terminus:size=14
-st*boldFont: terminus:size=14
-st*font: terminus:size=12
+!st*faceName: terminus:size=14
+!st*boldFont: terminus:size=14
+!st*font: terminus:size=12
+st*faceName: FiraCode:size=12
+st*boldFont: FiraCode:size=12
+st*font: FiraCode:size=12
 
 !! General
 st*scrollBar: false
