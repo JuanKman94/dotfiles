@@ -1,0 +1,10 @@
+--database=postgresql
+--css=tailwind
+--skip-action-mailer
+--skip-action-mailbox
+--skip-active-storage
+--skip-action-cable
+--asset-pipeline=propshaft
+--skip-jbuilder
+--skip-system-test
+--skip-bootsnap

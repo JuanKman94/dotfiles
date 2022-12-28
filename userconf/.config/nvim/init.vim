@@ -117,10 +117,10 @@ But there are many more. See `:help LSP` for the full list.
 
 Key map 	Action
 <c-x> <c-o> -- Complete
-g d         -- Jump to definition
+gd         -- Jump to definition
 K           -- Show hover documentation
-g r         -- Open quickfix with all references to method
-r n         -- Rename method and update references
+<space>gr   -- Open quickfix with all references to method
+<space>rn   -- Rename method and update references
 
 @see https://blog.backtick.consulting/neovims-built-in-lsp-with-ruby-and-rails/
 --]]
@@ -162,9 +162,10 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "solargraph" }
-for _, lsp in ipairs(servers) do
+local servers = { ["solargraph"] = {"bundle", "exec", "solargraph", "stdio"} }
+for lsp, cmd in pairs(servers) do
   nvim_lsp[lsp].setup {
+	cmd = cmd,
 	on_attach = lsp_bindings,
 	flags = {
 	  debounce_text_changes = 150,
