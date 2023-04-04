@@ -22,8 +22,14 @@ class Song
     new_name
   end
 
-  def new_filename
-    "#{File.dirname(@filename)}/#{new_name}"
+  def new_filename(extension: nil)
+    raise "Invalid target extension: #{extension}" if extension && !AUDIO_EXTENSIONS.include?(extension)
+
+    "#{File.dirname(@filename)}/#{new_name(extension)}"
+  end
+
+  def extname
+    File.extname(@filename)
   end
 
   def id3v2_tags
@@ -37,28 +43,30 @@ class Song
     tags
   end
 
-  # @param [String] directory
-  # @param [String] artist
-  # @param [String] album
-  # @param [Array<String>] extensions Allowed extensions with dot prefix, e.g., ".mp3"
+  # @param directory [String]
+  # @param artist [String]
+  # @param album [String]
+  # @param extensions [Array<String>] Allowed extensions with dot prefix, e.g., ".mp3"
+  # @return [Array<Song>]
   def self.from_directory(directory, artist:, album:, extensions: AUDIO_EXTENSIONS)
     Dir["#{directory}/*"]
       .select { |file| extensions.include?(File.extname(file)) }
       .map do |file|
-        filename = File.basename(file)
-        track = extract_track(filename).to_i
+        filename = File.realdirpath(file)
+        basename = File.basename(file)
+        track = extract_track(basename).to_i
 
         while track == 0 do
-          print "Track for '#{filename}': "
+          print "Track for '#{basename}': "
           track = STDIN.gets.chomp.to_i
         end
 
         Song.new(
           artist: artist,
           album: album,
-          filename: file,
+          filename: filename,
           track: track,
-          name: filename.sub(File.extname(filename), "").sub(/0?#{track} /, "")
+          name: basename.sub(File.extname(basename), "").sub(/0?#{track} /, "")
         )
       end
   end
@@ -72,13 +80,18 @@ class Song
 
   private
 
-  def new_name
+  def new_name(extension = nil)
     name = ::StringIO.new
 
     name << "#{padded_track}. " unless @track.nil?
     name << "#{@artist} - " unless @artist.nil?
     name << "#{@name}" unless @name.nil?
-    name << File.extname(@filename) unless @filename.nil?
+
+    if extension.nil?
+      name << File.extname(@filename) unless @filename.nil?
+    else
+      name << extension
+    end
 
     name.string
   end
@@ -122,6 +135,31 @@ class MyMusic < Thor
       tags = ["-T", songs.size.to_s] + song.id3v2_tags
 
       system("id3tag", *tags.flatten, song.filename)
+    end
+  end
+
+  desc "my_music convert DIRECTORY", "Convert audio files to .m4a (AAC) for iphone compatibility"
+  method_option :artist, aliases: "-a", desc: "Specify album artist for files inside DIRECTORY"
+  method_option :album, aliases: "-b", desc: "Specify album for files inside DIRECTORY"
+  def convert(directory)
+    album = options[:album] || extract_album(directory)
+    artist = options[:artist] || extract_artist(directory)
+
+    Song.from_directory(directory, artist: artist, album: album).each do |song|
+      next if song.extname == ".m4a"
+
+      cmd = [
+        "ffmpeg",
+        "-i",
+        song.filename, # input file
+        "-c:a",
+        "aac",
+        "-b:a",
+        "256k",
+        song.new_filename(extension: ".m4a") # output file
+      ]
+
+      system(*cmd)
     end
   end
 
