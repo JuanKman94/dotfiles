@@ -8,6 +8,7 @@
 SLACKBUILDS_DIR="/opt/slackbuilds"
 ACTION="install"
 CONFIRMATION="n"
+DONT_LOOKUP=0
 PACKAGE="$1"
 SKIP_DEPENDENCIES=""
 SKIP_MD5_CHECK=""
@@ -101,9 +102,10 @@ function install_sb() {
     source "$path/$(basename $path).info"
     pkg_name="$PRGNAM-$VERSION"
 
+    log "confirmation = $confirmation, requires = '$REQUIRES', skip = '$SKIP_DEPENDENCIES'" "DEBUG"
     if [ "$confirmation" = 'n' ]; then
         local msg="Package: $PRGNAM ($VERSION)"
-        if [ -n "$REQUIRES" ]; then
+        if [ -n "$REQUIRES" -a "$SKIP_DEPENDENCIES" != "y" ]; then
             msg="$msg\n  Dependencies:\n"
             msg="$msg$(tr ' ' '\n' <<< $REQUIRES | xargs printf "    * %s\n")"
         fi
@@ -198,24 +200,29 @@ function install_sb() {
 
 function print_help() {
     cat 1>&2 <<EOS
-Usage: $(basename $0) [<action>] <slackbuild [.tar.gz]>
+Usage: $(basename $0) <action> <slackbuild [.tar.gz]>
 
 The slackbuild can be either an archive downloaded from slackbuilds.org
 or a directory from the slackbuilds repository.
 
-  <action>      install, search. Default is install
   <slackbuild>  space-separated list of slackbuild packages
 
 ACTIONS
 
-  [i]nstall     Install package
-  [d]esc        Show package description (slack-desc), if found.
-  [s]earch      Show package description (slack-desc), if found.
+  i[nstall]     Install package
+  d[esc]        Show package description (slack-desc), if found.
+  s[earch]      Show package description (slack-desc), if found.
+  u[pgrade]     Upgrade package (install if new)
+  info          Print package info
 
 OPTIONS
 
-  -v|--verbose  Be verbose
+  -d|--do-not-lookup      Do not lookup package in slackbuilds repo, treat argument as slackbuild package directory
+  -y|--yes                Confirm package installation (skip prompt)
   -s|--skip-dependencies  Skip dependencies installation
+  --skip-md5              Skip MD5 integrity check
+  -v|--verbose            Be verbose
+  -h|--help               Print this message
 EOS
 }
 
@@ -229,42 +236,56 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             ;;
+
         i|install)
             PACKAGE="$2"
             shift
             ;;
+
         u|upgrade)
             ACTION="upgrade"
             PACKAGE="$2"
             shift
             shift
             ;;
+
         info)
             ACTION="info"
             PACKAGE="$2"
             shift
             shift
             ;;
+
+        -d|--do-not-lookup)
+            DONT_LOOKUP=1
+            shift
+            ;;
+
         -y|--yes)
             CONFIRMATION="y"
             shift
             ;;
+
         -s|--skip-dependencies)
             SKIP_DEPENDENCIES="y"
             shift
             ;;
+
         --skip-md5)
             SKIP_MD5_CHECK="y"
             shift
             ;;
+
         -v|--verbose)
             VERBOSE=1
             shift
             ;;
+
         -h|--help)
             print_help
             exit 1
             ;;
+
         *)
             PACKAGE="$param"
             shift
@@ -273,7 +294,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [ $ACTION = "info" -o $ACTION = "install" -o $ACTION = "upgrade" ]; then
-    packages=$(find $SLACKBUILDS_DIR -type d -name "$PACKAGE")
+    if [ $DONT_LOOKUP -eq 1 ]; then
+        packages="$PACKAGE"
+    else
+        packages=$(find $SLACKBUILDS_DIR -type d -name "$PACKAGE")
+    fi
 
     for pkg_path in $packages; do
         if [ $ACTION = "info" ]; then
