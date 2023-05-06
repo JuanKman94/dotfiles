@@ -1,0 +1,17 @@
+#!/bin/sh
+# Change screen-off timer depending on AC state.
+#
+# If the AC adapter is plugged, the screen will turn off after ~10 minutes of
+# being idle. If it's unplugged, after a minute.
+#
+# See xset(1)
+
+# If AC adapter is plugged the vlue is 1, 0 otherwise
+ONLINE=$1
+
+if [ "$ONLINE" = "1" ]
+then
+    xset s 600 660
+else
+    xset s 60 80
+fi
