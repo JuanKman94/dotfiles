@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# For reference, see: https://web.archive.org/web/20221108015158/https://ucnv.github.io/pnglitch/
+
+require "bundler/inline"
+
+gemfile do
+  source "https://rubygems.org"
+  gem "pnglitch"
+end
+
+FILTER_TYPES = {
+  none: 0,
+  sub: 1,
+  up: 2,
+  average: 3,
+  paeth: 4
+}.freeze
+
+file_path = ARGV[0]
+ext = File.extname(file_path)
+new_name = file_path.sub(ext, "_glitch#{ext}")
+
+PNGlitch.open(file_path) do |png|
+  # This is equivalent to Figure B.11 from the website (see beginning of file)
+  png.change_all_filters FILTER_TYPES[:average]
+
+  png.glitch do |data|
+    x = data.size / 4
+    data[0, x] + data[x*2, x] + data[x*1, x] + data[x*3..-1]
+  end
+
+  png.save new_name
+end

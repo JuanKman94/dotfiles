@@ -1,0 +1,38 @@
+#!/bin/sh
+
+BACKUP=0
+LOG_FILE="log/rspec.log"
+PENDING_FILE="pending.txt"
+RSPEC_CMD="bundle exec rspec"
+SPECS="${SPECS:-$(tr '\n' ' ' < $PENDING_FILE)}"
+
+while [[ $# -gt 0 ]]; do
+    param="$1"
+
+    case $param in
+        -b)
+            BACKUP=1
+            shift
+            ;;
+        *)
+            echo 1>&2 "Unrecognized parameter: $param"
+            shift
+            ;;
+    esac
+done
+
+if [ ! -f $PENDING_FILE ]; then
+    echo 1>&2 "error: $PENDING_FILE not found"
+    exit 1
+fi
+
+[[ -f ./bin/rspec ]] && RSPEC_CMD="./bin/rspec"
+
+if [ $BACKUP -eq 1 ]; then
+    cp $PENDING_FILE ${PENDING_FILE/txt/bak}
+fi
+
+set -e
+$RSPEC_CMD $SPECS --failure-exit-code 1 | tee $LOG_FILE
+
+grep '^rspec ' $LOG_FILE | cut -d ' ' -f 2 | cut -d '[' -f 1 | cut -d ':' -f 1,2 | sort -u > $PENDING_FILE

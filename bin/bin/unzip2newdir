@@ -1,0 +1,11 @@
+#!/bin/bash
+# Usage: unzip2newdir <zip archive>
+#
+# Extract zip archive to new directory named as archive without
+# the `.zip` extension.
+#
+# Written to use as custom action from Thunar(1).
+
+ZIP_FILE="$1"
+
+unzip "$ZIP_FILE" -d "$(echo "$ZIP_FILE" | sed 's|.zip$||')"

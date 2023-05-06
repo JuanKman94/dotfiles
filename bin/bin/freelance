@@ -1,0 +1,109 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/inline"
+require "date"
+
+gemfile do
+  source "https://rubygems.org"
+
+  gem "dry-cli", "1.0"
+end
+
+TODAY = Date.today.freeze
+
+def currency(number) = "$%.2f" % number
+
+def end_of_month(start_date)
+  result = nil
+
+  start_date.upto(start_date.next_month) do |date|
+    if date.month != start_date.month
+      result = date.prev_day
+      break
+    end
+  end
+
+  raise "Could not find end of month for #{date}" if result.nil?
+
+  result
+end
+
+module Freelance
+  class Salary
+    ANUALLY = "CHANGE_ME"
+
+    class << self
+      def monthly = ANUALLY / 12
+
+      def daily(month) = monthly.to_f / billable_days(month)
+
+      def hourly(month) = daily(month) / 8.to_f
+
+      # @param month [Numeric]
+      # @param year [Numeric]
+      # @param day [Numeric]
+      def billable_days(month, year: TODAY.year, day: nil)
+        date_args = [year, month, day].compact.map(&:to_i)
+        days = 0
+        date = Date.new(*date_args)
+        last_day = end_of_month(date)
+
+        date.upto(last_day) do |day|
+          next if day.saturday? || day.sunday?
+
+          days += 1
+        end
+
+        days
+      end
+    end
+  end
+
+  module CLI
+    module Commands
+      extend Dry::CLI::Registry
+
+      class Version < Dry::CLI::Command
+        desc "Print version"
+
+        def call(*)
+          puts "0.0.1"
+        end
+      end
+
+      class Invoice < Dry::CLI::Command
+        desc "Calculate billing for the given month"
+
+        option :month, type: :number, required: false, aliases: ["-m"], desc: "Month. Defaults to current month (#{TODAY.month})"
+        option :year, type: :number, required: false, aliases: ["-y"], desc: "Year. Defaults to current year (#{TODAY.year})"
+        option :day, type: :number, required: false, aliases: ["-d"], desc: "Starting on day of month. Defaults to first day of month"
+        option :pto, type: :number, required: false, aliases: ["-p"], desc: "Paid time off taken in the period"
+
+        def call(month: TODAY.month, year: TODAY.year, day: nil, pto: 0, **)
+          date_args = [year, month, day].compact.map(&:to_i)
+
+          first_day = Date.new(*date_args)
+          last_day = end_of_month(first_day)
+          billable_days = Salary.billable_days(month, day: first_day.day)
+          charged_days = billable_days - pto.to_i
+          daily = Salary.daily(month)
+          total = billable_days * daily
+
+          puts "=== #{first_day.strftime("%B %Y")} (#{first_day.iso8601} - #{last_day.iso8601})"
+          puts "* Billable days: #{billable_days}, #{pto.to_i} PTO days"
+          puts "* Monthly salary: #{currency(Salary.monthly)}"
+          puts "  * Daily salary: #{currency(daily)}"
+          puts "  * Hourly salary: #{currency(Salary.hourly(month))}"
+          puts "==========================="
+          puts "* Total: #{billable_days} x #{currency(daily)} = #{currency(total)}"
+        end
+      end
+
+      register "version", Version, aliases: ["v", "-v", "--version"]
+      register "invoice", Invoice, aliases: ["i"]
+    end
+  end
+end
+
+Dry::CLI.new(Freelance::CLI::Commands).call
