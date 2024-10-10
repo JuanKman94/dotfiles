@@ -2,33 +2,68 @@
 # Remove containers of the image $1 with a status of dead or exited
 
 E_WRONG_ARGS=85
-DOCKER=$(which docker)
 
 print_help() {
-	echo "Usage: $(basename $0) <image name>"
-	echo ""
-	echo "Remove containers having <image name> as an ancestor"
-	echo "and a 'dead' or 'exited' status"
+    echo -e "Remove containers having <image name> as an ancestor" \
+        "and a 'dead' or 'exited' status\n"
+    echo -e "Usage: $(basename $0) [-i] <image name> [<image name>...]\n"
+    echo "  -h Print this message"
+    echo "  -i Remove container image (docker-rmi)"
 }
+
+remove_image() {
+    local image="$1"
+
+    sudo docker rmi "$image"
+}
+
+remove_containers() {
+    local image="$1"
+    local containers=$(sudo docker ps -qa -f ancestor=$image -f status=exited -f status=dead | tr '\n' ' ')
+
+    if [ -z "$containers" ]; then
+        echo "No stopped containers of image $image"
+    else
+        sudo docker rm $containers
+    fi
+}
+
+REMOVE_IMAGE=0
+
+while getopts ":h:i" option; do
+    case "${option}" in
+        h)
+            print_help
+            exit 0
+            ;;
+        i)
+            REMOVE_IMAGE=1
+            shift
+            ;;
+        # If we have an invalid argument, warn and fail.
+        \? )
+            echo "(\\?) The value '${OPTARG}' is not a valid option"
+            exit 1
+            ;;
+            :)
+            echo "The value '${OPTARG}' is not a valid option"
+            exit $E_WRONG_ARGS
+            ;;
+    esac
+done
+
+if [ $# -eq 0 ]; then
+    print_help
+    exit $E_WRONG_ARGS
+fi
 
 echo "This script uses sudo"
 
-if [ $# -ne 1 ]; then
-	print_help
-	exit $E_WRONG_ARGS
-fi
+for image in $@; do
+    remove_containers "$image"
 
-if [ -z $DOCKER ]; then
-	echo "No docker found"
-	exit 1
-fi
-
-IMAGE="$1"
-containers=$(sudo $DOCKER ps -qa -f ancestor=$IMAGE -f status=exited -f status=dead | tr '\n' ' ')
-
-if [ -z "$containers" ]; then
-	echo "No stopped containers found of the image ${IMAGE}"
-	exit 1
-fi
-
-sudo $DOCKER rm $containers
+    if  [ $REMOVE_IMAGE -eq 1 ]; then
+        remove_image "$image"
+        echo "Container image removed"
+    fi
+done

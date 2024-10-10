@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # See https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash#13359121
 # for bash parameter handling
@@ -118,13 +118,13 @@ function install_sb() {
         exit 0
     fi
 
-    log "=== Installing $pkg_name ($path)"
+    log "=== Installing $pkg_name ($path) (ACTION=$ACTION)"
 
     is_sb_installed $pkg_name
     is_installed=$?
     if [ $action = "install" -a $is_installed -eq 0 ]; then
         log "$pkg_name already installed, skipping..." "WARN"
-        popd 1>/dev/null
+        popd 1>/dev/null 2>&1
         return 1
     fi
 
@@ -136,44 +136,54 @@ function install_sb() {
     pushd "$path"
     source "$path/$(basename "$path").info"
     # check if DOWNLOAD_x86_64 is configured
-    if [ "$DOWNLOAD" == "UNSUPPORTED" -a -n "$DOWNLOAD_x86_64" ]; then
+    if [ -n "$DOWNLOAD_x86_64" ]; then
         DOWNLOAD="$DOWNLOAD_x86_64"
     fi
+
+    # check if MD5 checksum is configured
+    if [ -n "$MD5SUM_x86_64" -o -z "$MD5SUM" ]; then
+        MD5SUM="$MD5SUM_x86_64"
+    fi
+    # test -z "$MD5SUM" && test -n "$MD5SUM_x86_64" && MD5SUM="$MD5SUM_x86_64"
 
     if [ -z "$DOWNLOAD" ]; then
         log "No DOWNLOAD source" "ERROR"
         exit 1
     fi
 
-    if [ ! -f "$(basename $DOWNLOAD)" ]; then
-        log "Downloading source from: $DOWNLOAD" "DEBUG"
-        wget --continue $DOWNLOAD
-        if [ $? -ne 0 ]; then
-            log "Something went wrong with wget" "ERROR"
-            exit 1
+    downloads=($DOWNLOAD)
+    md5s=($MD5SUM)
+
+    for (( i=0; i<${#downloads[@]}; i++)); do
+        download="${downloads[$i]}"
+        md5="${md5s[$i]}"
+        log "i = $i, download = $download, md5 = $md5" "DEBUG"
+
+        if [ ! -f "$(basename $download)" ]; then
+            log "Downloading source from: $download" "DEBUG"
+            wget --continue $download
+            if [ $? -ne 0 ]; then
+                log "Something went wrong with wget" "ERROR"
+                exit 1
+            fi
+        else
+            log "Source found" "WARN"
         fi
-    else
-        log "Source found" "WARN"
-    fi
 
-    # check if MD5 checksum is configured
-    test -z "$MD5SUM" && test -n "$MD5SUM_x86_64" && MD5SUM="$MD5SUM_x86_64"
+        if [ -n "$MD5SUM" -a "$SKIP_MD5_CHECK" != "y" ]; then
+            log "Comparing MD5 checksum..." "WARN"
+            ACTUAL_MD5SUM="$(md5sum "$(basename "$download")" | cut -d' ' -f 1)"
+            MD5_FOUND=1
 
-    if [ -n "$MD5SUM" -a "$SKIP_MD5_CHECK" != "y" ]; then
-        log "Comparing MD5 checksum..." "WARN"
-        ACTUAL_MD5SUM="$(md5sum "$(basename "$DOWNLOAD")" | cut -d' ' -f 1)"
-        MD5_FOUND=1
+            log "Comparing MD5 sum: MD5 = $md5" "DEBUG"
+            [ "$md5" == "$ACTUAL_MD5SUM" ] && MD5_FOUND=0
 
-        for MD5 in $MD5SUM; do
-            log "Comparing MD5 sum: MD5 = $MD5" "DEBUG"
-            [ "$MD5" == "$ACTUAL_MD5SUM" ] && MD5_FOUND=0
-        done
-
-        if [ $MD5_FOUND -ne 0 ]; then
-            log "MD5SUM does not match; expected $ACTUAL_MD5SUM, got $MD5SUM. Exiting..." "ERROR"
-            exit 1
+            if [ $MD5_FOUND -ne 0 ]; then
+                log "MD5SUM does not match; expected $ACTUAL_MD5SUM, got $MD5SUM. Exiting..." "ERROR"
+                exit 1
+            fi
         fi
-    fi
+    done
 
     log "Running slack build script"
     notify-send "Slackbuild" "Running build script for $pkg_name. May need password"
@@ -193,7 +203,13 @@ function install_sb() {
         log "Failed to install $path" "ERROR"
     fi
 
-    rm "$(tr '/' '\n' <<< $DOWNLOAD | tail -n 1)"
+    for download in $DOWNLOAD; do
+        rm "$(tr '/' '\n' <<< $download | tail -n 1)"
+    done
+    if [ -f README.SLACKWARE ]; then
+        cat README.SLACKWARE
+    fi
+
     popd 1>/dev/null
     return 0
 }
@@ -239,6 +255,11 @@ while [[ $# -gt 0 ]]; do
 
         i|install)
             PACKAGE="$2"
+            shift
+            ;;
+
+        reinstall)
+            ACTION="reinstall"
             shift
             ;;
 
@@ -293,7 +314,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [ $ACTION = "info" -o $ACTION = "install" -o $ACTION = "upgrade" ]; then
+if [ $ACTION = "info" -o $ACTION = "reinstall" -o $ACTION = "install" -o $ACTION = "upgrade" ]; then
     if [ $DONT_LOOKUP -eq 1 ]; then
         packages="$PACKAGE"
     else
@@ -306,6 +327,15 @@ if [ $ACTION = "info" -o $ACTION = "install" -o $ACTION = "upgrade" ]; then
 
             echo "$pkg =================================================== $pkg_path"
             cat $pkg_path/$pkg.info
+
+            if [ -f $pkg_path/README.SLACKWARE ]; then
+                echo -e "\n-----------------------------| README.SLACKWARE |-----------------------------\n"
+                cat $pkg_path/README.SLACKWARE
+            fi
+            if [ -f $pkg_path/README ]; then
+                echo -e "\n-----------------------------| README |-----------------------------\n"
+                cat $pkg_path/README
+            fi
         else
             install_sb "$pkg_path" $ACTION "$CONFIRMATION"
         fi

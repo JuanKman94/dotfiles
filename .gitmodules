@@ -1,9 +1,6 @@
-[submodule "awesome4/.config/awesome/vicious"]
-	path = awesome4/.config/awesome/vicious
-	url = https://github.com/Mic92/vicious
 [submodule "vim/.vim/bundle/Vundle.vim"]
 	path = vim/.vim/bundle/Vundle.vim
 	url = https://github.com/VundleVim/Vundle.vim.git
-[submodule "awesome4/.config/awesome/pomodoro"]
-	path = awesome4/.config/awesome/pomodoro
-	url = https://github.com/unode/awesome-pomodoro.git
+[submodule "vicious"]
+	path = awesome4/.config/awesome/vicious
+	url = https://github.com/vicious-widgets/vicious.git

@@ -27,7 +27,7 @@ theme.fg_focus      = xrdb.background
 theme.fg_urgent     = theme.bg_normal
 theme.fg_minimize   = xrdb.color7
 
-theme.useless_gap   = dpi(5)
+theme.useless_gap   = dpi(2)
 theme.border_width  = dpi(0)
 theme.border_normal = theme.fg_focus
 theme.border_focus  = theme.fg_normal
@@ -44,10 +44,10 @@ theme.border_marked = xrdb.color3
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
-theme.titlebar_fg_normal = theme.fg_normal .. "88"
-theme.titlebar_fg_focus = theme.fg_normal .. "ff"
-theme.titlebar_bg_normal = "#00000000"
-theme.titlebar_bg_focus = "#00000000"
+-- theme.titlebar_fg_normal = theme.fg_normal .. "88"
+-- theme.titlebar_fg_focus = theme.fg_normal .. "ff"
+-- theme.titlebar_bg_normal = "#00000000"
+-- theme.titlebar_bg_focus = "#00000000"
 
 theme.tooltip_fg = theme.fg_normal
 theme.tooltip_bg = theme.bg_normal
